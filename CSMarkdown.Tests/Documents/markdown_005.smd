@@ -1,0 +1,15 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+---
+
+## CS Syntax
+```{s echo=true}
+
+var con = "data source=.\\sql2012;initial catalog=sys2000;integrated security=true;";
+var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'", con);
+RenderTable(data);
+
+```
