@@ -105,17 +105,5 @@ namespace CSMarkdown.Rendering
 
             document.LoadHtml(html);
         }
-        
-        public static string ToBase64(this StringContent stringContent)
-        {
-            return stringContent.ToString().ToBase64();
-        }
-
-        public static string ToBase64(this string str)
-        {
-            var bytes = Encoding.UTF8.GetBytes(str);
-            return System.Convert.ToBase64String(bytes);
-        }
-
     }
 }

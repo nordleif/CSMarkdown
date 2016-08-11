@@ -165,7 +165,10 @@ namespace CSMarkdown.Rendering
                         var info = block?.FencedCodeData?.Info?.Trim();
                         if (!string.IsNullOrWhiteSpace(info) && info.StartsWith("{s", StringComparison.InvariantCultureIgnoreCase) && info.EndsWith("}", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            var html = $"<code lang=\"cs\" options=\"{info}\">{block.StringContent.ToBase64()}</code>";
+                            var stringContent = block.StringContent.ToString();
+                            var base64stringContent = Convert.ToBase64String(Encoding.UTF8.GetBytes(stringContent));
+
+                            var html = $"<code lang=\"cs\" options=\"{info}\">{base64stringContent}</code>";
                             block.Tag = BlockTag.HtmlBlock;
                             block.StringContent = new StringContent();
                             block.StringContent.Append(html, 0, html.Length);
@@ -188,7 +191,7 @@ namespace CSMarkdown.Rendering
                         prefix = text.Substring(0, index);
                         text = text.Substring(index + 2);
                         index = text.IndexOf("'");
-                        code = text.Substring(0, index).Trim().ToBase64();
+                        code = Convert.ToBase64String(Encoding.UTF8.GetBytes(text.Substring(0, index).Trim()));
                         suffix = text.Substring(index + 1);
 
                         block.InlineContent = new Inline
