@@ -1,9 +1,7 @@
 ﻿---
-title: Display Error
+title: Error 
 ---
 
-### True Option Value
-```{s error=true}
-throw new System.Exception("This is a error message.");
+```{s}
+1 / 0;
 ```
-`

@@ -74,7 +74,6 @@
     <None Include="Documents\markdown_004.smd" />
     <None Include="Documents\markdown_003.smd" />
     <None Include="Documents\markdown_001.smd" />
-    <None Include="Documents\markdown_006.smd" />
     <None Include="Documents\markdown_005.smd" />
     <None Include="packages.config" />
   </ItemGroup>

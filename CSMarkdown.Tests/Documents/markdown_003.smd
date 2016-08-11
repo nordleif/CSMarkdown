@@ -8,9 +8,19 @@ output:
 ## CS Syntax
 ```{s echo=true}
 
-var conStr = ("data source=.\\sql2012;initial catalog=sys2000;integrated security=true;");
-var data = ReadSql("select top 25 p.pnt_name, p.descr, d.local_time, d.value from rpt_data d inner join pnt p on d.pnt_no = p.pnt_no", conStr);
+var n = 1;
 
-Table(data);
+var con = "data source=.\\sql2012;initial catalog=sys2000;integrated security=true;";
+var data = ReadSql("select top 5 p.pnt_name [Pnt], p.descr [Descr], d.local_time [Time], d.value [Value] from rpt_data d inner join pnt p on d.pnt_no = p.pnt_no", con);
+RenderTable(data);
 
 ```
+
+## Inline code
+
+Two plus two equals 's 2 + 2'. This is a Roslyn expression.
+
+Four 's n' plus four equals <code options="inline">4+4</code>. Wow.
+
+
+

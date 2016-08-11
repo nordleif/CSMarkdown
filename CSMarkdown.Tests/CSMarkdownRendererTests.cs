@@ -43,5 +43,31 @@ namespace CSMarkdown.Tests
 
             Process.Start(path);
         }
+
+        [Test]
+        public void CSMarkdownRenderer_Error_Throw()
+        {
+            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_throw.smd");
+            var text = File.ReadAllText(path);
+
+            Assert.Catch<Exception>(() =>
+            {
+                var renderer = new CSMarkdownRenderer();
+                var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html });
+            });
+        }
+
+        [Test]
+        public void CSMarkdownRenderer_Error_Display()
+        {
+            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_display.smd");
+            var text = File.ReadAllText(path);
+
+            var renderer = new CSMarkdownRenderer();
+            var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html });
+
+            Assert.NotNull(result);
+        }
+
     }
 }
