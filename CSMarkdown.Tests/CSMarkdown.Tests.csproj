@@ -55,6 +55,21 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_display_error.smd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\markdown_error_throw.smd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\markdown_error_display.smd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\markdown_display_warning.smd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\markdown_display_message.smd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Documents\markdown_002.smd" />
     <None Include="Documents\markdown_004.smd" />
     <None Include="Documents\markdown_003.smd" />

@@ -1,0 +1,9 @@
+﻿---
+title: Display Error
+---
+
+### True Option Value
+```{s error=true}
+throw new System.Exception("This is a error message.");
+```
+`

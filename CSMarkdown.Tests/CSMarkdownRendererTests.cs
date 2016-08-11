@@ -23,9 +23,15 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_004.smd", RenderOutput.Pdf)]
         [TestCase("markdown_005.smd", RenderOutput.Html)]
         [TestCase("markdown_006.smd", RenderOutput.Html)]
+
+        [TestCase("markdown_display_error.smd", RenderOutput.Html)]
+        [TestCase("markdown_display_message.smd", RenderOutput.Html)]
+        [TestCase("markdown_display_warning.smd", RenderOutput.Html)]
+
         [Test]
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {
+
             var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents", fileName);
             var text = File.ReadAllText(path);
 

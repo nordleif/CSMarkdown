@@ -16,10 +16,10 @@ namespace CSMarkdown.Rendering
 
         }
 
-        public string ConnectionString { get; set; }
-
         public HtmlNode CurrentNode { get; set; }
         
+        public CodeChunkOptions Options { get; set; }
+
         public DataTable ReadSql(string query, string connectionString)
         {
             var dataTable = new DataTable();
@@ -51,6 +51,25 @@ namespace CSMarkdown.Rendering
             }
 
             CurrentNode.ChildNodes.Add(tableNode);
+        }
+
+        public void WriteMessage(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (Options.ReadValue<bool>("message", true))
+                CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"message\">## {text}</code></pre>"));
+
+        }
+
+        public void WriteWarning(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+
+            if (Options.ReadValue<bool>("warning", false))
+                CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"warning\">## {text}</code></pre>"));
         }
     }
 }

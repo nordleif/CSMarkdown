@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSMarkdown.Rendering
 {
-    internal class CodeChunkOptions
+    public class CodeChunkOptions
     {
         #region Static Members
 
@@ -19,20 +19,23 @@ namespace CSMarkdown.Rendering
                 text = text.Substring(2);
                 text = text.TrimEnd('}');
 
-                var items = text.Split(',');
-                foreach(var item in items)
+                if (!string.IsNullOrWhiteSpace(text))
                 {
-                    var keyValue = item.Split('=');
-                    var key = keyValue[0].Trim();
-                    object value = keyValue.Length > 1 ? keyValue[1] : null;
+                    var items = text.Split(',');
+                    foreach (var item in items)
+                    {
+                        var keyValue = item.Split('=');
+                        var key = keyValue[0].Trim();
+                        object value = keyValue.Length > 1 ? keyValue[1] : null;
 
-                    if (((string)value).Equals("true", StringComparison.InvariantCultureIgnoreCase))
-                        value = true;
-                    else if (((string)value).Equals("false", StringComparison.InvariantCultureIgnoreCase))
-                        value = false;
+                        if (((string)value).Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                            value = true;
+                        else if (((string)value).Equals("false", StringComparison.InvariantCultureIgnoreCase))
+                            value = false;
 
-                    if (!dictionary.ContainsKey(key))
-                        dictionary.Add(key, value);
+                        if (!dictionary.ContainsKey(key))
+                            dictionary.Add(key, value);
+                    }
                 }
             }
             

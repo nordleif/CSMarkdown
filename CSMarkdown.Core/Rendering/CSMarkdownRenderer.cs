@@ -102,6 +102,7 @@ namespace CSMarkdown.Rendering
                         continue;
                     
                     scriptContext.CurrentNode = HtmlNode.CreateNode("<div>");
+                    scriptContext.Options = codeChunk.Options;
 
                     // eval
                     if (!codeChunk.Options.ReadValue<bool>("eval", true))
@@ -117,13 +118,30 @@ namespace CSMarkdown.Rendering
                     // run
                     scriptState = scriptState.ContinueWithAsync(codeChunk.Code).Result;
                 }
-                catch (CompilationErrorException)
+                catch (CompilationErrorException ex)
                 {
-                    throw;
+                    if (!codeChunk.Options.ReadValue<bool>("error", false))
+                        throw;
+
+                    // TODO: ...
+                    scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
                 }
-                catch (Exception)
+                catch(AggregateException ex)
                 {
-                    throw;
+                    if (!codeChunk.Options.ReadValue<bool>("error", false))
+                        throw;
+                    
+                    // TODO: ...
+                    foreach(var innerExceptions in ex.InnerExceptions)
+                        scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {innerExceptions.Message}</code></pre>"));
+                }
+                catch (Exception ex)
+                {
+                    if (!codeChunk.Options.ReadValue<bool>("error", false))
+                        throw;
+
+                    // TODO: ...
+                    scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
                 }
                 finally
                 {
