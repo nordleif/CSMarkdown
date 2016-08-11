@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonMark.Syntax;
 using HtmlAgilityPack;
+using CSMarkdown.Rendering.Scripting;
 
 namespace CSMarkdown.Rendering
 {
@@ -104,6 +105,27 @@ namespace CSMarkdown.Rendering
             }
 
             document.LoadHtml(html);
+        }
+
+        public static void ThrowOrWriteError(this ScriptContextBase scriptContext, Exception ex)
+        {
+            if (ex == null)
+                throw new ArgumentNullException(nameof(ex));
+
+            if (!scriptContext.Options.ReadValue<bool>("error", false))
+                throw ex;
+            
+            var aggregateException = ex as AggregateException;
+            if (aggregateException != null)
+            {
+                foreach (var innerException in aggregateException.InnerExceptions)
+                    scriptContext.ThrowOrWriteError(innerException);
+            }
+            else
+            {
+                scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
+            }
+                
         }
     }
 }

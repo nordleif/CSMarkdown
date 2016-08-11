@@ -134,7 +134,8 @@
     <Compile Include="Rendering\PdfRendererOptions.cs" />
     <Compile Include="Rendering\RenderContext.cs" />
     <Compile Include="Rendering\CSMarkdownRenderOptions.cs" />
-    <Compile Include="Rendering\ScriptContext.cs" />
+    <Compile Include="Rendering\Scripting\DefaultScriptContext.cs" />
+    <Compile Include="Rendering\Scripting\ScriptContextBase.cs" />
     <Compile Include="Rendering\YamlOptions.cs" />
   </ItemGroup>
   <ItemGroup>

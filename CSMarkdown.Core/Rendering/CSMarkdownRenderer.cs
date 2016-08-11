@@ -12,6 +12,7 @@ using CommonMark.Syntax;
 using HtmlAgilityPack;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using CSMarkdown.Rendering.Scripting;
 
 namespace CSMarkdown.Rendering
 {
@@ -29,6 +30,9 @@ namespace CSMarkdown.Rendering
 
             if (options == null)
                 options = new CSMarkdownRenderOptions();
+
+            if (options.ScriptContext == null)
+                options.ScriptContext = new DefaultScriptContext();
 
             // Create context
             var context = new RenderContext { RenderOptions = options };
@@ -91,8 +95,8 @@ namespace CSMarkdown.Rendering
             if (context.CodeChunks == null || !context.CodeChunks.Any())
                 return;
 
-            var scriptContext = new ScriptContext();
-            var scriptState = CSharpScript.RunAsync(string.Empty, ScriptOptions.Default, scriptContext, typeof(ScriptContext)).Result;
+            var scriptContext = context.RenderOptions.ScriptContext;
+            var scriptState = CSharpScript.RunAsync(string.Empty, ScriptOptions.Default, scriptContext, scriptContext.GetType()).Result;
 
             foreach (var codeChunk in context.CodeChunks)
             {
@@ -120,28 +124,15 @@ namespace CSMarkdown.Rendering
                 }
                 catch (CompilationErrorException ex)
                 {
-                    if (!codeChunk.Options.ReadValue<bool>("error", false))
-                        throw;
-
-                    // TODO: ...
-                    scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
+                    scriptContext.ThrowOrWriteError(ex);
                 }
                 catch(AggregateException ex)
                 {
-                    if (!codeChunk.Options.ReadValue<bool>("error", false))
-                        throw;
-                    
-                    // TODO: ...
-                    foreach(var innerExceptions in ex.InnerExceptions)
-                        scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {innerExceptions.Message}</code></pre>"));
+                    scriptContext.ThrowOrWriteError(ex);
                 }
                 catch (Exception ex)
                 {
-                    if (!codeChunk.Options.ReadValue<bool>("error", false))
-                        throw;
-
-                    // TODO: ...
-                    scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
+                    scriptContext.ThrowOrWriteError(ex);
                 }
                 finally
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSMarkdown.Rendering.Scripting;
 
 namespace CSMarkdown.Rendering
 {
@@ -12,6 +13,8 @@ namespace CSMarkdown.Rendering
         {
             Output = RenderOutput.Html;
         }
+
+        public ScriptContextBase ScriptContext { get; set; }
 
         public RenderOutput Output { get; set; }
     }

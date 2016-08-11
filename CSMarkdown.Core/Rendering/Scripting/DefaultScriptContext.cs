@@ -7,18 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace CSMarkdown.Rendering
+namespace CSMarkdown.Rendering.Scripting
 {
-    public class ScriptContext 
+    public class DefaultScriptContext
+        : ScriptContextBase
     {
-        public ScriptContext()
+        public DefaultScriptContext()
         {
 
         }
-
-        public HtmlNode CurrentNode { get; set; }
-        
-        public CodeChunkOptions Options { get; set; }
 
         public DataTable ReadSql(string query, string connectionString)
         {
@@ -28,7 +25,7 @@ namespace CSMarkdown.Rendering
 
             return dataTable;
         }
-        
+
         public void RenderTable(DataTable data)
         {
             if (data == null)
@@ -51,25 +48,6 @@ namespace CSMarkdown.Rendering
             }
 
             CurrentNode.ChildNodes.Add(tableNode);
-        }
-
-        public void WriteMessage(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return;
-
-            if (Options.ReadValue<bool>("message", true))
-                CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"message\">## {text}</code></pre>"));
-
-        }
-
-        public void WriteWarning(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return;
-
-            if (Options.ReadValue<bool>("warning", false))
-                CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"warning\">## {text}</code></pre>"));
         }
     }
 }
