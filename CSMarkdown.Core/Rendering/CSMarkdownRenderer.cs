@@ -12,7 +12,7 @@ using CommonMark.Syntax;
 using HtmlAgilityPack;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using CSMarkdown.Rendering.Scripting;
+using CSMarkdown.Scripting;
 
 namespace CSMarkdown.Rendering
 {

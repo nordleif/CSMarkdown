@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonMark.Syntax;
 using HtmlAgilityPack;
-using CSMarkdown.Rendering.Scripting;
+using CSMarkdown.Scripting;
 
 namespace CSMarkdown.Rendering
 {

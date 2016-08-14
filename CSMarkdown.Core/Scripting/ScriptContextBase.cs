@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using CSMarkdown.Rendering;
 
-namespace CSMarkdown.Rendering.Scripting
+namespace CSMarkdown.Scripting
 {
     public class ScriptContextBase 
     {

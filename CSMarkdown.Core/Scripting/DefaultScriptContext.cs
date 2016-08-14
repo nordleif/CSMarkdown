@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
-namespace CSMarkdown.Rendering.Scripting
+namespace CSMarkdown.Scripting
 {
     public class DefaultScriptContext
         : ScriptContextBase

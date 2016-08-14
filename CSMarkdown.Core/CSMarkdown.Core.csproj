@@ -121,6 +121,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Table.cs" />
     <Compile Include="Hosting\WebApp.cs" />
     <Compile Include="Hosting\StartOptions.cs" />
     <Compile Include="Rendering\CodeChunk.cs" />
@@ -134,8 +135,8 @@
     <Compile Include="Rendering\PdfRendererOptions.cs" />
     <Compile Include="Rendering\RenderContext.cs" />
     <Compile Include="Rendering\CSMarkdownRenderOptions.cs" />
-    <Compile Include="Rendering\Scripting\DefaultScriptContext.cs" />
-    <Compile Include="Rendering\Scripting\ScriptContextBase.cs" />
+    <Compile Include="Scripting\DefaultScriptContext.cs" />
+    <Compile Include="Scripting\ScriptContextBase.cs" />
     <Compile Include="Rendering\YamlOptions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +182,7 @@
     </Content>
     <EmbeddedResource Include="Rendering\www\default.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
