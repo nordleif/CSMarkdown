@@ -121,6 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Cell.cs" />
+    <Compile Include="Data\Column.cs" />
+    <Compile Include="Data\Row.cs" />
     <Compile Include="Data\Table.cs" />
     <Compile Include="Hosting\WebApp.cs" />
     <Compile Include="Hosting\StartOptions.cs" />
