@@ -64,7 +64,7 @@ namespace CSMarkdown.Rendering
 
             // Load HTML document
             context.HtmlDocument = new HtmlDocument();
-            context.HtmlDocument.LoadHtmlFromResource("default.html");
+            context.HtmlDocument.LoadHtmlFromResource(options.Output == RenderOutput.Pdf ? "default-pdf.html" : "default-html.html");
 
             // Render YAML options
             RenderYamlHeader(context);
@@ -247,21 +247,21 @@ namespace CSMarkdown.Rendering
         private void RenderYamlHeader(RenderContext context)
         {
             var styleUrls = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
-            styleUrls.Add("default", "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css");
-            styleUrls.Add("cerulean", "https://bootswatch.com/cerulean/bootstrap.min.css");
-            styleUrls.Add("cosmo", "https://bootswatch.com/cosmo/bootstrap.min.css");
-            styleUrls.Add("cyborg", "https://bootswatch.com/cyborg/bootstrap.min.css");
-            styleUrls.Add("darkly", "https://bootswatch.com/darkly/bootstrap.min.css");
-            styleUrls.Add("flatly", "https://bootswatch.com/flatly/bootstrap.min.css");
-            styleUrls.Add("journal", "https://bootswatch.com/journal/bootstrap.min.css");
-            styleUrls.Add("lumen", "https://bootswatch.com/lumen/bootstrap.min.css");
-            styleUrls.Add("paper", "https://bootswatch.com/paper/bootstrap.min.css");
-            styleUrls.Add("simplex", "https://bootswatch.com/simplex/bootstrap.min.css");
-            styleUrls.Add("slate", "https://bootswatch.com/slate/bootstrap.min.css");
-            styleUrls.Add("spacelab", "https://bootswatch.com/spacelab/bootstrap.min.css");
-            styleUrls.Add("superhero", "https://bootswatch.com/superhero/bootstrap.min.css");
-            styleUrls.Add("united", "https://bootswatch.com/united/bootstrap.min.css");
-            styleUrls.Add("yeti", "https://bootswatch.com/yeti/bootstrap.min.css");
+            styleUrls.Add("default", "css.default.css");
+            styleUrls.Add("cerulean", "css.bootstrap.css");
+            styleUrls.Add("cosmo", "css.cosmo.css");
+            styleUrls.Add("cyborg", "css.cyborg.css");
+            styleUrls.Add("darkly", "css.darkly.css");
+            styleUrls.Add("flatly", "css.flatly.css");
+            styleUrls.Add("journal", "css.journal.css");
+            styleUrls.Add("lumen", "css.lumen.css");
+            styleUrls.Add("paper", "css.paper.css");
+            styleUrls.Add("simplex", "css.simplex.css");
+            styleUrls.Add("slate", "css.slate.css");
+            styleUrls.Add("spacelab", "css.spacelab.css");
+            styleUrls.Add("superhero", "css.superhero.css");
+            styleUrls.Add("united", "css.united.css");
+            styleUrls.Add("yeti", "css.yeti.css");
             
             // Theme
             var theme = context.YamlHeader.ReadValue<string>("output.html_document.theme", "default");

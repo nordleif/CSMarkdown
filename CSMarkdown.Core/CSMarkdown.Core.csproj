@@ -156,31 +156,33 @@
     <Content Include="mingwm10.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Rendering\www\css\cerulean.css" />
-    <Content Include="Rendering\www\css\cosmo.css" />
-    <Content Include="Rendering\www\css\cyborg.css" />
-    <Content Include="Rendering\www\css\darkly.css" />
-    <Content Include="Rendering\www\css\default.css" />
-    <Content Include="Rendering\www\css\flatly.css" />
-    <Content Include="Rendering\www\css\journal.css" />
-    <Content Include="Rendering\www\css\lumen.css" />
-    <Content Include="Rendering\www\css\paper.css" />
-    <Content Include="Rendering\www\css\readable.css" />
-    <Content Include="Rendering\www\css\sandstone.css" />
-    <Content Include="Rendering\www\css\simplex.css" />
-    <Content Include="Rendering\www\css\slate.css" />
-    <Content Include="Rendering\www\css\spacelab.css" />
-    <Content Include="Rendering\www\css\superhero.css" />
-    <Content Include="Rendering\www\css\united.css" />
-    <Content Include="Rendering\www\css\yeti.css" />
+    <EmbeddedResource Include="Rendering\www\css\cerulean.css" />
+    <EmbeddedResource Include="Rendering\www\css\cosmo.css" />
+    <EmbeddedResource Include="Rendering\www\css\cyborg.css" />
+    <EmbeddedResource Include="Rendering\www\css\darkly.css" />
+    <EmbeddedResource Include="Rendering\www\css\default.css" />
+    <EmbeddedResource Include="Rendering\www\css\flatly.css" />
+    <EmbeddedResource Include="Rendering\www\css\journal.css" />
+    <EmbeddedResource Include="Rendering\www\css\lumen.css" />
+    <EmbeddedResource Include="Rendering\www\css\paper.css" />
+    <EmbeddedResource Include="Rendering\www\css\readable.css" />
+    <EmbeddedResource Include="Rendering\www\css\sandstone.css" />
+    <EmbeddedResource Include="Rendering\www\css\simplex.css" />
+    <EmbeddedResource Include="Rendering\www\css\slate.css" />
+    <EmbeddedResource Include="Rendering\www\css\spacelab.css" />
+    <EmbeddedResource Include="Rendering\www\css\superhero.css" />
+    <EmbeddedResource Include="Rendering\www\css\united.css" />
+    <EmbeddedResource Include="Rendering\www\css\yeti.css" />
     <EmbeddedResource Include="Rendering\www\img\frontmatec.png" />
+    <EmbeddedResource Include="Rendering\www\default-pdf.html" />
+    <EmbeddedResource Include="Rendering\www\js\bootstrap.js" />
     <Content Include="ssleay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="wkhtmltox0.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Rendering\www\default.html" />
+    <EmbeddedResource Include="Rendering\www\default-html.html" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
