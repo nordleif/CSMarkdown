@@ -71,7 +71,43 @@ namespace CSMarkdown.Data
         {
             get { return m_cells.FirstOrDefault(c => c.Column.Index == columnIndex && c.Row.Index == rowIndex); }
         }
+        
+        public Table InsertColumnAfter(Column afterColumn, string name, Func<Table, Row, object> func)
+        {
+            return InsertColumnAfter(afterColumn.Index, name, func);
+        }
 
+        public Table InsertColumnAfter(string afterColumnName, string name, Func<Table, Row, object> func)
+        {
+            var column = m_cells.Select(c => c.Column).FirstOrDefault(c => c.Name.Equals(afterColumnName, StringComparison.InvariantCultureIgnoreCase));
+            if (column == null)
+                column = Columns.Last();
+            return InsertColumnAfter(column.Index, name, func);
+        }
+        
+        public Table InsertColumnAfter(int afterIndex, string name, Func<Table, Row, object> func)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Table InsertColumnBefore(Column beforeColumn, string name, Func<Table, Row, object> func)
+        {
+            return InsertColumnAfter(beforeColumn.Index, name, func);
+        }
+
+        public Table InsertColumnBefore(string beforeColumnName, string name, Func<Table, Row, object> func)
+        {
+            var column = m_cells.Select(c => c.Column).FirstOrDefault(c => c.Name.Equals(beforeColumnName, StringComparison.InvariantCultureIgnoreCase));
+            if (column == null)
+                column = Columns.Last();
+            return InsertColumnAfter(column.Index, name, func);
+        }
+
+        public Table InsertColumnBefore(int beforeColumnIndex, string name, Func<Table, Row, object> func)
+        {
+            throw new NotImplementedException();
+        }
+        
         public Table Clone()
         {
             var newTable = new Table();

@@ -8,8 +8,6 @@ namespace CSMarkdown.Data
 {
     public class Column
     {
-        private Table m_table;
-
         internal Column(Table table, int index, string name)
         {
             Table = table;
