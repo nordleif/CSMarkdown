@@ -130,7 +130,6 @@
     <Compile Include="Rendering\CodeChunk.cs" />
     <Compile Include="Rendering\CodeChunkOptions.cs" />
     <Compile Include="Rendering\CSMarkdownRenderer.cs" />
-    <Compile Include="Rendering\CustomHtmlFormatter.cs" />
     <Compile Include="Rendering\Enums.cs" />
     <Compile Include="Rendering\Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
