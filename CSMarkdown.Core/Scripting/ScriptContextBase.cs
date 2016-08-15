@@ -10,7 +10,7 @@ using CSMarkdown.Rendering;
 
 namespace CSMarkdown.Scripting
 {
-    public class ScriptContextBase 
+    public abstract class ScriptContextBase 
     {
         public ScriptContextBase()
         {

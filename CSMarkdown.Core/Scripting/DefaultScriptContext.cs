@@ -49,5 +49,22 @@ namespace CSMarkdown.Scripting
 
             CurrentNode.ChildNodes.Add(tableNode);
         }
+
+        public void RenderChart(DataTable data, object options)
+        {
+            // TODO:
+            // Nye smd eksempler + unit test
+            // Gamle unit test må ikke overskrives
+            //  1. Vis graf
+            //  2. Vis værdier ved mouse over
+            //  3. Vis graf med 2 legends
+            //  4. Vis forskellige chart types -> line, bar etc
+            //  5. x akse som dato
+            //  6. x akse som tal
+            //
+            //  
+            //  a. max/min værdier på x og y
+            //  b. flere legends :-)
+        }
     }
 }

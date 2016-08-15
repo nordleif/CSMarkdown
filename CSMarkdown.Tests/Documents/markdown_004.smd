@@ -14,6 +14,10 @@ var con = "data source=.\\sql2012;initial catalog=sys2000;integrated security=tr
 var data = ReadSql("select top 5 p.pnt_name [Pnt], p.descr [Descr], d.local_time [Time], d.value [Value] from rpt_data d inner join pnt p on d.pnt_no = p.pnt_no", con);
 RenderTable(data);
 
+var options = new ChartOptions();
+options.Y.add("box", "Value"),
+RenderChart(data, options);
+
 ```
 
 ## Inline code
