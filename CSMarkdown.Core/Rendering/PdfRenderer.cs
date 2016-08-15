@@ -27,7 +27,7 @@ namespace CSMarkdown.Rendering
                 options = new PdfRendererOptions();
 
             var config = new GlobalConfig()
-                .SetMargins(new Margins(19, 19, 19, 19))
+                .SetMargins(options.MarginTop, options.MarginRight, options.MarginBottom, options.MarginLeft)
                 .SetDocumentTitle("CSMarkdown")
                 .SetPaperSize(PaperKind.A4);
 
