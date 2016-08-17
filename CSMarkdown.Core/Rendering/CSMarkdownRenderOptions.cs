@@ -11,8 +11,11 @@ namespace CSMarkdown.Rendering
     {
         public CSMarkdownRenderOptions()
         {
+            FlattenHtml = true;
             Output = RenderOutput.Html;
         }
+
+        public bool FlattenHtml { get; set; }
 
         public ScriptContextBase ScriptContext { get; set; }
 

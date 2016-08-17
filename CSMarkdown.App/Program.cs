@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CommandLineParser.Arguments;
-using CommandLineParser.Exceptions;
 using CSMarkdown.Rendering;
 using CSMarkdown.Hosting;
 
@@ -14,33 +12,25 @@ namespace CSMarkdown.App
     {
         static void Main(string[] args)
         {
-            var renderArgument = new SwitchArgument('r', "render", "", true);
-            var webAppArgument = new SwitchArgument('w', "webapp", false);
+            var options = new ActivationOptions();
 
-            try
-            {
-                var parser = new CommandLineParser.CommandLineParser();
-                parser.Arguments.Add(renderArgument);
-                parser.ParseCommandLine(args);
-    
-            }
-            catch (CommandLineException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            var parser = new CommandLineParser.CommandLineParser();
+            parser.ShowUsageHeader = "CSMarkdown";
+            parser.ExtractArgumentAttributes(options);
+            parser.ParseCommandLine(args);
 
-            if (renderArgument.Value)
-            {
-                var renderer = new CSMarkdownRenderer();
-                var text = renderer.Render("# Header 1");
-            }
-            else if (webAppArgument.Value)
-            {
-                var wepApp = new WebApp();
-                wepApp.Start(new StartOptions());
-                
-                Console.ReadLine();
-            }
+            if (options.WebApp)
+                WebApp(options);
+            
+        }
+
+        static void WebApp(ActivationOptions options)
+        {
+            var wepApp = new WebApp();
+            wepApp.Start(new StartOptions { WorkingDirectory = @"D:\Source\GitHub\CSMarkdown\CSMarkdown.Tests\Documents" });
+
+            Console.WriteLine("WebApp started. Press enter to quit.");
+            Console.ReadLine();
         }
     }
 }

@@ -14,5 +14,7 @@ namespace CSMarkdown.Hosting
         }
 
         public string[] Urls { get; set; }
+
+        public string WorkingDirectory { get; set; }
     }
 }

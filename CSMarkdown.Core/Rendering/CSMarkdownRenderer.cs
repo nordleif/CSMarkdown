@@ -77,14 +77,17 @@ namespace CSMarkdown.Rendering
 
             // Render code chunks
             RenderCodeChunks(context);
-            
-            // 
-            var document = context.HtmlDocument.Flatten();
-            var result = Encoding.UTF8.GetBytes(document.DocumentNode.InnerHtml);
+
+            // Flatten HTML
+            if (options.FlattenHtml)
+                context.HtmlDocument = context.HtmlDocument.Flatten();
+
+            //
+            var result = Encoding.UTF8.GetBytes(context.HtmlDocument.DocumentNode.InnerHtml);
             if (options.Output == RenderOutput.Pdf)
             {
                 var renderer = new PdfRenderer();
-                result = renderer.Render(document.DocumentNode.InnerHtml, new PdfRendererOptions());
+                result = renderer.Render(context.HtmlDocument.DocumentNode.InnerHtml, new PdfRendererOptions());
             }
 
             return result;
