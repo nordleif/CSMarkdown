@@ -3,7 +3,7 @@ title: Display Warning
 ---
 
 ### Default Option Value
-```{s}
+```{s warning=true}
 WriteWarning("Test");
 ```
 

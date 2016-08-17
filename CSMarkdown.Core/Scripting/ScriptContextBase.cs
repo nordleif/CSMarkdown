@@ -36,7 +36,7 @@ namespace CSMarkdown.Scripting
             if (string.IsNullOrWhiteSpace(text))
                 return;
 
-            if (Options.ReadValue<bool>("warning", false))
+            if (Options.ReadValue<bool>("warning", true))
                 CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"warning\">## {text}</code></pre>"));
         }
     }
