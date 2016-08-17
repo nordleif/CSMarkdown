@@ -23,9 +23,14 @@
             background-color: rgba(0, 0, 0, 0.04);
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
+        #logo {
+          background: white;
+        }
+
+        #logo img {
+          display: block;
+          margin: 0 auto;
+          padding: 10px;
         }
 
         @media screen and (max-width: 600px) {
@@ -65,7 +70,7 @@
     </style>
 
     <div class="container-fluid main-container">
-        <img src="img.frontmatec.png" class="pull-right" style="height: 50px; width: 250px;" />
+        <div id="logo" class="pull-right"><img src="img.frontmatec.png" alt="logo"></div>
     </div> 
     <script src="js.bootstrap.js"></script>
 </body>
