@@ -1,29 +1,28 @@
 ﻿---
-title: Display Warning
+title: Display Message
 ---
 
 ### Default Option Value
-```{s warning=true}
-WriteWarning("Test");
+```{s}
+WriteMessage("Test");
 ```
 
 ### Lower Case True Option Value
 ```{s message=true}
-WriteWarning("Test");
+WriteMessage("Test");
 ```
 
 ### Upper Case True Option Value
 ```{s MESSAGE=TRUE}
-WriteWarning("Test");
+WriteMessage("Test");
 ```
 
 ### Lower Case False Option Value
 ```{s message=false}
-WriteWarning("Test");
+WriteMessage("Test");
 ```
 
 ### Upper Case False Option Value
 ```{s MESSAGE=FALSe}
-WriteWarning("Test");
+WriteMessage("Test");
 ```
-
