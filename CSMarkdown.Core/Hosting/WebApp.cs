@@ -32,6 +32,16 @@ namespace CSMarkdown.Hosting
 
         private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
+
+            // Urls:
+            // -----
+            //
+            // /render/<smdname>?rc:output=html?intparam=1&boolparam=true
+            // /render/reports
+            //
+            //  /reports/<smdname >
+
+
             Console.WriteLine(context.Request.Path);
 
             var requestPath = context.Request.Path.ToUriComponent(); // context.Request.Uri.LocalPath;

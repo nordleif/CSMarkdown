@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -111,6 +112,10 @@ namespace CSMarkdown.Rendering
                     var propertyType = typeof(string);
                     if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
                         propertyType = typeof(bool);
+                    else if (type.Equals("date", StringComparison.InvariantCultureIgnoreCase))
+                        propertyType = typeof(DateTime);
+                    else if (type.Equals("datetime", StringComparison.InvariantCultureIgnoreCase))
+                        propertyType = typeof(DateTime);
                     else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
                         propertyType = typeof(double);
                     else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
@@ -128,7 +133,7 @@ namespace CSMarkdown.Rendering
             
             return expandoObject;
         }
-
+        
         public static string ReadResourceString(this Assembly assembly, string resourceName)
         {
             using (var stream = assembly.GetManifestResourceStream($"CSMarkdown.Rendering.www.{resourceName}"))
@@ -174,5 +179,6 @@ namespace CSMarkdown.Rendering
             }
                 
         }
+
     }
 }

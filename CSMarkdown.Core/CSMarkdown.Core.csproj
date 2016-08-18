@@ -142,6 +142,7 @@
     <Compile Include="Rendering\RenderContext.cs" />
     <Compile Include="Rendering\CSMarkdownRenderOptions.cs" />
     <Compile Include="Scripting\DefaultScriptContext.cs" />
+    <Compile Include="Scripting\Extensions.cs" />
     <Compile Include="Scripting\ScriptContextBase.cs" />
     <Compile Include="Rendering\YamlOptions.cs" />
   </ItemGroup>

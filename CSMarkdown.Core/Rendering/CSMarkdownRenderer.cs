@@ -103,7 +103,7 @@ namespace CSMarkdown.Rendering
                 return;
 
             var scriptContext = context.RenderOptions.ScriptContext;
-            var scriptOptions = ScriptOptions.Default.AddReferences(Assembly.GetExecutingAssembly()).AddImports("CSMarkdown.Scripting");
+            var scriptOptions = ScriptOptions.Default.WithReferences("Microsoft.CSharp").AddReferences(Assembly.GetExecutingAssembly()).AddImports("CSMarkdown.Scripting");
             var scriptState = CSharpScript.RunAsync(string.Empty, scriptOptions, scriptContext, scriptContext.GetType()).Result;
 
             foreach (var codeChunk in context.CodeChunks)
@@ -112,7 +112,8 @@ namespace CSMarkdown.Rendering
                 {
                     if (string.IsNullOrEmpty(codeChunk.Code))
                         continue;
-                    
+
+                    scriptContext.p = context.Parameters;           
                     scriptContext.CurrentNode = HtmlNode.CreateNode("<div>");
                     scriptContext.Options = codeChunk.Options;
 

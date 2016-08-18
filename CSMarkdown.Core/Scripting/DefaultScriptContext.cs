@@ -21,8 +21,13 @@ namespace CSMarkdown.Scripting
         {
             var dataTable = new DataTable();
             var dataAdapter = new SqlDataAdapter(query, connectionString);
+            
+            var parameters = (IDictionary<string, object>)p;
+            foreach (var parameter in parameters)
+                dataAdapter.SelectCommand.Parameters.AddWithValue(parameter.Key, parameter.Value != null ? parameter.Value : DBNull.Value);
+            
             dataAdapter.Fill(dataTable);
-
+            
             return dataTable;
         }
 
