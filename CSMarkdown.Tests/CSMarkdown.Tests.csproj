@@ -55,6 +55,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_parameters.smd" />
     <None Include="Documents\markdown_display_error.smd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

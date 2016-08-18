@@ -69,5 +69,19 @@ namespace CSMarkdown.Tests
             Assert.NotNull(result);
         }
 
+        [Test]
+        public void CSMarkdownRenderer_Parameters()
+        {
+            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_parameters.smd");
+            var text = File.ReadAllText(path);
+
+            var renderer = new CSMarkdownRenderer();
+            var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html });
+
+            path = path.Replace(Path.GetExtension(path), ".html");
+            File.WriteAllBytes(path, result);
+
+            Process.Start(path);
+        }
     }
 }

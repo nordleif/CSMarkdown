@@ -1,0 +1,21 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+params:
+  bool:
+    type: bool
+    value: true
+  double:
+    type: double
+    value: 1.1
+  int:
+    type: int
+    value: 1
+---
+
+## Parameters
+```{s echo=true}
+
+```

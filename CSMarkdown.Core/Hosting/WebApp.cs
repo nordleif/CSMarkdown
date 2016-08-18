@@ -31,15 +31,16 @@ namespace CSMarkdown.Hosting
         }
 
         private async Task OnRequest(IOwinContext context, Func<Task> next)
-        {            
-            var requestPath = context.Request.Path.ToUriComponent();
-            var requestUri = new Uri(requestPath, UriKind.Relative);
+        {
+            Console.WriteLine(context.Request.Path);
 
+            var requestPath = context.Request.Path.ToUriComponent(); // context.Request.Uri.LocalPath;
+            var requestUri = new Uri(requestPath, UriKind.Relative);
+            
             var segments = requestPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = segments.FirstOrDefault();
             if (firstSegment != null)
             {
-                
                 if (firstSegment.Equals("render", StringComparison.InvariantCultureIgnoreCase) && segments.Length == 2)
                 {
                     // Render

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -84,6 +85,48 @@ namespace CSMarkdown.Rendering
             var html = Assembly.GetExecutingAssembly().ReadResourceString(resourceName);
             
             document.LoadHtml(html);
+        }
+
+        public static dynamic ParseParameters(this YamlOptions options)
+        {
+            var expandoObject = new ExpandoObject();
+            var paramters = options.ReadValue<Dictionary<object, object>>("params", new Dictionary<object, object>());
+            if (paramters != null)
+            {
+                foreach (var kvp in paramters)
+                {
+                    var propertyName = kvp.Key as string;
+                    if (string.IsNullOrWhiteSpace(propertyName))
+                        continue;
+
+                    var type = string.Empty;
+                    var value = string.Empty;
+                    var parameter = kvp.Value as Dictionary<object, object>;
+                    if (parameter != null)
+                    {
+                        type = parameter.ContainsKey("type") ? parameter["type"] as string : null;
+                        value = parameter.ContainsKey("value") ? parameter["value"] as string : null;
+                    }
+                    
+                    var propertyType = typeof(string);
+                    if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
+                        propertyType = typeof(bool);
+                    else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
+                        propertyType = typeof(double);
+                    else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
+                        propertyType = typeof(int);
+
+                    object propertyValue = null;
+                    if (!string.IsNullOrEmpty(value))
+                        propertyValue = Convert.ChangeType(value, propertyType);
+                    else
+                        propertyValue = Activator.CreateInstance(propertyType);
+                    
+                    ((IDictionary<string, object>)expandoObject).Add(propertyName, propertyValue);
+                }
+            }
+            
+            return expandoObject;
         }
 
         public static string ReadResourceString(this Assembly assembly, string resourceName)

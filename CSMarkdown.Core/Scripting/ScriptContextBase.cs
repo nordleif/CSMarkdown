@@ -21,6 +21,8 @@ namespace CSMarkdown.Scripting
 
         public CodeChunkOptions Options { get; set; }
 
+        public dynamic Parameters { get; set; }
+
         public void WriteMessage(string text)
         {
             if (string.IsNullOrWhiteSpace(text))

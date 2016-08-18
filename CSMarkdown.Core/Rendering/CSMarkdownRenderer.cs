@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -62,6 +63,9 @@ namespace CSMarkdown.Rendering
             // Parse YAML header
             context.YamlHeader = YamlOptions.Parse(yamlText);
 
+            // Parse parameters
+            context.Parameters = context.YamlHeader.ParseParameters();
+            
             // Load HTML document
             context.HtmlDocument = new HtmlDocument();
             context.HtmlDocument.LoadHtmlFromResource(options.Output == RenderOutput.Pdf ? "default-pdf.html" : "default-html.html");

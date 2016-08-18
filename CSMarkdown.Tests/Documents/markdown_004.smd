@@ -13,7 +13,7 @@ var data = ReadSql("select top 5 p.pnt_name [Pnt], p.descr [Descr], d.local_time
 RenderTable(data);
 ```
 
-## Inline code
+## Inline code WOW
 
 Two plus two equals 's 2 + 2'. This is a Roslyn expression.
 

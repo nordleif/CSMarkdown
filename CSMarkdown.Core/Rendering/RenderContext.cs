@@ -22,6 +22,8 @@ namespace CSMarkdown.Rendering
 
         public CSMarkdownRenderOptions RenderOptions { get; set; }
 
+        public dynamic Parameters { get; set; }
+
         public YamlOptions YamlHeader { get; set; }
     }
 }
