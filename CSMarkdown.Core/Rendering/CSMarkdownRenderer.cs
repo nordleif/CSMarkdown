@@ -64,7 +64,7 @@ namespace CSMarkdown.Rendering
             context.YamlHeader = YamlOptions.Parse(yamlText);
 
             // Parse parameters
-            context.Parameters = context.YamlHeader.ParseParameters();
+            context.Parameters = context.YamlHeader.ParseParameters(context.RenderOptions.Parameters);
             
             // Load HTML document
             context.HtmlDocument = new HtmlDocument();

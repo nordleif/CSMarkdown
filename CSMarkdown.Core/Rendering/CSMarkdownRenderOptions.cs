@@ -17,8 +17,10 @@ namespace CSMarkdown.Rendering
 
         public bool FlattenHtml { get; set; }
 
-        public ScriptContextBase ScriptContext { get; set; }
-
         public RenderOutput Output { get; set; }
+
+        public Dictionary<string, string> Parameters { get; set; }
+
+        public ScriptContextBase ScriptContext { get; set; }
     }
 }

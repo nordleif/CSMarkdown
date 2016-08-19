@@ -88,49 +88,49 @@ namespace CSMarkdown.Rendering
             document.LoadHtml(html);
         }
 
-        public static dynamic ParseParameters(this YamlOptions options)
+        public static dynamic ParseParameters(this YamlOptions options, Dictionary<string, string> values)
         {
+            if (values == null)
+                values = new Dictionary<string, string>();
+
             var expandoObject = new ExpandoObject();
-            var paramters = options.ReadValue<Dictionary<object, object>>("params", new Dictionary<object, object>());
-            if (paramters != null)
+            var parameterNames = options.ReadKeys("params");
+            foreach (var parameterName in parameterNames)
             {
-                foreach (var kvp in paramters)
-                {
-                    var propertyName = kvp.Key as string;
-                    if (string.IsNullOrWhiteSpace(propertyName))
-                        continue;
+                if (string.IsNullOrWhiteSpace(parameterName))
+                    continue;
 
-                    var type = string.Empty;
-                    var value = string.Empty;
-                    var parameter = kvp.Value as Dictionary<object, object>;
-                    if (parameter != null)
-                    {
-                        type = parameter.ContainsKey("type") ? parameter["type"] as string : null;
-                        value = parameter.ContainsKey("value") ? parameter["value"] as string : null;
-                    }
-                    
-                    var propertyType = typeof(string);
-                    if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
-                        propertyType = typeof(bool);
-                    else if (type.Equals("date", StringComparison.InvariantCultureIgnoreCase))
-                        propertyType = typeof(DateTime);
-                    else if (type.Equals("datetime", StringComparison.InvariantCultureIgnoreCase))
-                        propertyType = typeof(DateTime);
-                    else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
-                        propertyType = typeof(double);
-                    else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
-                        propertyType = typeof(int);
+                var type = options.ReadValue<string>($"params.{parameterName}.type", string.Empty);
+                var defaultValue = options.ReadValue<string>($"params.{parameterName}.value", string.Empty);
 
-                    object propertyValue = null;
-                    if (!string.IsNullOrEmpty(value))
-                        propertyValue = Convert.ChangeType(value, propertyType);
-                    else
-                        propertyValue = Activator.CreateInstance(propertyType);
-                    
-                    ((IDictionary<string, object>)expandoObject).Add(propertyName, propertyValue);
-                }
+                var propertyType = typeof(string);
+                if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(bool);
+                else if (type.Equals("date", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime);
+                else if (type.Equals("datetime", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime);
+                else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(double);
+                else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(int);
+
+                object parameterValue = null;
+                if (!string.IsNullOrEmpty(defaultValue))
+                    parameterValue = Convert.ChangeType(defaultValue, propertyType);
+                else
+                    parameterValue = Activator.CreateInstance(propertyType);
+
+                var value = values.FirstOrDefault(kvp => kvp.Key.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Value;
+                if (!string.IsNullOrEmpty(value))
+                    parameterValue = Convert.ChangeType(value, propertyType);
+
+                if (parameterValue == null)
+                    throw new ParameterMissingException($"The '{parameterName}' parameter is missing a value.");
+
+                ((IDictionary<string, object>)expandoObject).Add(parameterName, parameterValue);
             }
-            
+
             return expandoObject;
         }
         

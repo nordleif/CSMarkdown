@@ -57,6 +57,15 @@ namespace CSMarkdown.Rendering
             return result;
         }
 
+        public string[] ReadKeys(string key)
+        {
+            var obj = ReadValue(key, null);
+            var dictionary = obj as Dictionary<object, object>;
+            if (dictionary != null)
+                return dictionary.Keys.Select(k => (string)k).ToArray();
+            return new string[0];
+        }
+
         public T ReadValue<T>(string key, T defaultValue)
         {
             try
