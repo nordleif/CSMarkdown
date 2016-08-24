@@ -142,8 +142,15 @@
     <Compile Include="Rendering\PdfRendererOptions.cs" />
     <Compile Include="Rendering\RenderContext.cs" />
     <Compile Include="Rendering\CSMarkdownRenderOptions.cs" />
+    <Compile Include="Scripting\BarLegend.cs" />
+    <Compile Include="Scripting\BaseChartOptions.cs" />
+    <Compile Include="Scripting\BaseLegend.cs" />
+    <Compile Include="Scripting\ChartOptions.cs" />
+    <Compile Include="Scripting\CustomDefinedDateConverter.cs" />
     <Compile Include="Scripting\DefaultScriptContext.cs" />
     <Compile Include="Scripting\Extensions.cs" />
+    <Compile Include="Scripting\LineLegend.cs" />
+    <Compile Include="Scripting\PieLegend.cs" />
     <Compile Include="Scripting\ScriptContextBase.cs" />
     <Compile Include="Rendering\YamlOptions.cs" />
   </ItemGroup>

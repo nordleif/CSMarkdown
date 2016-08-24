@@ -31,8 +31,8 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {
-
-            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents", fileName);
+            var path = Path.Combine(@"../../Documents", fileName);
+            //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents", fileName);
             var text = File.ReadAllText(path);
 
             var renderer = new CSMarkdownRenderer();
