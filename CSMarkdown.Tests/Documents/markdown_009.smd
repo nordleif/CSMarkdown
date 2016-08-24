@@ -1,0 +1,19 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+---
+Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+## CS Syntax
+```{s echo=true}
+
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
+var data = ReadSql("select d.local_time, d.value, d.value * 2 as newValue from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'", con);
+var options = new ChartOptions();
+options.ListOfLegends.Add(new LineLegend(){Key = "Test1"});
+options.ListOfLegends.Add(new LineLegend(){Key = "Test2"});
+options.XAxisType = "date";
+RenderChart(data, options);
+
+```

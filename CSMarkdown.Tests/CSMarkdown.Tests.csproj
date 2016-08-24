@@ -55,6 +55,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_017.smd" />
+    <None Include="Documents\markdown_016.smd" />
+    <None Include="Documents\markdown_015.smd" />
+    <None Include="Documents\markdown_014.smd" />
+    <None Include="Documents\markdown_013.smd" />
+    <None Include="Documents\markdown_012.smd" />
+    <None Include="Documents\markdown_011.smd" />
+    <None Include="Documents\markdown_010.smd" />
+    <None Include="Documents\markdown_009.smd" />
+    <None Include="Documents\markdown_008.smd" />
+    <None Include="Documents\markdown_007.smd" />
+    <None Include="Documents\markdown_006.smd" />
     <None Include="Documents\markdown_parameters.smd" />
     <None Include="Documents\markdown_display_error.smd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
