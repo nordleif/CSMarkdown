@@ -46,7 +46,7 @@ namespace CSMarkdown.Scripting
             }
         }
 
-        public List<BaseLegend> ListOfLegends
+        public List<BaseLegend> Legends
         {
             get
             {

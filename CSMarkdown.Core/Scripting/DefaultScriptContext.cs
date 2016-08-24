@@ -73,12 +73,12 @@ namespace CSMarkdown.Scripting
             {
                 options = CreateDefaultChartOptions(data);
             }
-            else if (options.ListOfLegends.Count == 0) //|| options.ListOfLegends.Count < data.Columns.Count-1
+            else if (options.Legends.Count == 0) //|| options.ListOfLegends.Count < data.Columns.Count-1
             {
-                options.ListOfLegends = CreateUndefinedLegends(data, options.ListOfLegends);
+                options.Legends = CreateUndefinedLegends(data, options.Legends);
             }
 
-            foreach (var legendType in options.ListOfLegends)
+            foreach (var legendType in options.Legends)
             {
                 legendType.Values = MakeValuesDictionary(data, options.XDataName, legendType.YDataName, options, legendType);
             }
@@ -90,7 +90,7 @@ namespace CSMarkdown.Scripting
 
             string datasetString = "";
 
-            foreach (var legend in options.ListOfLegends)
+            foreach (var legend in options.Legends)
             {
                 datasetString = CreateDataSet(legend, datasetString, options);
             }
@@ -135,11 +135,11 @@ namespace CSMarkdown.Scripting
         private List<BaseLegend> CreateUndefinedLegends(DataTable data, List<BaseLegend> listOfLegends)
         {
             List<BaseLegend> defaultListOfLegends = listOfLegends;
-            int columnsCount;
-            if (data.Columns.Count == 0)
-                columnsCount = 3;
-            else
-                columnsCount = data.Columns.Count;
+            int columnsCount = data.Columns.Count;
+            //if (data.Columns.Count == 0)
+            //    columnsCount = 3;
+            //else
+            //    columnsCount = data.Columns.Count;
 
             for (int i = 1; i < columnsCount; i++)
             {
@@ -189,7 +189,7 @@ namespace CSMarkdown.Scripting
 
             for (int i = 1; i < columnCounter; i++)
             {
-                defaultChartOptions.ListOfLegends.Add(new LineLegend() { Key = data.Columns[i].ColumnName });
+                defaultChartOptions.Legends.Add(new LineLegend() { Key = data.Columns[i].ColumnName });
             }
 
             return defaultChartOptions;
@@ -257,7 +257,7 @@ namespace CSMarkdown.Scripting
             var epoch = new DateTime(1970, 01, 01, 0, 0, 0);
             for (int i = 0; i < dTable.Rows.Count; i++)
             {
-                if (legend.Type == "pie" || legend.Type == "donut")//options.ChartModelType == "pie" || options.ChartModelType == "donut"
+                if (legend.Type == "pie" || legend.Type == "donut")
                 {
                     xValue = "\"" + dTable.Rows[i].ItemArray[xDataColumnIndex].ToString() + "\"";
                     dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
@@ -386,12 +386,12 @@ namespace CSMarkdown.Scripting
 
             addGraphFunction += "chart.yAxis1.tickFormat(d3.format(',.0f'));\n";
 
-            if (options.ListOfLegends.Count > 1)
+            if (options.Legends.Count > 1)
             {
                 addGraphFunction += "chart.yAxis2.tickFormat(d3.format(',.1f'));\n";
             }
             int legendCounter = 1;
-            foreach (var legend in options.ListOfLegends)
+            foreach (var legend in options.Legends)
             {
                 if (legend.MinValue.HasValue && legend.MaxValue.HasValue)
                 {
