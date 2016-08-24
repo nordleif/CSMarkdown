@@ -73,8 +73,9 @@ namespace CSMarkdown.Scripting
             {
                 options = CreateDefaultChartOptions(data);
             }
-            else if (options.Legends.Count == 0) //|| options.ListOfLegends.Count < data.Columns.Count-1
+            else if (options.Legends.Count == 0)
             {
+                data = CreateEmptyChartLegend();
                 options.Legends = CreateUndefinedLegends(data, options.Legends);
             }
 
@@ -132,14 +133,37 @@ namespace CSMarkdown.Scripting
 
         }
 
+        private DataTable CreateEmptyChartLegend()
+        {
+            DataTable data = new DataTable();
+            DataColumn column = new DataColumn();
+            DataRow row;
+
+            column = new DataColumn();
+            column.DataType = Type.GetType("System.Int32");
+            column.ColumnName = "x";
+            data.Columns.Add(column);
+
+            column = new DataColumn();
+            column.DataType = Type.GetType("System.Int32");
+            column.ColumnName = "y";
+            data.Columns.Add(column);
+
+            for (int i = 0; i < 10; i++)
+            {
+                row = data.NewRow();
+                row["x"] = i;
+                row["y"] = 0;
+                data.Rows.Add(row);
+            }
+
+            return data;
+        }
+
         private List<BaseLegend> CreateUndefinedLegends(DataTable data, List<BaseLegend> listOfLegends)
         {
             List<BaseLegend> defaultListOfLegends = listOfLegends;
             int columnsCount = data.Columns.Count;
-            //if (data.Columns.Count == 0)
-            //    columnsCount = 3;
-            //else
-            //    columnsCount = data.Columns.Count;
 
             for (int i = 1; i < columnsCount; i++)
             {

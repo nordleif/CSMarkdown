@@ -763,16 +763,34 @@ e.duration(0).headerEnabled(!1).valueFormatter(function(a,b){return c.valueForma
 <h2>CS Syntax</h2>
 <div><pre><code>
 var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
-var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'",="" con);="" var="" options="new" chartoptions();="" options.legends.add(new="" linelegend(){key="Test1" });="" renderchart(data,="" options);=""></code></pre><div id="chart0"><svg></svg></div><script>
-var dataset0 = [{"key": "Test1", "values": [{"x":1470005702000,"y":164.99330775},{"x":1470009302000,"y":172.9645071667},{"x":1470012902000,"y":184.1048475833},{"x":1470016502000,"y":178.61468325},{"x":1470020102000,"y":165.6704584167},{"x":1470023702000,"y":175.6970710833},{"x":1470027302000,"y":182.98385525},{"x":1470030902000,"y":178.9450224167},{"x":1470034502000,"y":163.3416253333},{"x":1470038102000,"y":172.8646844167},{"x":1470041702000,"y":185.4508541667},{"x":1470045302000,"y":173.9060793333},{"x":1470048902000,"y":165.7661130833},{"x":1470052502000,"y":178.4055201667},{"x":1470056102000,"y":184.2623320833},{"x":1470059702000,"y":167.58535525},{"x":1470063302000,"y":169.4606676667},{"x":1470066902000,"y":180.6711505833},{"x":1470070502000,"y":183.28287325},{"x":1470074102000,"y":164.0649886667},{"x":1470077702000,"y":171.1748940833},{"x":1470081302000,"y":184.91672025},{"x":1470084902000,"y":167.78663825},{"x":1470088502000,"y":169.7218733333}], "type": "line", "yAxis": 1}];
-nv.addGraph( function() { var chart = nv.models.multiChart().margin({top: 75, right: 75, bottom: 75, left: 75})
-.useInteractiveGuideline(true)
-.color(d3.scale.category10().range());
-chart.xAxis.tickFormat(function(d) {return d3.time.format('%d.%m.%Y - %H:%M:%S')(new Date(d))}).staggerLabels(true);
-chart.yAxis1.tickFormat(d3.format(',.0f'));
+var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'",="" con);="" var="" options="new" chartoptions();="" options.legends.add(new="" pielegend(){key="Test1" });="" options.xaxistype="date" ;="" options.chartmodeltype="pie" ;="" renderchart(data,="" options);=""></code></pre><div id="chart0"><svg></svg></div><script>
+var dataset0 = [{"x":"01-08-2016 00:55:02","y":164.99330775},{"x":"01-08-2016 01:55:02","y":172.9645071667},{"x":"01-08-2016 02:55:02","y":184.1048475833},{"x":"01-08-2016 03:55:02","y":178.61468325},{"x":"01-08-2016 04:55:02","y":165.6704584167},{"x":"01-08-2016 05:55:02","y":175.6970710833},{"x":"01-08-2016 06:55:02","y":182.98385525},{"x":"01-08-2016 07:55:02","y":178.9450224167},{"x":"01-08-2016 08:55:02","y":163.3416253333},{"x":"01-08-2016 09:55:02","y":172.8646844167},{"x":"01-08-2016 10:55:02","y":185.4508541667},{"x":"01-08-2016 11:55:02","y":173.9060793333},{"x":"01-08-2016 12:55:02","y":165.7661130833},{"x":"01-08-2016 13:55:02","y":178.4055201667},{"x":"01-08-2016 14:55:02","y":184.2623320833},{"x":"01-08-2016 15:55:02","y":167.58535525},{"x":"01-08-2016 16:55:02","y":169.4606676667},{"x":"01-08-2016 17:55:02","y":180.6711505833},{"x":"01-08-2016 18:55:02","y":183.28287325},{"x":"01-08-2016 19:55:02","y":164.0649886667},{"x":"01-08-2016 20:55:02","y":171.1748940833},{"x":"01-08-2016 21:55:02","y":184.91672025},{"x":"01-08-2016 22:55:02","y":167.78663825},{"x":"01-08-2016 23:55:02","y":169.7218733333}];
+ nv.addGraph(function() {var chart = nv.models.pieChart()
+.x(function(d) {return d.x})
+.y(function(d) {return d.y})
+.showLabels(true);
 d3.select('#chart0 svg')
 .datum(dataset0)
-.transition().duration(500).call(chart); nv.utils.windowResize(chart.update);
+.transition().duration(350)
+.call(chart);
+return chart;
+});</script></div>
+<h2>CS Syntax</h2>
+<div><pre><code>
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
+var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'",="" con);="" var="" options="new" chartoptions();="" options.legends.add(new="" pielegend(){key="Test1" ,="" isdonut="true});" options.xaxistype="date" ;="" options.chartmodeltype="pie" ;="" renderchart(data,="" options);=""></code></pre><div id="chart1"><svg></svg></div><script>
+var dataset1 = [{"x":"01-08-2016 00:55:02","y":164.99330775},{"x":"01-08-2016 01:55:02","y":172.9645071667},{"x":"01-08-2016 02:55:02","y":184.1048475833},{"x":"01-08-2016 03:55:02","y":178.61468325},{"x":"01-08-2016 04:55:02","y":165.6704584167},{"x":"01-08-2016 05:55:02","y":175.6970710833},{"x":"01-08-2016 06:55:02","y":182.98385525},{"x":"01-08-2016 07:55:02","y":178.9450224167},{"x":"01-08-2016 08:55:02","y":163.3416253333},{"x":"01-08-2016 09:55:02","y":172.8646844167},{"x":"01-08-2016 10:55:02","y":185.4508541667},{"x":"01-08-2016 11:55:02","y":173.9060793333},{"x":"01-08-2016 12:55:02","y":165.7661130833},{"x":"01-08-2016 13:55:02","y":178.4055201667},{"x":"01-08-2016 14:55:02","y":184.2623320833},{"x":"01-08-2016 15:55:02","y":167.58535525},{"x":"01-08-2016 16:55:02","y":169.4606676667},{"x":"01-08-2016 17:55:02","y":180.6711505833},{"x":"01-08-2016 18:55:02","y":183.28287325},{"x":"01-08-2016 19:55:02","y":164.0649886667},{"x":"01-08-2016 20:55:02","y":171.1748940833},{"x":"01-08-2016 21:55:02","y":184.91672025},{"x":"01-08-2016 22:55:02","y":167.78663825},{"x":"01-08-2016 23:55:02","y":169.7218733333}];
+ nv.addGraph(function() {var chart = nv.models.pieChart()
+.x(function(d) {return d.x})
+.y(function(d) {return d.y})
+.showLabels(true).labelThreshold(.05)
+.labelType("key")
+.donut(true)
+.donutRatio(0.35);
+d3.select('#chart1 svg')
+.datum(dataset1)
+.transition().duration(350)
+.call(chart);
 return chart;
 });</script></div>
 </div> 

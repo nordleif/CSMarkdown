@@ -20,7 +20,7 @@ Viser top 5 rækker for datoen 's p.from'.
 
 ```{s echo=true}
 
-var con = "data source=.\\sql2012;initial catalog=sys2000;integrated security=true;";
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
 var data = ReadSql("select top 5 p.pnt_name [Pnt], p.descr [Descr], d.local_time [Time], d.value [Value] from rpt_data d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = @tag and d.local_time >= @from", con);
 RenderTable(data);
 

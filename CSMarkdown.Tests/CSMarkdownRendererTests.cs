@@ -58,7 +58,8 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Error_Throw()
         {
-            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_throw.smd");
+            var path = Path.Combine(@"../../Documents/markdown_error_throw.smd");
+            //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_throw.smd");
             var text = File.ReadAllText(path);
 
             Assert.Catch<Exception>(() =>
@@ -71,7 +72,8 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Error_Display()
         {
-            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_display.smd");
+            var path = Path.Combine(@"../../Documents/markdown_error_display.smd");
+            //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_display.smd");
             var text = File.ReadAllText(path);
 
             var renderer = new CSMarkdownRenderer();
@@ -83,7 +85,8 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Parameters()
         {
-            var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_parameters.smd");
+            var path = Path.Combine(@"../../Documents/markdown_parameters.smd");
+            //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_parameters.smd");
             var text = File.ReadAllText(path);
 
             var renderer = new CSMarkdownRenderer();
