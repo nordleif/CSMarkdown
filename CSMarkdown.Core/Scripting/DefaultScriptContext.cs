@@ -98,10 +98,12 @@ namespace CSMarkdown.Scripting
                 data = new DataTable();
                 data = FillEmptyDataTable();
             }
+
             if (options == null)
             {
                 options = CreateDefaultChartOptions(data);
             }
+
             else if (options.Legends.Count == 0)
             {
                 data = CreateEmptyChartLegend();
