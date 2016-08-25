@@ -43,7 +43,7 @@ namespace CSMarkdown.Scripting
                 return;
 
             var tableNode = HtmlNode.CreateNode("<table>");
-            tableNode.Attributes.Add("class", "table");
+            tableNode.Attributes.Add("class", "responsive");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));
@@ -60,6 +60,35 @@ namespace CSMarkdown.Scripting
 
             CurrentNode.ChildNodes.Add(tableNode);
         }
+
+        /*public void RenderTable(DataTable data)
+        {
+            if (data == null)
+                return;
+            var tableNode = HtmlNode.CreateNode("<table>");
+            tableNode.Attributes.Add("class","responsive");
+
+            var rowHeaderNode = HtmlNode.CreateNode("<tr>");
+            foreach (DataColumn column in data.Columns)
+            {
+                rowHeaderNode.AppendChild(HtmlNode.CreateNode($"<th>{column.ColumnName.Trim()}"));
+                
+            }
+            tableNode.AppendChild(rowHeaderNode);
+
+            HtmlNode rowNode;
+            foreach (DataRow row in data.Rows)
+            {
+                rowNode = HtmlNode.CreateNode("<tr>");
+                foreach (DataColumn column in data.Columns)
+                {
+                    rowNode.AppendChild(HtmlNode.CreateNode($"<td>{row[column]}"));
+                }
+                tableNode.AppendChild(rowNode);
+            }
+            CurrentNode.ChildNodes.Add(tableNode);
+
+        }*/
 
         public void RenderChart(DataTable data, ChartOptions options = null)
         {
