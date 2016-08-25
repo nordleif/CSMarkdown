@@ -74,6 +74,7 @@ namespace CSMarkdown.Scripting
             {
                 options = CreateDefaultChartOptions(data);
             }
+
             else if (options.Legends.Count == 0)
             {
                 data = CreateEmptyChartLegend();
