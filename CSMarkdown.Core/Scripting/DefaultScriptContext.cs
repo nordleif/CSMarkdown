@@ -69,6 +69,7 @@ namespace CSMarkdown.Scripting
                 data = new DataTable();
                 data = FillEmptyDataTable();
             }
+
             if (options == null)
             {
                 options = CreateDefaultChartOptions(data);
