@@ -11,7 +11,7 @@ namespace CSMarkdown.Scripting
         public string ConvertDateFormat(string definedDateFormat)
         {
             string convertedDateFormat = "";
-            List<string> listOfFormatDefinitions = new List<string>();
+            List<string> formatDefinitions = new List<string>();
             string specificFormatDefinition = definedDateFormat[0].ToString();
             for (int i = 1; i < definedDateFormat.Length; i++)
             {
@@ -20,24 +20,24 @@ namespace CSMarkdown.Scripting
                 {
                     if (i == definedDateFormat.Length - 1)
                     {
-                        listOfFormatDefinitions.Add(specificFormatDefinition);
+                        formatDefinitions.Add(specificFormatDefinition);
                         specificFormatDefinition = definedDateFormat[i].ToString();
-                        listOfFormatDefinitions.Add(specificFormatDefinition);
+                        formatDefinitions.Add(specificFormatDefinition);
                     }
                     else
-                        listOfFormatDefinitions.Add(specificFormatDefinition);
+                        formatDefinitions.Add(specificFormatDefinition);
                     specificFormatDefinition = "";
                 }
 
                 else if (definedDateFormat[i - 1] == definedDateFormat[i] && i == definedDateFormat.Length - 1)
                 {
                     specificFormatDefinition += definedDateFormat[i];
-                    listOfFormatDefinitions.Add(specificFormatDefinition);
+                    formatDefinitions.Add(specificFormatDefinition);
                 }
                 specificFormatDefinition += definedDateFormat[i];
             }
 
-            foreach (var item in listOfFormatDefinitions)
+            foreach (var item in formatDefinitions)
             {
                 switch (item)
                 {
