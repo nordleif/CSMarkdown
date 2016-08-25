@@ -13,6 +13,7 @@ namespace CSMarkdown.App
         static void Main(string[] args)
         {
             var options = new ActivationOptions();
+            options.WebApp = true;
 
             var parser = new CommandLineParser.CommandLineParser();
             parser.ShowUsageHeader = "CSMarkdown";
@@ -26,8 +27,9 @@ namespace CSMarkdown.App
 
         static void WebApp(ActivationOptions options)
         {
-            var wepApp = new WebApp();
-            wepApp.Start(new StartOptions { WorkingDirectory = @"D:\Source\GitHub\CSMarkdown\CSMarkdown.Tests\Documents" });
+            var webApp = new WebApp();
+            webApp.Start(new StartOptions { WorkingDirectory = @"C:\Users\sys2000\Source\Repos\CSMarkdown\CSMarkdown.Tests\Documents" });
+            //webApp.Start(new StartOptions { WorkingDirectory = @"D:\Source\GitHub\CSMarkdown\CSMarkdown.Tests\Documents" });
 
             Console.WriteLine("WebApp started. Press enter to quit.");
             Console.ReadLine();
