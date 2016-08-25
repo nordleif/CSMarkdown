@@ -9,7 +9,7 @@ namespace CSMarkdown.App
 {
     internal class ActivationOptions
     {
-        [SwitchArgument('w', "webapp", false, Description = "Starts the web app")]
+        [SwitchArgument('w', "webapp", true, Description = "Starts the web app")]
         public bool WebApp { get; set; }
 
     }
