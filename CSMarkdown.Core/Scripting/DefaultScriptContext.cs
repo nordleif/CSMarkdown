@@ -27,13 +27,13 @@ namespace CSMarkdown.Scripting
         {
             var dataTable = new DataTable();
             var dataAdapter = new SqlDataAdapter(query, connectionString);
-            
+
             var parameters = (IDictionary<string, object>)p;
             foreach (var parameter in parameters)
                 dataAdapter.SelectCommand.Parameters.AddWithValue(parameter.Key, parameter.Value != null ? parameter.Value : DBNull.Value);
-            
+
             dataAdapter.Fill(dataTable);
-            
+
             return dataTable;
         }
 
@@ -110,6 +110,11 @@ namespace CSMarkdown.Scripting
                 options.Legends = CreateUndefinedLegends(data, options.Legends);
             }
 
+            if (options.Legends.Count > 2)
+            {
+                options.Legends = OrganizingOrderOfLegends(options, data);
+            }
+
             foreach (var legendType in options.Legends)
             {
                 legendType.Values = MakeValuesDictionary(data, options.XDataName, legendType.YDataName, options, legendType);
@@ -162,6 +167,153 @@ namespace CSMarkdown.Scripting
             //  a. max/min værdier på x og y
             //  b. flere legends :-)
 
+        }
+
+        private List<BaseLegend> OrganizingOrderOfLegends(ChartOptions options, DataTable data)
+        {
+            List<HighestLowestValues> valuesForSorting = new List<HighestLowestValues>();
+            HighestLowestValues hlv;
+            if (options.XDataName == "")
+            {
+                options.XDataName = data.Columns[0].ColumnName;
+            }
+
+            List<BaseLegend> useableLegends = new List<BaseLegend>();
+            foreach (var legend in options.Legends)
+            {
+                if (legend.YDataName != "" && data.Columns.Contains(legend.YDataName))
+                {
+                    if (legend.Key == "")
+                        legend.Key = legend.YDataName;
+
+                    useableLegends.Add(legend);
+                }
+            }
+
+            if (useableLegends.Count == 0 && options.Legends.Count != 0)
+            {
+                useableLegends = options.Legends;
+                for (int i = 0, j = 0; i < useableLegends.Count + 1; i++)
+                {
+                    if (data.Columns[i].ColumnName != options.XDataName)
+                    {
+                        useableLegends[j].YDataName = data.Columns[i].ColumnName;
+
+                        if (useableLegends[j].Key == "")
+                            useableLegends[j].Key = data.Columns[i].ColumnName;
+                        j++;
+                    }
+                }
+            }
+
+            foreach (var legend in useableLegends)
+            {
+                hlv = new HighestLowestValues();
+                hlv.ColumnIndex = data.Columns.IndexOf(legend.YDataName);
+                hlv.HighestValue = double.MinValue;
+                hlv.LowestValue = double.MaxValue;
+                for (int j = 0; j < data.Rows.Count; j++)
+                {
+                    if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) > hlv.HighestValue)
+                        hlv.HighestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
+
+                    if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) < hlv.LowestValue)
+                        hlv.LowestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
+                }
+                for (int k = 0; k < useableLegends.Count; k++)
+                {
+                    if (useableLegends[k].YDataName == data.Columns[hlv.ColumnIndex].ColumnName)
+                    {
+                        hlv.IndexInOriginalList = k;
+                        k = useableLegends.Count;
+                    }
+                }
+                valuesForSorting.Add(hlv);
+            }
+
+            foreach (var highestLowestCombination in valuesForSorting)
+            {
+                highestLowestCombination.HighestLowestDifference = highestLowestCombination.HighestValue - highestLowestCombination.LowestValue;
+            }
+
+
+
+            List<HighestLowestValues> valuesBySpand = new List<HighestLowestValues>();
+            int currentValueItem = 0;
+            while (currentValueItem < valuesForSorting.Count)
+            {
+                valuesBySpand.Add(new HighestLowestValues() { HighestLowestDifference = double.MinValue });
+                foreach (var highestLowestCombination in valuesForSorting)
+                {
+                    if (highestLowestCombination.HighestLowestDifference >= valuesBySpand[currentValueItem].HighestLowestDifference &&
+                        (highestLowestCombination.HighestValue >= valuesBySpand[currentValueItem].HighestValue - valuesBySpand[currentValueItem].HighestValue * 0.75 ||
+                        highestLowestCombination.HighestValue <= valuesBySpand[currentValueItem].HighestValue - valuesBySpand[currentValueItem].HighestValue * 0.25) &&
+                        !valuesBySpand.Contains(highestLowestCombination))
+                    {
+                        valuesBySpand[currentValueItem] = highestLowestCombination;
+                    }
+                }
+                currentValueItem++;
+            }
+
+
+            HighestLowestValues highestValueItem = null;
+            HighestLowestValues lowestValueItem = null;
+            HighestLowestValues highestSpanItem = null;
+            HighestLowestValues lowestSpanItem = null;
+
+            foreach (var item in valuesBySpand)
+            {
+                if (highestValueItem == null || item.HighestValue > highestValueItem.HighestValue)
+                    highestValueItem = item;
+                if (lowestValueItem == null || item.LowestValue < lowestValueItem.LowestValue)
+                    lowestValueItem = item;
+                if (highestSpanItem == null || item.HighestLowestDifference > highestSpanItem.HighestLowestDifference)
+                    highestSpanItem = item;
+                if (lowestSpanItem == null || item.HighestLowestDifference < lowestSpanItem.HighestLowestDifference)
+                    lowestSpanItem = item;
+            }
+
+            double averageSpan = (highestSpanItem.HighestLowestDifference + lowestSpanItem.HighestLowestDifference) / 2;
+            foreach (var sortedValueItem in valuesBySpand)
+            {
+                if (sortedValueItem.HighestLowestDifference > highestSpanItem.HighestLowestDifference - highestSpanItem.HighestLowestDifference * 0.75)
+                {
+                    sortedValueItem.LeftOrRightYAxis = 1;
+                }
+                else if (sortedValueItem.HighestLowestDifference > lowestSpanItem.HighestLowestDifference - lowestSpanItem.HighestLowestDifference * 0.75)
+                    sortedValueItem.LeftOrRightYAxis = 2;
+
+            }
+
+            List<BaseLegend> legendsBeforeReordering = new List<BaseLegend>();
+            for (int i = 0; i < useableLegends.Count; i++)
+            {
+                legendsBeforeReordering.Add(useableLegends[valuesBySpand[i].IndexInOriginalList]);
+                if (legendsBeforeReordering[i].LeftOrRightYAxis == null)
+                {
+                    if (valuesBySpand[i].LeftOrRightYAxis == 1)
+                        legendsBeforeReordering[i].LeftOrRightYAxis = "left";
+
+                    else if (valuesBySpand[i].LeftOrRightYAxis == 2)
+                        legendsBeforeReordering[i].LeftOrRightYAxis = "right";
+                }
+            }
+
+            List<BaseLegend> legendsAfterReordering = new List<BaseLegend>();
+            int leftThenRight = 1;
+            while (leftThenRight < 3)
+            {
+                foreach (var legend in legendsBeforeReordering)
+                {
+                    if (leftThenRight == 1 && legend.LeftOrRightYAxis.ToLower() == "left")
+                        legendsAfterReordering.Add(legend);
+                    else if (leftThenRight == 2 && legend.LeftOrRightYAxis.ToLower() == "right")
+                        legendsAfterReordering.Add(legend);
+                }
+                leftThenRight++;
+            }
+            return legendsAfterReordering;
         }
 
         private List<BaseLegend> CreateUndefinedLegends(DataTable data, List<BaseLegend> legends)
@@ -251,8 +403,15 @@ namespace CSMarkdown.Scripting
 
             }
             dataset = dataset.Remove(dataset.Length - 1);
+            int leftOrRight;
+            if (lineLegend.LeftOrRightYAxis == "left")
+                leftOrRight = 1;
+
+            else
+                leftOrRight = 2;
+
             if (lineLegend.Type != "pie" && lineLegend.Type != "donut")
-                dataset += "], \"type\": \"" + lineLegend.Type + "\", \"yAxis\": " + m_numberOfLegends.ToString() + "}]";
+                dataset += "], \"type\": \"" + lineLegend.Type + "\", \"yAxis\": " + leftOrRight.ToString() + "}]";
             else
                 dataset += "]";
             m_numberOfLegends++;
