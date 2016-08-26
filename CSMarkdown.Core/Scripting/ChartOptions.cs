@@ -19,7 +19,7 @@ namespace CSMarkdown.Scripting
         private string m_xAxisType;
         private string m_xDataName = "";
         private string m_xAxisDateFormat;
-        private string m_showLabels = "true";
+        private string m_showLabels = "false";
         private string m_labelThreshold = ".05";
         private string m_labelType = "key";
         private string m_donutRatio = "0.35";

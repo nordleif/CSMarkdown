@@ -210,6 +210,9 @@
     <EmbeddedResource Include="Rendering\www\css\nvd3.css" />
     <EmbeddedResource Include="Rendering\www\js\d3.js" />
     <EmbeddedResource Include="Rendering\www\js\nvd3.js" />
+    <EmbeddedResource Include="Rendering\www\js\responsive-tables.js" />
+    <EmbeddedResource Include="Rendering\www\css\responsive-tables.css" />
+    <EmbeddedResource Include="Rendering\www\js\jQuery.js" />
     <Content Include="ssleay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

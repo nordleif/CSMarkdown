@@ -15,7 +15,7 @@ namespace CSMarkdown.Scripting
 
         private int m_numberOfLegends = 1;
         private int m_chartCounter = 0;
-        private string m_chartXAxisType;
+        //private string m_chartXAxisType;
         private int m_yDataColumnIndex = 1;
 
         public DefaultScriptContext()
@@ -43,7 +43,7 @@ namespace CSMarkdown.Scripting
                 return;
 
             var tableNode = HtmlNode.CreateNode("<table>");
-            tableNode.Attributes.Add("class", "table");
+            tableNode.Attributes.Add("class", "responsive");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));
@@ -61,6 +61,35 @@ namespace CSMarkdown.Scripting
             CurrentNode.ChildNodes.Add(tableNode);
         }
 
+        /*public void RenderTable(DataTable data)
+        {
+            if (data == null)
+                return;
+            var tableNode = HtmlNode.CreateNode("<table>");
+            tableNode.Attributes.Add("class","responsive");
+
+            var rowHeaderNode = HtmlNode.CreateNode("<tr>");
+            foreach (DataColumn column in data.Columns)
+            {
+                rowHeaderNode.AppendChild(HtmlNode.CreateNode($"<th>{column.ColumnName.Trim()}"));
+                
+            }
+            tableNode.AppendChild(rowHeaderNode);
+
+            HtmlNode rowNode;
+            foreach (DataRow row in data.Rows)
+            {
+                rowNode = HtmlNode.CreateNode("<tr>");
+                foreach (DataColumn column in data.Columns)
+                {
+                    rowNode.AppendChild(HtmlNode.CreateNode($"<td>{row[column]}"));
+                }
+                tableNode.AppendChild(rowNode);
+            }
+            CurrentNode.ChildNodes.Add(tableNode);
+
+        }*/
+
         public void RenderChart(DataTable data, ChartOptions options = null)
         {
 
@@ -77,7 +106,7 @@ namespace CSMarkdown.Scripting
 
             else if (options.Legends.Count == 0)
             {
-                data = CreateEmptyChartLegend();
+                data = FillEmptyDataTable();
                 options.Legends = CreateUndefinedLegends(data, options.Legends);
             }
 
@@ -86,10 +115,10 @@ namespace CSMarkdown.Scripting
                 legendType.Values = MakeValuesDictionary(data, options.XDataName, legendType.YDataName, options, legendType);
             }
 
-            if (options.XAxisType == "")
+            /*if (options.XAxisType == "")
             {
                 options.XAxisType = m_chartXAxisType;
-            }
+            }*/
 
             string datasetString = "";
 
@@ -135,44 +164,17 @@ namespace CSMarkdown.Scripting
 
         }
 
-        private DataTable CreateEmptyChartLegend()
+        private List<BaseLegend> CreateUndefinedLegends(DataTable data, List<BaseLegend> legends)
         {
-            DataTable data = new DataTable();
-            DataColumn column = new DataColumn();
-            DataRow row;
-
-            column = new DataColumn();
-            column.DataType = Type.GetType("System.Int32");
-            column.ColumnName = "x";
-            data.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = Type.GetType("System.Int32");
-            column.ColumnName = "y";
-            data.Columns.Add(column);
-
-            for (int i = 0; i < 10; i++)
-            {
-                row = data.NewRow();
-                row["x"] = i;
-                row["y"] = 0;
-                data.Rows.Add(row);
-            }
-
-            return data;
-        }
-
-        private List<BaseLegend> CreateUndefinedLegends(DataTable data, List<BaseLegend> listOfLegends)
-        {
-            List<BaseLegend> defaultListOfLegends = listOfLegends;
+            List<BaseLegend> defaultLegends = legends;
             int columnsCount = data.Columns.Count;
 
             for (int i = 1; i < columnsCount; i++)
             {
-                defaultListOfLegends.Add(new LineLegend() { Key = data.Columns[i].ColumnName });
+                defaultLegends.Add(new LineLegend() { Key = data.Columns[i].ColumnName });
             }
 
-            return defaultListOfLegends;
+            return defaultLegends;
         }
 
         private DataTable FillEmptyDataTable()
@@ -255,11 +257,6 @@ namespace CSMarkdown.Scripting
                 dataset += "]";
             m_numberOfLegends++;
 
-            if (lineLegend.Type == "pie" || lineLegend.Type == "donut")
-            {
-                options.ChartModelType = lineLegend.Type;
-            }
-
             return dataset;
         }
 
@@ -286,7 +283,7 @@ namespace CSMarkdown.Scripting
                 if (legend.Type == "pie" || legend.Type == "donut")
                 {
                     xValue = "\"" + dTable.Rows[i].ItemArray[xDataColumnIndex].ToString() + "\"";
-                    dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
+                    options.ChartModelType = legend.Type;
                 }
                 else if (dTable.Rows[i].ItemArray[xDataColumnIndex].GetType() == typeof(string) || options.XAxisType.ToLower() == "string")
                 {
@@ -295,10 +292,9 @@ namespace CSMarkdown.Scripting
                     int LabelColumn = 0;
                     if (options.LabelColumn != null)
                         LabelColumn = dTable.Columns.IndexOf(options.LabelColumn);
-                    //options.XAxisLabels.Add(Convert.ToString(dTable.Rows[i].ItemArray[LabelColumn]));
                     labels.Add(dTable.Rows[i].ItemArray[LabelColumn].ToString());
-                    dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
-                    m_chartXAxisType = "string";
+                    //m_chartXAxisType = "string";
+                    options.XAxisType = "string";
                 }
 
                 else if (dTable.Rows[i].ItemArray[xDataColumnIndex].GetType() == typeof(DateTime) || options.XAxisType.ToLower() == "date")
@@ -307,17 +303,16 @@ namespace CSMarkdown.Scripting
                     date = Convert.ToDateTime(dTable.Rows[i].ItemArray[xDataColumnIndex]).ToUniversalTime();
                     long ticker = date.Ticks - epoch.Ticks;
                     xValue = ticker.ToString().Remove(ticker.ToString().Length - 4);
-                    dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
-                    m_chartXAxisType = "date";
+                    //m_chartXAxisType = "date";
+                    options.XAxisType = "date";
                 }
                 else
                 {
-
                     xValue = dTable.Rows[i].ItemArray[xDataColumnIndex].ToString().Replace(',', '.');
-                    dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
-                    m_chartXAxisType = "int";
+                    //m_chartXAxisType = "int";
+                    options.XAxisType = "int";
                 }
-
+                dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
             }
             options.XAxisLabels = labels;
 
@@ -351,25 +346,6 @@ namespace CSMarkdown.Scripting
                 + "return chart;\n});";
             return addGraphFunction;
 
-        }
-
-        private string CreatePieData(dynamic lineLegend, string dataset)
-        {
-            if (m_numberOfLegends == 1)
-            {
-                dataset = "\nvar dataset" + m_chartCounter + " = [";
-            }
-
-            foreach (var dataCombination in lineLegend.Values)
-            {
-                dataset += "{" + dataCombination.Key + "," + dataCombination.Value + "},";
-
-            }
-            dataset = dataset.Remove(dataset.Length - 1);
-            dataset += "]";
-
-            m_numberOfLegends++;
-            return dataset;
         }
 
         private string MakeNVAddGraphFunction(ChartOptions options)

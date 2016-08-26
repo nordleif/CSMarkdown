@@ -34,6 +34,7 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_015.smd", RenderOutput.Html)]
         [TestCase("markdown_016.smd", RenderOutput.Html)]
         [TestCase("markdown_017.smd", RenderOutput.Html)]
+        [TestCase("markdown_018.smd", RenderOutput.Html)]
 
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]
