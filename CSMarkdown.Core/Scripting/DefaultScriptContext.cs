@@ -110,11 +110,18 @@ namespace CSMarkdown.Scripting
                 options.Legends = CreateUndefinedLegends(data, options.Legends);
             }
 
-            if (options.Legends.Count > 2)
+            if (options.Legends.Count > 2 && options.ChartModelType == "multiChart()")
             {
                 options.Legends = OrganizingOrderOfLegends(options, data);
             }
+            else if (options.Legends.Count == 2)
+            {
+                if (options.Legends[0].LeftOrRightYAxis == null || options.Legends[0].LeftOrRightYAxis.ToLower() != "left" || options.Legends[0].LeftOrRightYAxis.ToLower() != "right")
+                    options.Legends[0].LeftOrRightYAxis = "left";
 
+                if (options.Legends[1].LeftOrRightYAxis == null || options.Legends[1].LeftOrRightYAxis.ToLower() != "left" || options.Legends[1].LeftOrRightYAxis.ToLower() != "right")
+                    options.Legends[1].LeftOrRightYAxis = "right";
+            }
             foreach (var legendType in options.Legends)
             {
                 legendType.Values = MakeValuesDictionary(data, options.XDataName, legendType.YDataName, options, legendType);
@@ -361,10 +368,10 @@ namespace CSMarkdown.Scripting
         {
             ChartOptions defaultChartOptions = new ChartOptions();
             int columnCounter;
-            if (data.Columns.Count > 3)
-                columnCounter = 3;
+            //if (data.Columns.Count > 3)
+            //    columnCounter = 3;
 
-            else
+            //else
                 columnCounter = data.Columns.Count;
 
             for (int i = 1; i < columnCounter; i++)
@@ -404,11 +411,11 @@ namespace CSMarkdown.Scripting
             }
             dataset = dataset.Remove(dataset.Length - 1);
             int leftOrRight;
-            if (lineLegend.LeftOrRightYAxis == "left")
-                leftOrRight = 1;
+            if (lineLegend.LeftOrRightYAxis == "right")
+                leftOrRight = 2;
 
             else
-                leftOrRight = 2;
+                leftOrRight = 1;
 
             if (lineLegend.Type != "pie" && lineLegend.Type != "donut")
                 dataset += "], \"type\": \"" + lineLegend.Type + "\", \"yAxis\": " + leftOrRight.ToString() + "}]";
