@@ -10,12 +10,12 @@ namespace CSMarkdown.Scripting
     {
         public ChartOptions()
         {
-            m_listOfLegends = new List<BaseLegend>();
+            m_legends = new List<BaseLegend>();
             m_xAxisType = "";
         }
         private List<string> m_XAxisLabels;
         private string m_LabelColumn;
-        private List<BaseLegend> m_listOfLegends;
+        private List<BaseLegend> m_legends;
         private string m_xAxisType;
         private string m_xDataName = "";
         private string m_xAxisDateFormat;
@@ -50,11 +50,11 @@ namespace CSMarkdown.Scripting
         {
             get
             {
-                return m_listOfLegends;
+                return m_legends;
             }
             set
             {
-                m_listOfLegends = value;
+                m_legends = value;
             }
         }
 
