@@ -71,19 +71,18 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documents\markdown_017.smd" />
-    <None Include="Documents\markdown_016.smd" />
-    <None Include="Documents\markdown_015.smd" />
-    <None Include="Documents\markdown_014.smd" />
-    <None Include="Documents\markdown_013.smd" />
-    <None Include="Documents\markdown_012.smd" />
-    <None Include="Documents\markdown_011.smd" />
-    <None Include="Documents\markdown_010.smd" />
-    <None Include="Documents\markdown_009.smd" />
-    <None Include="Documents\markdown_008.smd" />
-    <None Include="Documents\markdown_007.smd" />
-    <None Include="Documents\markdown_006.smd" />
-    <None Include="Documents\markdown_018.smd" />
+    <None Include="Documents\markdown_xaxis_as_string.smd" />
+    <None Include="Documents\markdown_pie_and_donut_chart.smd" />
+    <None Include="Documents\markdown_render_10_charts.smd" />
+    <None Include="Documents\markdown_custom_dateformat.smd" />
+    <None Include="Documents\markdown_null_data.smd" />
+    <None Include="Documents\markdown_no_legends.smd" />
+    <None Include="Documents\markdown_2_legends_2_types.smd" />
+    <None Include="Documents\markdown_2_legends_1_type.smd" />
+    <None Include="Documents\markdown_2_legends.smd" />
+    <None Include="Documents\markdown_min_and_max_values.smd" />
+    <None Include="Documents\markdown_min_value.smd" />
+    <None Include="Documents\markdown_legend.smd" />
     <None Include="Documents\markdown_parameters.smd" />
     <None Include="Documents\markdown_display_error.smd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -101,10 +100,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Documents\markdown_002.smd" />
-    <None Include="Documents\markdown_004.smd" />
-    <None Include="Documents\markdown_003.smd" />
+    <None Include="Documents\markdown_inline_code.smd" />
     <None Include="Documents\markdown_001.smd" />
-    <None Include="Documents\markdown_005.smd" />
+    <None Include="Documents\markdown_yaml_params.smd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

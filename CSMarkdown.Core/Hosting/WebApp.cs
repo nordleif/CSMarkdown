@@ -23,11 +23,11 @@ namespace CSMarkdown.Hosting
 
         public void Start(StartOptions options)
         {
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
+                if (options == null)
+                    throw new ArgumentNullException(nameof(options));
 
-            m_options = options;
-            m_webApp = Microsoft.Owin.Hosting.WebApp.Start("http://localhost/csmarkdown/", (builder) => builder.Use(OnRequest));
+                m_options = options;
+                m_webApp = Microsoft.Owin.Hosting.WebApp.Start("http://localhost/csmarkdown/", (builder) => builder.Use(OnRequest));
         }
 
         private async Task OnRequest(IOwinContext context, Func<Task> next)

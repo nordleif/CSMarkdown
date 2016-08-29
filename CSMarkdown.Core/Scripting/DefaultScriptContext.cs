@@ -61,35 +61,6 @@ namespace CSMarkdown.Scripting
             CurrentNode.ChildNodes.Add(tableNode);
         }
 
-        /*public void RenderTable(DataTable data)
-        {
-            if (data == null)
-                return;
-            var tableNode = HtmlNode.CreateNode("<table>");
-            tableNode.Attributes.Add("class","responsive");
-
-            var rowHeaderNode = HtmlNode.CreateNode("<tr>");
-            foreach (DataColumn column in data.Columns)
-            {
-                rowHeaderNode.AppendChild(HtmlNode.CreateNode($"<th>{column.ColumnName.Trim()}"));
-                
-            }
-            tableNode.AppendChild(rowHeaderNode);
-
-            HtmlNode rowNode;
-            foreach (DataRow row in data.Rows)
-            {
-                rowNode = HtmlNode.CreateNode("<tr>");
-                foreach (DataColumn column in data.Columns)
-                {
-                    rowNode.AppendChild(HtmlNode.CreateNode($"<td>{row[column]}"));
-                }
-                tableNode.AppendChild(rowNode);
-            }
-            CurrentNode.ChildNodes.Add(tableNode);
-
-        }*/
-
         public void RenderChart(DataTable data, ChartOptions options = null)
         {
 
@@ -244,7 +215,7 @@ namespace CSMarkdown.Scripting
             int i = 0;
             foreach (var dataCombination in lineLegend.Values)
             {
-                if (options.XAxisType == "string" && lineLegend.Type != "pie")
+                if (options.XAxisType == "string")// && lineLegend.Type != "pie"
                     dataset += "{" + dataCombination.Key + "," + dataCombination.Value + ", label: \"" + options.XAxisLabels.ElementAt(i++) + "\"},";
                 else
                     dataset += "{" + dataCombination.Key + "," + dataCombination.Value + "},";
@@ -283,6 +254,7 @@ namespace CSMarkdown.Scripting
                 if (legend.Type == "pie" || legend.Type == "donut")
                 {
                     xValue = "\"" + dTable.Rows[i].ItemArray[xDataColumnIndex].ToString() + "\"";
+                    options.XAxisType = "";
                     options.ChartModelType = legend.Type;
                 }
                 else if (dTable.Rows[i].ItemArray[xDataColumnIndex].GetType() == typeof(string) || options.XAxisType.ToLower() == "string")
@@ -315,7 +287,7 @@ namespace CSMarkdown.Scripting
                 dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
             }
             options.XAxisLabels = labels;
-
+        
             if (yDataColumnNameWasNotDefined)
                 m_yDataColumnIndex++;
 

@@ -13,7 +13,7 @@ var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join 
 var options = new ChartOptions();
 options.Legends.Add(new LineLegend(){Key = "Test1"});
 options.XAxisType = "string";
-//options.LabelColumn = "local_time";
+options.LabelColumn = "local_time";
 RenderChart(data, options);
 
 ```

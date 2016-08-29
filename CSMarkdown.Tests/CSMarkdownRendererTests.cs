@@ -17,24 +17,22 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_001.smd", RenderOutput.Pdf)]
         [TestCase("markdown_002.smd", RenderOutput.Html)]
         [TestCase("markdown_002.smd", RenderOutput.Pdf)]
-        [TestCase("markdown_003.smd", RenderOutput.Html)]
-        [TestCase("markdown_003.smd", RenderOutput.Pdf)]
-        [TestCase("markdown_004.smd", RenderOutput.Html)]
-        [TestCase("markdown_004.smd", RenderOutput.Pdf)]
-        [TestCase("markdown_005.smd", RenderOutput.Html)]
-        [TestCase("markdown_006.smd", RenderOutput.Html)]
-        [TestCase("markdown_007.smd", RenderOutput.Html)]
-        [TestCase("markdown_008.smd", RenderOutput.Html)]
-        [TestCase("markdown_009.smd", RenderOutput.Html)]
-        [TestCase("markdown_010.smd", RenderOutput.Html)]
-        [TestCase("markdown_011.smd", RenderOutput.Html)]
-        [TestCase("markdown_012.smd", RenderOutput.Html)]
-        [TestCase("markdown_013.smd", RenderOutput.Html)]
-        [TestCase("markdown_014.smd", RenderOutput.Html)]
-        [TestCase("markdown_015.smd", RenderOutput.Html)]
-        [TestCase("markdown_016.smd", RenderOutput.Html)]
-        [TestCase("markdown_017.smd", RenderOutput.Html)]
-        [TestCase("markdown_018.smd", RenderOutput.Html)]
+        [TestCase("markdown_2_legends.smd", RenderOutput.Html)]
+        [TestCase("markdown_2_legends.smd", RenderOutput.Pdf)]
+        [TestCase("markdown_2_legends_1_type.smd", RenderOutput.Html)]
+        [TestCase("markdown_2_legends_1_type.smd", RenderOutput.Pdf)]
+        [TestCase("markdown_2_legends_2_types.smd", RenderOutput.Html)]
+        [TestCase("markdown_custom_dateformat.smd", RenderOutput.Html)]
+        [TestCase("markdown_inline_code.smd", RenderOutput.Html)]
+        [TestCase("markdown_legend.smd", RenderOutput.Html)]
+        [TestCase("markdown_min_and_max_values.smd", RenderOutput.Html)]
+        [TestCase("markdown_min_value.smd", RenderOutput.Html)]
+        [TestCase("markdown_no_legends.smd", RenderOutput.Html)]
+        [TestCase("markdown_null_data.smd", RenderOutput.Html)]
+        [TestCase("markdown_pie_and_donut_chart.smd", RenderOutput.Html)]
+        [TestCase("markdown_render_10_charts.smd", RenderOutput.Html)]
+        [TestCase("markdown_xaxis_as_string.smd", RenderOutput.Html)]
+        [TestCase("markdown_yaml_params.smd", RenderOutput.Html)]
 
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]
@@ -59,7 +57,7 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Error_Throw()
         {
-            var path = Path.Combine(@"../../Documents/markdown_error_throw.smd");
+            var path = Path.Combine(@"../../Documents\\markdown_error_throw.smd");
             //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_throw.smd");
             var text = File.ReadAllText(path);
 
@@ -73,7 +71,7 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Error_Display()
         {
-            var path = Path.Combine(@"../../Documents/markdown_error_display.smd");
+            var path = Path.Combine(@"../../Documents\\markdown_error_display.smd");
             //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_error_display.smd");
             var text = File.ReadAllText(path);
 
@@ -86,7 +84,7 @@ namespace CSMarkdown.Tests
         [Test]
         public void CSMarkdownRenderer_Parameters()
         {
-            var path = Path.Combine(@"../../Documents/markdown_parameters.smd");
+            var path = Path.Combine(@"../../Documents\\markdown_parameters.smd");
             //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents\\markdown_parameters.smd");
             var text = File.ReadAllText(path);
 
