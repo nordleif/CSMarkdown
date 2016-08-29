@@ -71,6 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_multiple_value_with_legends_defined.smd" />
+    <None Include="Documents\markdown_multiple_value_without_legends.smd" />
     <None Include="Documents\markdown_xaxis_as_string.smd" />
     <None Include="Documents\markdown_pie_and_donut_chart.smd" />
     <None Include="Documents\markdown_render_10_charts.smd" />

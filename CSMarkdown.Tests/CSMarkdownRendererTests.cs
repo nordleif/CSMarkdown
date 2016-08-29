@@ -37,7 +37,8 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]
         [TestCase("markdown_display_warning.smd", RenderOutput.Html)]
-
+        [TestCase("markdown_multiple_value_without_legends.smd", RenderOutput.Html)]
+        [TestCase("markdown_multiple_value_with_legends_defined.smd", RenderOutput.Html)]
         [Test]
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {
