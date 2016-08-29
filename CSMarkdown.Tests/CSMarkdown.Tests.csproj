@@ -71,8 +71,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Documents\markdown_020.smd" />
     <None Include="Documents\markdown_019.smd" />
+    <None Include="Documents\markdown_018.smd" />
     <None Include="Documents\markdown_017.smd" />
     <None Include="Documents\markdown_016.smd" />
     <None Include="Documents\markdown_015.smd" />
@@ -85,7 +85,6 @@
     <None Include="Documents\markdown_008.smd" />
     <None Include="Documents\markdown_007.smd" />
     <None Include="Documents\markdown_006.smd" />
-    <None Include="Documents\markdown_018.smd" />
     <None Include="Documents\markdown_parameters.smd" />
     <None Include="Documents\markdown_display_error.smd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
