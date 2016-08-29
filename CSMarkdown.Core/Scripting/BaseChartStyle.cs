@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSMarkdown.Scripting
 {
-    public class ChartStyle
+    public class BaseChartStyle
     {
         private string chartModelType = "multiChart()";
         private int m_marginTop = 75;
