@@ -878,12 +878,12 @@ e.duration(0).headerEnabled(!1).valueFormatter(function(a,b){return c.valueForma
 <h2>CS Syntax</h2>
 <div><pre><code>
 var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
-var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'",="" con);="" var="" options="new" chartoptions();="" options.xaxisdateformat="dd - MM - yyyy" ;="" renderchart(data,="" options);=""></code></pre><div id="chart0"><svg></svg></div><script>
-var dataset0 = [{"key": "y", "values": [{"x":0,"y":0},{"x":1,"y":0},{"x":2,"y":0},{"x":3,"y":0},{"x":4,"y":0},{"x":5,"y":0},{"x":6,"y":0},{"x":7,"y":0},{"x":8,"y":0},{"x":9,"y":0}], "type": "line", "yAxis": 1}];
+var data = ReadSql("select d.local_time, d.value from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'",="" con);="" var="" options="new" chartoptions();="" options.xaxisdateformat="dd - MM - yyyy" ;="" renderchart(data,="" options);=""></code></pre><pre><code class="warning">## No data were defined for creating chart</code></pre><div id="chart0"><svg></svg></div><script>
+var dataset0 = [{"key": "No Values Received", "values": [{"x":-3600000,"y":0},{"x":82800000,"y":0},{"x":169200000,"y":0},{"x":255600000,"y":0},{"x":342000000,"y":0}], "type": "line", "yAxis": 1}];
 nv.addGraph( function() { var chart = nv.models.multiChart().margin({top: 75, right: 75, bottom: 75, left: 75})
 .useInteractiveGuideline(true)
 .color(d3.scale.category10().range());
-chart.xAxis.tickFormat(d3.format(',r')).staggerLabels(true);
+chart.xAxis.tickFormat(function(d) {return d3.time.format('%d - %m - %Y')(new Date(d))}).staggerLabels(true);
 chart.yAxis1.tickFormat(d3.format(',.0f'));
 d3.select('#chart0 svg')
 .datum(dataset0)

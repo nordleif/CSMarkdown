@@ -112,6 +112,10 @@ namespace CSMarkdown.Scripting
 
             if (options.Legends.Count > 2 && options.ChartModelType == "multiChart()")
             {
+                if (options.XDataName == "")
+                {
+                    options.XDataName = data.Columns[0].ColumnName;
+                }
                 options.Legends = OrganizingOrderOfLegends(options, data);
             }
             else if (options.Legends.Count == 2)
@@ -206,7 +210,7 @@ namespace CSMarkdown.Scripting
                     {
                         useableLegends[j].YDataName = data.Columns[i].ColumnName;
 
-                        if (useableLegends[j].Key == "")
+                        if (useableLegends[j].Key == null)
                             useableLegends[j].Key = data.Columns[i].ColumnName;
                         j++;
                     }

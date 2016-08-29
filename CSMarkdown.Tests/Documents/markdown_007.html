@@ -883,7 +883,7 @@ var dataset0 = [{"key": "Test1", "values": [{"x":1470005702000,"y":164.99330775}
 nv.addGraph( function() { var chart = nv.models.multiChart().margin({top: 75, right: 75, bottom: 75, left: 75})
 .useInteractiveGuideline(true)
 .color(d3.scale.category10().range());
-chart.xAxis.tickFormat(d3.format(',r')).staggerLabels(true);
+chart.xAxis.tickFormat(function(d) {return d3.time.format('%d.%m.%Y - %H:%M:%S')(new Date(d))}).staggerLabels(true);
 chart.yAxis1.tickFormat(d3.format(',.0f'));
 chart.yDomain1([150, 185.4508541667]);
 d3.select('#chart0 svg')

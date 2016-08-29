@@ -882,7 +882,7 @@ var dataset0 = [{"x":"01-08-2016 00:55:02","y":164.99330775},{"x":"01-08-2016 01
  nv.addGraph(function() {var chart = nv.models.pieChart()
 .x(function(d) {return d.x})
 .y(function(d) {return d.y})
-.showLabels(true);
+.showLabels(false);
 d3.select('#chart0 svg')
 .datum(dataset0)
 .transition().duration(350)
@@ -897,7 +897,7 @@ var dataset1 = [{"x":"01-08-2016 00:55:02","y":164.99330775},{"x":"01-08-2016 01
  nv.addGraph(function() {var chart = nv.models.pieChart()
 .x(function(d) {return d.x})
 .y(function(d) {return d.y})
-.showLabels(true).labelThreshold(.05)
+.showLabels(false).labelThreshold(.05)
 .labelType("key")
 .donut(true)
 .donutRatio(0.35);

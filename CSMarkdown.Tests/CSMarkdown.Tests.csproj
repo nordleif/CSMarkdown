@@ -71,6 +71,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_020.smd" />
     <None Include="Documents\markdown_019.smd" />
     <None Include="Documents\markdown_017.smd" />
     <None Include="Documents\markdown_016.smd" />
