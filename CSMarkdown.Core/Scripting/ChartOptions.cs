@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSMarkdown.Scripting
 {
-    public class ChartOptions : BaseChartOptions
+    public class ChartOptions : ChartStyle
     {
         public ChartOptions()
         {
