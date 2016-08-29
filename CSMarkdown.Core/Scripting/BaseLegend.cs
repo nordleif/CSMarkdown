@@ -13,6 +13,7 @@ namespace CSMarkdown.Scripting
         private int? m_minValue;
         private int? m_maxValue;
         private string m_YDataName = "";
+        private string m_leftOrRightYAxis;
 
         public string Key
         {
@@ -76,6 +77,19 @@ namespace CSMarkdown.Scripting
             set
             {
                 m_YDataName = value;
+            }
+        }
+
+        public string LeftOrRightYAxis
+        {
+            get
+            {
+                return m_leftOrRightYAxis;
+            }
+
+            set
+            {
+                m_leftOrRightYAxis = value;
             }
         }
     }

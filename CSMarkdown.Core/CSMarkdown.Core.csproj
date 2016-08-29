@@ -165,6 +165,7 @@
     <Compile Include="Scripting\CustomDefinedDateConverter.cs" />
     <Compile Include="Scripting\DefaultScriptContext.cs" />
     <Compile Include="Scripting\Extensions.cs" />
+    <Compile Include="Scripting\HighestLowestValues.cs" />
     <Compile Include="Scripting\LineLegend.cs" />
     <Compile Include="Scripting\PieLegend.cs" />
     <Compile Include="Scripting\ScriptContextBase.cs" />
