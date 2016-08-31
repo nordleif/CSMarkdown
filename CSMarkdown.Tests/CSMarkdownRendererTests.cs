@@ -48,7 +48,7 @@ namespace CSMarkdown.Tests
 
             var renderer = new CSMarkdownRenderer();
             var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = output });
-            
+
             path = path.Replace(Path.GetExtension(path), output == RenderOutput.Html ? ".html" : ".pdf");
             File.WriteAllBytes(path, result);
 
@@ -96,6 +96,32 @@ namespace CSMarkdown.Tests
             File.WriteAllBytes(path, result);
 
             Process.Start(path);
+        }
+
+        [TestCase("app_new_name_of_output_file.txt")]
+        [Test]
+        public void MarkdownAppTest(string fileName)
+        {
+            var path = Path.Combine(@"../../Documents", fileName);
+            var text = File.ReadAllText(path);
+            string exeFilePath = AppDomain.CurrentDomain.BaseDirectory;
+            exeFilePath = exeFilePath.Remove(exeFilePath.Length - 27) + "CSMarkdown.App\\bin\\Debug\\CSMarkdown.exe";
+            Process process = new Process();
+            process.StartInfo.FileName = exeFilePath;
+            process.StartInfo.Arguments = text;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+
+            StreamReader reader = process.StandardError;
+            string output = reader.ReadToEnd();
+            process.WaitForExit();
+            process.Close();
+
+            if (output != "")
+            {
+                throw new Exception(output);
+            }
         }
     }
 }

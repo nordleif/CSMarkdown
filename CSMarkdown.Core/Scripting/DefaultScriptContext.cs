@@ -63,7 +63,6 @@ namespace CSMarkdown.Scripting
 
         public void RenderChart(DataTable data, ChartOptions options = null)
         {
-
             if (data == null || data.Rows.Count == 0)
             {
                 data = new DataTable();
