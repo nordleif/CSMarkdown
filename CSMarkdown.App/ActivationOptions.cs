@@ -35,8 +35,5 @@ namespace CSMarkdown.App
 
         [ValueArgument(typeof(string), 'p', LongName = "parameters", Description = "Holds the parameters for the report", Example = "from=2016-04-01, to= 2016-01-03, tag=NameTag")]
         public string Parameters { get; set; }
-
-        //[EnumeratedValueArgument(typeof(Rendering.RenderOutput), 't', "outputtype", AllowedValues = "html;pdf")]
-        //public Rendering.RenderOutput OutputType { get; set; }
     }
 }
