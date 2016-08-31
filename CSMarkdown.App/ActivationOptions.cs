@@ -18,7 +18,7 @@ namespace CSMarkdown.App
         [SwitchArgument('f', "flattenhtml", true, Description = "Use when you don't want the html to be flattened. Default is true")]
         public bool FalttenHtml { get; set; }
 
-        [ValueArgument(typeof(string), 's', LongName = "smdfile", Description = "Name of the smd file to use")]
+        [ValueArgument(typeof(string), 's', LongName = "smdfile", Description = "Name of the .smd file to use")]
         public string SmdFileName { get; set; }
 
         [ValueArgument(typeof(string), 'n', LongName = "newfilename", Description = "Name of the output file. If name consists of white spaces, use \"[name]\" around the name")]
