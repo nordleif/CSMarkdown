@@ -44,6 +44,7 @@ namespace CSMarkdown.Scripting
 
             var tableNode = HtmlNode.CreateNode("<table>");
             tableNode.Attributes.Add("class", "responsive");
+            tableNode.Attributes.Add("align","center");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));
@@ -565,7 +566,7 @@ namespace CSMarkdown.Scripting
             }
             addGraphFunction += "d3.select('#chart" + m_chartCounter + " svg')\n"
                 + ".datum(dataset" + m_chartCounter + ")\n"
-                + ".transition().duration(500).call(chart); nv.utils.windowResize(chart.update);\n"
+                + ".transition().duration(0).call(chart); nv.utils.windowResize(chart.update);\n"
                 + "return chart;\n"
                 + "});";
             return addGraphFunction;
