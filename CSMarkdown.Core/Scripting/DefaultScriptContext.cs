@@ -44,6 +44,7 @@ namespace CSMarkdown.Scripting
 
             var tableNode = HtmlNode.CreateNode("<table>");
             tableNode.Attributes.Add("class", "responsive");
+            tableNode.Attributes.Add("align","center");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));

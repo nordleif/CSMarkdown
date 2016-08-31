@@ -14,8 +14,11 @@
    Shared Styles
 ----------------------------------------- */
 
+tr:nth-child(even) {background-color: #f2f2f2}
+
 table th { font-weight: bold; }
 table td, table th { padding: 9px 10px; text-align: left; }
+table, th, td {border: 1px solid black;}
 
 /* Mobile */
 @media only screen and (max-width: 767px) {

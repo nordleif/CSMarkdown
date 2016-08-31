@@ -45,6 +45,8 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_xaxis_as_string.smd", RenderOutput.Pdf)]
         [TestCase("markdown_yaml_params.smd", RenderOutput.Html)]
         [TestCase("markdown_yaml_params.smd", RenderOutput.Pdf)]
+        [TestCase("markdown_table.smd", RenderOutput.Html)]
+        [TestCase("markdown_table.smd", RenderOutput.Pdf)]
 
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]
