@@ -167,7 +167,7 @@
     <Compile Include="Rendering\RenderContext.cs" />
     <Compile Include="Rendering\CSMarkdownRenderOptions.cs" />
     <Compile Include="Scripting\BarLegend.cs" />
-    <Compile Include="Scripting\ChartStyle.cs" />
+    <Compile Include="Scripting\BaseChartStyle.cs" />
     <Compile Include="Scripting\BaseLegend.cs" />
     <Compile Include="Scripting\ChartOptions.cs" />
     <Compile Include="Scripting\CustomDefinedDateConverter.cs" />
