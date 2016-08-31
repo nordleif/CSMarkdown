@@ -22,17 +22,29 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_2_legends_1_type.smd", RenderOutput.Html)]
         [TestCase("markdown_2_legends_1_type.smd", RenderOutput.Pdf)]
         [TestCase("markdown_2_legends_2_types.smd", RenderOutput.Html)]
+        [TestCase("markdown_2_legends_2_types.smd", RenderOutput.Pdf)]
         [TestCase("markdown_custom_dateformat.smd", RenderOutput.Html)]
+        [TestCase("markdown_custom_dateformat.smd", RenderOutput.Pdf)]
         [TestCase("markdown_inline_code.smd", RenderOutput.Html)]
+        [TestCase("markdown_inline_code.smd", RenderOutput.Pdf)]
         [TestCase("markdown_legend.smd", RenderOutput.Html)]
+        [TestCase("markdown_legend.smd", RenderOutput.Pdf)]
         [TestCase("markdown_min_and_max_values.smd", RenderOutput.Html)]
+        [TestCase("markdown_min_and_max_values.smd", RenderOutput.Pdf)]
         [TestCase("markdown_min_value.smd", RenderOutput.Html)]
+        [TestCase("markdown_min_value.smd", RenderOutput.Pdf)]
         [TestCase("markdown_no_legends.smd", RenderOutput.Html)]
+        [TestCase("markdown_no_legends.smd", RenderOutput.Pdf)]
         [TestCase("markdown_null_data.smd", RenderOutput.Html)]
+        [TestCase("markdown_null_data.smd", RenderOutput.Pdf)]
         [TestCase("markdown_pie_and_donut_chart.smd", RenderOutput.Html)]
+        [TestCase("markdown_pie_and_donut_chart.smd", RenderOutput.Pdf)]
         [TestCase("markdown_render_10_charts.smd", RenderOutput.Html)]
+        [TestCase("markdown_render_10_charts.smd", RenderOutput.Pdf)]
         [TestCase("markdown_xaxis_as_string.smd", RenderOutput.Html)]
+        [TestCase("markdown_xaxis_as_string.smd", RenderOutput.Pdf)]
         [TestCase("markdown_yaml_params.smd", RenderOutput.Html)]
+        [TestCase("markdown_yaml_params.smd", RenderOutput.Pdf)]
 
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]
@@ -43,6 +55,7 @@ namespace CSMarkdown.Tests
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {
             var path = Path.Combine(@"../../Documents", fileName);
+
             //var path = Path.Combine("D:\\Source\\GitHub\\CSMarkdown\\CSMarkdown.Tests\\Documents", fileName);
             var text = File.ReadAllText(path);
 
