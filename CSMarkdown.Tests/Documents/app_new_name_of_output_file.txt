@@ -1,1 +1,0 @@
-﻿-r -s markdown_2_legends.smd -n Hubba -i C:\Users\Nicholai\Desktop\CSMarkdownGit\CSMarkdown.Tests\Documents -o C:\temp -t html

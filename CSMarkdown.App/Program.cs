@@ -16,8 +16,6 @@ namespace CSMarkdown.App
         {
             var options = new ActivationOptions();
 
-
-
             var parser = new CommandLineParser.CommandLineParser();
             parser.ShowUsageHeader = "CSMarkdown";
             parser.ExtractArgumentAttributes(options);
@@ -58,9 +56,9 @@ namespace CSMarkdown.App
                 string key = "", value = "";
                 for (int i = 0; i < options.Parameters.Length; i++)
                 {
-                    if (isKey && key != "" && value != "")
+                    if (isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
                     {
-                        parameters.Add(key, value);
+                        parameters.Add(key.Trim(), value);
                         key = "";
                         value = "";
                         padsBetweenCommas = 1;
@@ -94,12 +92,11 @@ namespace CSMarkdown.App
                             value += options.Parameters[i];
                             padsBetweenCommas++;
                         }
-
                     }
                 }
-                if (!isKey && key != "" && value != "")
+                if (!isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
                 {
-                    parameters.Add(key, value);
+                    parameters.Add(key.Trim(), value);
                 }
             }
 

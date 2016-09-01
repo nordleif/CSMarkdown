@@ -33,7 +33,7 @@ namespace CSMarkdown.App
         [ValueArgument(typeof(string), 't', LongName = "outputtype", Description = "Define which type the output document should be")]
         public string OutputType { get; set; }
 
-        [ValueArgument(typeof(string), 'p', LongName = "parameters", Description = "Holds the parameters for the report", Example = "from=2016-04-01, to= 2016-01-03, tag=NameTag")]
+        [ValueArgument(typeof(string), 'p', LongName = "parameters", Description = "Holds the parameters for the report. If the argument with parameters contains whitespaces, then use \"[parameters]\" to encapsulate", Example = "from=2016-04-01, to=2016-01-03, tag=NameTag")]
         public string Parameters { get; set; }
     }
 }

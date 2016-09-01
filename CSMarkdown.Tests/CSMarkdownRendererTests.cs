@@ -113,19 +113,23 @@ namespace CSMarkdown.Tests
             Process.Start(path);
         }
 
-        [TestCase("app_new_name_of_output_file.txt")]
+        [TestCase("-r -s markdown_2_legends.smd -n Hubba -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --newfilename LongName --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: using long name")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: no name given")]
+        [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/temp", TestName = "App: no output defined")]
+        [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file with whitespaces")]
+        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/temp -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
         [Test]
-        public void MarkdownAppTest(string fileName)
+        public void MarkdownAppTest(string args)
         {
-            var path = Path.Combine(@"../../Documents", fileName);
-            var text = File.ReadAllText(path);
             string exeFilePath = AppDomain.CurrentDomain.BaseDirectory;
             exeFilePath = exeFilePath.Remove(exeFilePath.Length - 27) + "CSMarkdown.App\\bin\\Debug\\CSMarkdown.exe";
             Process process = new Process();
             process.StartInfo.FileName = exeFilePath;
-            process.StartInfo.Arguments = text;
+            process.StartInfo.Arguments = args;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.CreateNoWindow = false;
             process.Start();
 
             StreamReader reader = process.StandardError;
