@@ -121,6 +121,7 @@ namespace CSMarkdown.Tests
         [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: new name of output file with whitespaces")]
         [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
         [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t pdf", TestName = "App: new name and pdf as output")]
+        [TestCase("-r -s markdown_2_legends.smd -n Markdown2LegendsUsingTheApp -i ../../Documents -t pdf", TestName = "App: no output path defined - Places file where .smd file is")]
         [TestCase("/?", TestName = "App: get /? for CSMarkdown.exe")]
         [Test]
         public void MarkdownAppTest(string args)
