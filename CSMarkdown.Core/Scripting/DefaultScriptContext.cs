@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace CSMarkdown.Scripting
 {
@@ -34,6 +36,73 @@ namespace CSMarkdown.Scripting
 
             dataAdapter.Fill(dataTable);
 
+            return dataTable;
+        }
+
+        public DataTable ReadCsv(string path)
+        {
+            DataTable dataTable = new DataTable();
+            DataColumn collumn;
+
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                
+                string[] splitLine = reader.ReadLine().Split(',');
+                foreach (var head in splitLine)
+                {
+                    collumn = new DataColumn();
+                    collumn.ColumnName = head;
+                    collumn.DataType = typeof(string);
+                    dataTable.Columns.Add(collumn);
+                }
+                
+                while (!reader.EndOfStream)
+                {
+                    DataRow row;
+                    string[] line = reader.ReadLine().Split(',');
+                    row = dataTable.NewRow();
+
+                    for (int i = 0; i < line.Length; i++)
+                        row[i] = line[i];
+
+                    dataTable.Rows.Add(row);
+                }
+            }
+
+            return dataTable;
+        }
+
+        public DataTable ReadExcel(string path, int sheet = 1)
+        {
+            DataTable dataTable = new DataTable();
+            using (XLWorkbook workbook = new XLWorkbook(path))
+            {
+                IXLWorksheet worksheet = workbook.Worksheet(sheet);
+
+                bool firstRow = true;
+                foreach (IXLRow row in worksheet.Rows())
+                {
+                    if (firstRow)
+                    {
+                        foreach (IXLCell cell in row.Cells())
+                        {
+                            dataTable.Columns.Add(cell.Value.ToString());
+                        }
+                        firstRow = false;
+                    }
+                    else
+                    {
+                        dataTable.Rows.Add();
+                        int i = 0;
+                        foreach (IXLCell cell in row.Cells())
+                        {
+                            dataTable.Rows[dataTable.Rows.Count - 1][i] = cell.Value.ToString();
+                            i++;
+                        }
+                    }
+                }
+            }
             return dataTable;
         }
 
@@ -515,7 +584,7 @@ namespace CSMarkdown.Scripting
                 //{"y": [værdi], "x": [værdi], "label": [string værdi]}.
                 // -Kig evt på dette link: http://channagayan.blogspot.dk/2014/08/adding-string-values-to-nvd3-line-chart.html
 
-                addGraphFunction += "chart.xAxis.axisLabel('Date').tickFormat(function(d) {var label = dataset" + m_chartCounter + "[0].values[--d].label; return label}).staggerLabels(true);\n";
+                addGraphFunction += "chart.xAxis.axisLabel('').tickFormat(function(d) {var label = dataset" + m_chartCounter + "[0].values[--d].label; return label}).staggerLabels(true);\n";
             }
             else if (options.XAxisType.ToLower() == "date")
             {
