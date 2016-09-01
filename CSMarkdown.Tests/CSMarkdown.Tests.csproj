@@ -65,6 +65,10 @@
     <Compile Include="YamlOptionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CSMarkdown.App\CSMarkdown.App.csproj">
+      <Project>{5867be11-380b-4c08-89bb-514087d0e665}</Project>
+      <Name>CSMarkdown.App</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CSMarkdown.Core\CSMarkdown.Core.csproj">
       <Project>{dfc55e98-a0ee-4269-8546-3c69ba517b8f}</Project>
       <Name>CSMarkdown.Core</Name>

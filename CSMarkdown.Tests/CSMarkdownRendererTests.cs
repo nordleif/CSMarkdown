@@ -64,7 +64,7 @@ namespace CSMarkdown.Tests
 
             var renderer = new CSMarkdownRenderer();
             var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = output });
-            
+
             path = path.Replace(Path.GetExtension(path), output == RenderOutput.Html ? ".html" : ".pdf");
             File.WriteAllBytes(path, result);
 
@@ -112,6 +112,37 @@ namespace CSMarkdown.Tests
             File.WriteAllBytes(path, result);
 
             Process.Start(path);
+        }
+
+        [TestCase("-r -s markdown_2_legends.smd -n Hubba -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --newfilename LongName --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: using long name")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: no name given")]
+        [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/temp", TestName = "App: no output defined")]
+        [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file with whitespaces")]
+        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/temp -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
+        [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/temp -t pdf", TestName = "App: new name and pdf as output")]
+        [Test]
+        public void MarkdownAppTest(string args)
+        {
+            string exeFilePath = AppDomain.CurrentDomain.BaseDirectory;
+            exeFilePath = exeFilePath.Remove(exeFilePath.Length - 27) + "CSMarkdown.App\\bin\\Debug\\CSMarkdown.exe";
+            Process process = new Process();
+            process.StartInfo.FileName = exeFilePath;
+            process.StartInfo.Arguments = args;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+
+            StreamReader reader = process.StandardError;
+            string output = reader.ReadToEnd();
+            process.WaitForExit();
+            process.Close();
+
+            if (output != "")
+            {
+                if (output != "Qt: Could not initialize OLE (error 80010106)\r\n")
+                    throw new Exception(output);
+            }
         }
     }
 }
