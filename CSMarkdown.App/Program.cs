@@ -44,7 +44,7 @@ namespace CSMarkdown.App
             if (options.OutputType == null)
                 options.OutputType = "html";
 
-            else if (!options.OutputType.Contains("html") || !options.OutputType.Contains("pdf"))
+            else if (!options.OutputType.Contains("html") && !options.OutputType.Contains("pdf"))
                 options.OutputType = "html";
 
             Dictionary<string, string> parameters = new Dictionary<string, string>();

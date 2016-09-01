@@ -119,6 +119,7 @@ namespace CSMarkdown.Tests
         [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/temp", TestName = "App: no output defined")]
         [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file with whitespaces")]
         [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/temp -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
+        [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/temp -t pdf", TestName = "App: new name and pdf as output")]
         [Test]
         public void MarkdownAppTest(string args)
         {
@@ -129,7 +130,6 @@ namespace CSMarkdown.Tests
             process.StartInfo.Arguments = args;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.CreateNoWindow = false;
             process.Start();
 
             StreamReader reader = process.StandardError;
@@ -139,7 +139,8 @@ namespace CSMarkdown.Tests
 
             if (output != "")
             {
-                throw new Exception(output);
+                if (output != "Qt: Could not initialize OLE (error 80010106)\r\n")
+                    throw new Exception(output);
             }
         }
     }
