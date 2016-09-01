@@ -121,7 +121,6 @@ namespace CSMarkdown.App
                 path = options.OutputPath + "\\" + options.NewFileName + (renderOutput == RenderOutput.Html ? ".html" : ".pdf");
 
             File.WriteAllBytes(path, result);
-            Console.WriteLine("CSMarkdown Render finished");
         }
 
         static void WebApp(ActivationOptions options)
