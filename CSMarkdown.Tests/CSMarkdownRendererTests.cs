@@ -114,17 +114,22 @@ namespace CSMarkdown.Tests
             Process.Start(path);
         }
 
-        [TestCase("-r -s markdown_2_legends.smd -n Hubba -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file")]
-        [TestCase("--render --smdfile markdown_2_legends.smd --newfilename LongName --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: using long name")]
-        [TestCase("--render --smdfile markdown_2_legends.smd --inputpath ../../Documents --outputpath C:/temp -t html", TestName = "App: no name given")]
-        [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/temp", TestName = "App: no output defined")]
-        [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/temp -t html", TestName = "App: new name of output file with whitespaces")]
-        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/temp -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
-        [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/temp -t pdf", TestName = "App: new name and pdf as output")]
+        [TestCase("-r -s markdown_2_legends.smd -n Hubba -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: new name of output file")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --newfilename LongName --inputpath ../../Documents --outputpath C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: using long name")]
+        [TestCase("--render --smdfile markdown_2_legends.smd --inputpath ../../Documents --outputpath C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: no name given")]
+        [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder", TestName = "App: no output defined")]
+        [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: new name of output file with whitespaces")]
+        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
+        [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t pdf", TestName = "App: new name and pdf as output")]
         [TestCase("/?", TestName = "App: get /? for CSMarkdown.exe")]
         [Test]
         public void MarkdownAppTest(string args)
         {
+            string outputFolder = @"C:\CSMarkdownTempFiles-DeletableFolder";
+            if (!Directory.Exists(outputFolder))
+            {
+                Directory.CreateDirectory(outputFolder);
+            }
             string exeFilePath = AppDomain.CurrentDomain.BaseDirectory;
             exeFilePath = exeFilePath.Remove(exeFilePath.Length - 27) + "CSMarkdown.App\\bin\\Debug\\CSMarkdown.exe";
             Process process = new Process();
@@ -141,7 +146,7 @@ namespace CSMarkdown.Tests
             //Writes the output, which normally would have been shown in the Console
             StreamReader outputReader = process.StandardOutput;
             string consoleOutput = outputReader.ReadToEnd();
-            string consoleOutputPath = "C:/temp/CSMarkdownOutput.txt";
+            string consoleOutputPath = Path.Combine(outputFolder, "CSMarkdownOutput.txt");
             string currentContent = String.Empty;
             if (File.Exists(consoleOutputPath))
                 currentContent = File.ReadAllText(consoleOutputPath);
