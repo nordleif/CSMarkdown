@@ -16,6 +16,7 @@
 
 tr:nth-child(even) {background-color: #f2f2f2}
 
+table {margin: 10px 10px 10px 10px}
 table th { font-weight: bold; }
 table td, table th { padding: 9px 10px; text-align: left; }
 table, th, td {border: 1px solid black;}

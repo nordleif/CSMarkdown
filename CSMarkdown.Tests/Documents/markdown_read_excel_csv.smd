@@ -4,13 +4,13 @@ title: Unit Test
 
 content goes here
 ```{s echo=true}
-var data = ReadExcel("C:\\Users\\sys2000\\Downloads\\test.xlsx");
+var data = ReadCsv(@"C:\Users\sys2000\Source\Repos\CSMarkdown\CSMarkdown.Tests\Documents\mockupdata.csv");
 RenderTable(data);
 
 ```
 
 ```{s echo=true}
-var data = ReadCsv("C:\\Users\\sys2000\\Downloads\\MOCK_DATA (2).csv");
+var data = ReadCsv(@"C:\Users\sys2000\Source\Repos\CSMarkdown\CSMarkdown.Tests\Documents\mockupdata.csv");
 var options = new ChartOptions();
 options.Legends.Add(new LineLegend(){Key = "Oil"});
 options.Legends.Add(new LineLegend(){Key = "War"});

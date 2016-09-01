@@ -42,19 +42,18 @@ namespace CSMarkdown.Scripting
         public DataTable ReadCsv(string path)
         {
             DataTable dataTable = new DataTable();
-            DataColumn collumn;
+            DataColumn column;
 
 
             using (StreamReader reader = new StreamReader(path))
             {
-                
                 string[] splitLine = reader.ReadLine().Split(',');
                 foreach (var head in splitLine)
                 {
-                    collumn = new DataColumn();
-                    collumn.ColumnName = head;
-                    collumn.DataType = typeof(string);
-                    dataTable.Columns.Add(collumn);
+                    column = new DataColumn();
+                    column.ColumnName = head;
+                    column.DataType = typeof(string);
+                    dataTable.Columns.Add(column);
                 }
                 
                 while (!reader.EndOfStream)
@@ -204,20 +203,6 @@ namespace CSMarkdown.Scripting
             m_chartCounter++;
             m_numberOfLegends = 1;
             m_yDataColumnIndex = 1;
-            // TODO:
-            // Nye smd eksempler + unit test
-            // Gamle unit test må ikke overskrives
-            //  1. Vis graf
-            //  2. Vis værdier ved mouse over
-            //  3. Vis graf med 2 legends
-            //  4. Vis forskellige chart types -> line, bar etc
-            //  5. x akse som dato
-            //  6. x akse som tal
-            //
-            //  
-            //  a. max/min værdier på x og y
-            //  b. flere legends :-)
-
         }
 
         private List<BaseLegend> OrganizingOrderOfLegends(ChartOptions options, DataTable data)
