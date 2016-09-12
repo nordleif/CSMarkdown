@@ -103,7 +103,7 @@ namespace CSMarkdown.Rendering
                 return;
 
             var scriptContext = context.RenderOptions.ScriptContext;
-            var scriptOptions = ScriptOptions.Default.WithReferences("Microsoft.CSharp").AddReferences(Assembly.GetExecutingAssembly()).AddImports("CSMarkdown.Scripting");
+            var scriptOptions = ScriptOptions.Default.WithReferences("Microsoft.CSharp").AddReferences(Assembly.GetExecutingAssembly()).AddImports("CSMarkdown.Scripting", "System");
             var scriptState = CSharpScript.RunAsync(string.Empty, scriptOptions, scriptContext, scriptContext.GetType()).Result;
 
             foreach (var codeChunk in context.CodeChunks)

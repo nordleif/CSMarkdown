@@ -33,10 +33,69 @@ namespace CSMarkdown.Scripting
             var parameters = (IDictionary<string, object>)p;
             foreach (var parameter in parameters)
                 dataAdapter.SelectCommand.Parameters.AddWithValue(parameter.Key, parameter.Value != null ? parameter.Value : DBNull.Value);
-
             dataAdapter.Fill(dataTable);
 
             return dataTable;
+        }
+
+        public DataTable ReadTags(string connectionString, Interval interval, DateTime from, DateTime to, params string[] tags)
+        {
+            DataTable dTable = new DataTable();
+            DataRow row;
+
+            string intervalForQuery = "";
+
+            if (interval == Interval.Data)
+                intervalForQuery = "data";
+            else if (interval == Interval.Hour)
+                intervalForQuery = "hourdata";
+            else if (interval == Interval.Day)
+                intervalForQuery = "daydata";
+            else if (interval == Interval.Month)
+                intervalForQuery = "monthdata";
+            int rowCounter;
+            foreach (var tag in tags)
+            {
+                DataColumn column = new DataColumn();
+                DataTable extractedTable = new DataTable();
+                // select d.local_time, d.value, d.value * 2 as newValue from rpt_hourdata d inner join pnt p on d.pnt_no = 
+                //          p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'
+                extractedTable = ReadSql("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tag + "' and local_time >= '" + from + "' and local_time < '" + to + "'", connectionString);
+
+                if (dTable.Columns.Count == 0)
+                {
+                    if (extractedTable.Columns.Contains("value"))
+                    {
+                        extractedTable.Columns[extractedTable.Columns.IndexOf("value")].ColumnName = tag + " value";
+                    }
+                    dTable = extractedTable;
+                }
+                else
+                {
+                    if (extractedTable.Columns.Contains("value"))
+                    {
+                        extractedTable.Columns[extractedTable.Columns.IndexOf("value")].ColumnName = tag + " value";
+                    }
+                    column = extractedTable.Columns[1];
+                    dTable.Columns.Add(column.ColumnName, column.DataType);
+
+                    rowCounter = extractedTable.Rows.Count >= dTable.Rows.Count ? extractedTable.Rows.Count : dTable.Rows.Count;
+                    for (int i = 0; i < rowCounter; i++)
+                    {
+                        if (Convert.ToDateTime(dTable.Rows[i].ItemArray[0]).ToString("yyyy-MM-dd HH") == Convert.ToDateTime(extractedTable.Rows[i].ItemArray[0]).ToString("yyyy-MM-dd HH"))
+                        {
+                            var str = "asd";
+                        }
+                        else
+                        {
+                            string str2 = "dsa";
+                        }
+                    }
+                }
+
+            }
+
+            return dTable;
         }
 
         public DataTable ReadCsv(string path)
@@ -55,7 +114,7 @@ namespace CSMarkdown.Scripting
                     column.DataType = typeof(string);
                     dataTable.Columns.Add(column);
                 }
-                
+
                 while (!reader.EndOfStream)
                 {
                     DataRow row;
@@ -112,7 +171,7 @@ namespace CSMarkdown.Scripting
 
             var tableNode = HtmlNode.CreateNode("<table>");
             tableNode.Attributes.Add("class", "responsive");
-            tableNode.Attributes.Add("align","center");
+            tableNode.Attributes.Add("align", "center");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));
@@ -401,7 +460,7 @@ namespace CSMarkdown.Scripting
             //    columnCounter = 3;
 
             //else
-                columnCounter = data.Columns.Count;
+            columnCounter = data.Columns.Count;
 
             for (int i = 1; i < columnCounter; i++)
             {
@@ -508,10 +567,15 @@ namespace CSMarkdown.Scripting
                     //m_chartXAxisType = "int";
                     options.XAxisType = "int";
                 }
-                dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
+
+                if (String.IsNullOrWhiteSpace(dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.')))
+                    dicOfValues.Add("\"x\":" + xValue, "\"y\": null");
+
+                else
+                    dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
             }
             options.XAxisLabels = labels;
-        
+
             if (yDataColumnNameWasNotDefined)
                 m_yDataColumnIndex++;
 

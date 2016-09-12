@@ -75,6 +75,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_2_legends_using_readTags.smd" />
     <None Include="Documents\markdown_read_excel_csv.smd" />
     <None Include="Documents\markdown_table.smd" />
     <None Include="Documents\markdown_multiple_value_with_legends_defined.smd" />
@@ -110,6 +111,7 @@
     <None Include="Documents\markdown_002.smd" />
     <None Include="Documents\markdown_inline_code.smd" />
     <None Include="Documents\markdown_001.smd" />
+    <None Include="Documents\markdown_yaml_params - Copy.smd" />
     <None Include="Documents\markdown_yaml_params.smd" />
     <None Include="Documents\mockupdata.csv" />
     <None Include="packages.config" />

@@ -9,7 +9,7 @@ Two line chart test, where which Columns in data are not defined (default second
 ```{s echo=true}
 
 var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
-var data = ReadSql("select d.local_time, d.value, d.value * 2 as newValue from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'", con);
+var data = ReadSql("select d.local_time, d.value, d.value * 2 as newValue from rpt_hourdata d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2015-10-24' and local_time < '2015-10-27'", con);
 var options = new ChartOptions();
 options.Legends.Add(new LineLegend(){Key = "Test1"});
 options.Legends.Add(new LineLegend(){Key = "Test2"});

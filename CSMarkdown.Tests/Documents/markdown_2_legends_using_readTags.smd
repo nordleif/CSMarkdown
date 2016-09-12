@@ -1,0 +1,15 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+---
+Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+## CS Syntax
+```{s echo=true}
+
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
+var data = ReadTags(con, Interval.Hour, new DateTime(2016, 08, 01), new DateTime(2016, 08, 02), "P000_NIV", "P000_M3", "P00_AMP");
+RenderChart(data);
+
+```
