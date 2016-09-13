@@ -23,6 +23,10 @@ namespace CSMarkdown.Scripting
         private string m_labelThreshold = ".05";
         private string m_labelType = "key";
         private string m_donutRatio = "0.35";
+        private bool m_showMaxMin = false;
+        private int m_rotateLabels = 45;
+        private bool m_showAllTicks = true;
+
         public List<string> XAxisLabels
         {
             get
@@ -145,7 +149,43 @@ namespace CSMarkdown.Scripting
             }
         }
 
+        public bool ShowMaxMin
+        {
+            get
+            {
+                return m_showMaxMin;
+            }
 
+            set
+            {
+                m_showMaxMin = value;
+            }
+        }
 
+        public int RotateLabels
+        {
+            get
+            {
+                return m_rotateLabels;
+            }
+
+            set
+            {
+                m_rotateLabels = value;
+            }
+        }
+
+        public bool ShowAllTicks
+        {
+            get
+            {
+                return m_showAllTicks;
+            }
+
+            set
+            {
+                m_showAllTicks = value;
+            }
+        }
     }
 }

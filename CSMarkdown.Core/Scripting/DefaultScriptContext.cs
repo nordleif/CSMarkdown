@@ -42,18 +42,28 @@ namespace CSMarkdown.Scripting
         {
             DataTable dTable = new DataTable();
             DataRow row;
-
             string intervalForQuery = "";
 
             if (interval == Interval.Data)
+            {
                 intervalForQuery = "data";
+
+            }
             else if (interval == Interval.Hour)
+            {
                 intervalForQuery = "hourdata";
+
+                dTable = CreateBaseDataTable(from, to, tags);
+            }
             else if (interval == Interval.Day)
                 intervalForQuery = "daydata";
             else if (interval == Interval.Month)
                 intervalForQuery = "monthdata";
             int rowCounter;
+
+
+
+            //////////////////////////////////
             foreach (var tag in tags)
             {
                 DataColumn column = new DataColumn();
@@ -94,6 +104,27 @@ namespace CSMarkdown.Scripting
                 }
 
             }
+            /////////////////////////
+
+            return dTable;
+        }
+
+        private DataTable CreateBaseDataTable(DateTime from, DateTime to, string[] tags)
+        {
+            DataTable dTable = new DataTable();
+            DataColumn column = new DataColumn();
+            DataRow row;
+            for (int i = 0; i < tags.Length; i++)
+            {
+                column = new DataColumn();
+                column.ColumnName = tags[i] + ".value";
+                dTable.Columns.Add(column);
+            }
+            //while (from < to)
+            //{
+            //    row
+            //    from = from.AddHours(1);
+            //}
 
             return dTable;
         }
@@ -682,6 +713,21 @@ namespace CSMarkdown.Scripting
                     addGraphFunction += "chart.yDomain" + legendCounter + "([" + Convert.ToString(lowestValue).Replace(",", ".") + ", " + legend.MaxValue + "]);\n";
                 }
             }
+            if (!options.ShowMaxMin && options.ShowAllTicks)
+            {
+                addGraphFunction += "var ticker = new Array(dataset" + m_chartCounter + "[0].values.length);\n";
+                if (options.XAxisType != "string")
+                {
+                    addGraphFunction += "for (var a = dataset" + m_chartCounter.ToString() + "[0].values.length-1; a > -1; a--){ticker[a] = dataset" + m_chartCounter.ToString() + "[0].values[a].x;}chart.xAxis.tickValues(ticker).rotateLabels(" + options.RotateLabels + ").showMaxMin(" + options.ShowMaxMin.ToString().ToLower() + ");";
+                }
+                else
+                {
+                    //Her skal der skrives hvordan den i if statementet skal være, i tilfælde af at den skal bruge labels, som man skal ved strings. Ved at man vælger den plads i datasettet, som labelsne har.
+                }
+            }
+            else
+                addGraphFunction += "chart.xAxis.rotateLabels(" + options.RotateLabels + ").showMaxMin(" + options.ShowMaxMin.ToString().ToLower() + ");\n";
+
             addGraphFunction += "d3.select('#chart" + m_chartCounter + " svg')\n"
                 + ".datum(dataset" + m_chartCounter + ")\n"
                 + ".transition().duration(0).call(chart); nv.utils.windowResize(chart.update);\n"
