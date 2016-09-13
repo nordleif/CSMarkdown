@@ -43,88 +43,97 @@ namespace CSMarkdown.Scripting
             DataTable dTable = new DataTable();
             DataRow row;
             string intervalForQuery = "";
+            string formatString = "";
 
             if (interval == Interval.Data)
             {
                 intervalForQuery = "data";
-
+                //Hvordan skal det håndteres ved data?.
+                //Hvis der skal laves en ny metode til data, skal understående CreateBaseDataTable's blive hvor de er
+                //Men kan samme metode bruges, kan CreateBaseDataTable naturligvis blot skrives en gang og sættes udenfor if statementsne
             }
             else if (interval == Interval.Hour)
             {
                 intervalForQuery = "hourdata";
-
-                dTable = CreateBaseDataTable(from, to, tags);
+                formatString = "yyyy-MM-dd HH";
+                dTable = CreateBaseDataTable(interval, from, to, tags);
             }
             else if (interval == Interval.Day)
+            {
                 intervalForQuery = "daydata";
+                formatString = "yyyy-MM-dd";
+                dTable = CreateBaseDataTable(interval, from, to, tags);
+            }
             else if (interval == Interval.Month)
+            {
                 intervalForQuery = "monthdata";
+                formatString = "yyyy-MM";
+                dTable = CreateBaseDataTable(interval, from, to, tags);
+            }
+
             int rowCounter;
 
-
+            string fromDate = from.Year + "-" + from.Month.ToString("00") + "-" + from.Day.ToString("00") + " " + from.Hour.ToString("00") + ":" + from.Minute.ToString("00") + ":" + from.Second.ToString("00");
+            string toDate = to.Year + "-" + to.Month.ToString("00") + "-" + to.Day.ToString("00") + " " + to.Hour.ToString("00") + ":" + to.Minute.ToString("00") + ":" + to.Second.ToString("00");
 
             //////////////////////////////////
-            foreach (var tag in tags)
+
+            for (int i = 0; i < tags.Length; i++)
             {
-                DataColumn column = new DataColumn();
                 DataTable extractedTable = new DataTable();
-                // select d.local_time, d.value, d.value * 2 as newValue from rpt_hourdata d inner join pnt p on d.pnt_no = 
-                //          p.pnt_no where p.pnt_name = 'P000_NIV' and local_time >= '2016-08-01' and local_time < '2016-08-02'
-                extractedTable = ReadSql("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tag + "' and local_time >= '" + from + "' and local_time < '" + to + "'", connectionString);
+                extractedTable = ReadSql("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tags[i] + "' and local_time >= '" + fromDate + "' and local_time < '" + toDate + "'", connectionString);
 
-                if (dTable.Columns.Count == 0)
+                foreach (DataRow extractedRow in extractedTable.Rows)
                 {
-                    if (extractedTable.Columns.Contains("value"))
+                    for (int j = 0; j < dTable.Rows.Count; j++)
                     {
-                        extractedTable.Columns[extractedTable.Columns.IndexOf("value")].ColumnName = tag + " value";
-                    }
-                    dTable = extractedTable;
-                }
-                else
-                {
-                    if (extractedTable.Columns.Contains("value"))
-                    {
-                        extractedTable.Columns[extractedTable.Columns.IndexOf("value")].ColumnName = tag + " value";
-                    }
-                    column = extractedTable.Columns[1];
-                    dTable.Columns.Add(column.ColumnName, column.DataType);
+                        if (Convert.ToDateTime(extractedRow.ItemArray[0]).ToString(formatString) == Convert.ToDateTime(dTable.Rows[j].ItemArray[0]).ToString(formatString))
+                        {
+                            dTable.Rows[j][dTable.Columns.IndexOf(tags[i])] = Convert.ToDouble(extractedRow.ItemArray[1]);
 
-                    rowCounter = extractedTable.Rows.Count >= dTable.Rows.Count ? extractedTable.Rows.Count : dTable.Rows.Count;
-                    for (int i = 0; i < rowCounter; i++)
-                    {
-                        if (Convert.ToDateTime(dTable.Rows[i].ItemArray[0]).ToString("yyyy-MM-dd HH") == Convert.ToDateTime(extractedTable.Rows[i].ItemArray[0]).ToString("yyyy-MM-dd HH"))
-                        {
-                            var str = "asd";
-                        }
-                        else
-                        {
-                            string str2 = "dsa";
+                            j = dTable.Rows.Count;
                         }
                     }
                 }
-
             }
-            /////////////////////////
 
             return dTable;
         }
 
-        private DataTable CreateBaseDataTable(DateTime from, DateTime to, string[] tags)
+        private DataTable CreateBaseDataTable(Interval interval, DateTime from, DateTime to, string[] tags)
         {
             DataTable dTable = new DataTable();
             DataColumn column = new DataColumn();
             DataRow row;
+            //column.ColumnName = interval.ToString();
+            column.ColumnName = "local_time";
+            column.DataType = typeof(DateTime);
+            dTable.Columns.Add(column);
             for (int i = 0; i < tags.Length; i++)
             {
                 column = new DataColumn();
-                column.ColumnName = tags[i] + ".value";
+                column.ColumnName = tags[i];
+                column.DataType = typeof(double);
                 dTable.Columns.Add(column);
             }
-            //while (from < to)
-            //{
-            //    row
-            //    from = from.AddHours(1);
-            //}
+            while (from < to)
+            {
+                row = dTable.NewRow();
+                row[0] = from;
+                //for (int i = 1; i < dTable.Columns.Count; i++)
+                //{
+                //    row[i] = DBNull.Value;
+                //}
+                dTable.Rows.Add(row);
+                if (interval == Interval.Hour)
+                    from = from.AddHours(1);
+
+                else if (interval == Interval.Day)
+                    from = from.AddDays(1);
+
+                else if (interval == Interval.Month)
+                    from = from.AddMonths(1);
+            }
 
             return dTable;
         }
@@ -304,6 +313,7 @@ namespace CSMarkdown.Scripting
                 options.XDataName = data.Columns[0].ColumnName;
             }
 
+            List<BaseLegend> unuseableLegends = new List<BaseLegend>();
             List<BaseLegend> useableLegends = new List<BaseLegend>();
             foreach (var legend in options.Legends)
             {
@@ -338,14 +348,22 @@ namespace CSMarkdown.Scripting
                 hlv.ColumnIndex = data.Columns.IndexOf(legend.YDataName);
                 hlv.HighestValue = double.MinValue;
                 hlv.LowestValue = double.MaxValue;
+                int allNullValuesCounter = 0;
                 for (int j = 0; j < data.Rows.Count; j++)
                 {
-                    if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) > hlv.HighestValue)
-                        hlv.HighestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
+                    if (data.Rows[j].ItemArray[hlv.ColumnIndex] != DBNull.Value)
+                    {
+                        if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) > hlv.HighestValue)
+                            hlv.HighestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
 
-                    if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) < hlv.LowestValue)
-                        hlv.LowestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
+                        if (Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]) < hlv.LowestValue)
+                            hlv.LowestValue = Convert.ToDouble(data.Rows[j].ItemArray[hlv.ColumnIndex]);
+                    }
+                    else
+                        allNullValuesCounter++;
                 }
+
+
                 for (int k = 0; k < useableLegends.Count; k++)
                 {
                     if (useableLegends[k].YDataName == data.Columns[hlv.ColumnIndex].ColumnName)
@@ -354,7 +372,20 @@ namespace CSMarkdown.Scripting
                         k = useableLegends.Count;
                     }
                 }
-                valuesForSorting.Add(hlv);
+
+                if (allNullValuesCounter != data.Rows.Count)
+                {
+                    valuesForSorting.Add(hlv);
+                }
+                else
+                {
+                    unuseableLegends.Add(useableLegends[hlv.IndexInOriginalList]);
+                }
+            }
+
+            foreach (var unuseableLegend in unuseableLegends)
+            {
+                useableLegends.Remove(unuseableLegend);
             }
 
             foreach (var highestLowestCombination in valuesForSorting)
@@ -400,17 +431,23 @@ namespace CSMarkdown.Scripting
                     lowestSpanItem = item;
             }
 
-            double averageSpan = (highestSpanItem.HighestLowestDifference + lowestSpanItem.HighestLowestDifference) / 2;
-            foreach (var sortedValueItem in valuesBySpand)
+            //double averageSpan = (highestSpanItem.HighestLowestDifference + lowestSpanItem.HighestLowestDifference) / 2;
+            if (useableLegends.Count == 2)
             {
-                if (sortedValueItem.HighestLowestDifference > highestSpanItem.HighestLowestDifference - highestSpanItem.HighestLowestDifference * 0.75)
-                {
-                    sortedValueItem.LeftOrRightYAxis = 1;
-                }
-                else if (sortedValueItem.HighestLowestDifference > lowestSpanItem.HighestLowestDifference - lowestSpanItem.HighestLowestDifference * 0.75)
-                    sortedValueItem.LeftOrRightYAxis = 2;
-
+                valuesBySpand[0].LeftOrRightYAxis = 1;
+                valuesBySpand[1].LeftOrRightYAxis = 2;
             }
+            else
+                foreach (var sortedValueItem in valuesBySpand)
+                {
+                    if (sortedValueItem.HighestLowestDifference > highestSpanItem.HighestLowestDifference /*- highestSpanItem.HighestLowestDifference*/ * 0.75)
+                    {
+                        sortedValueItem.LeftOrRightYAxis = 1;
+                    }
+                    else if (sortedValueItem.HighestLowestDifference > lowestSpanItem.HighestLowestDifference /*- lowestSpanItem.HighestLowestDifference*/ * 0.75)
+                        sortedValueItem.LeftOrRightYAxis = 2;
+
+                }
 
             List<BaseLegend> legendsBeforeReordering = new List<BaseLegend>();
             for (int i = 0; i < useableLegends.Count; i++)
@@ -425,6 +462,12 @@ namespace CSMarkdown.Scripting
                         legendsBeforeReordering[i].LeftOrRightYAxis = "right";
                 }
             }
+            for (int i = 0; i < unuseableLegends.Count; i++)
+            {
+                WriteWarning("No data was found for: " + unuseableLegends[i].Key);
+                unuseableLegends[i].Key += " (no data found)";
+                unuseableLegends[i].LeftOrRightYAxis = "right";
+            }
 
             List<BaseLegend> legendsAfterReordering = new List<BaseLegend>();
             int leftThenRight = 1;
@@ -438,6 +481,10 @@ namespace CSMarkdown.Scripting
                         legendsAfterReordering.Add(legend);
                 }
                 leftThenRight++;
+            }
+            foreach (var legend in unuseableLegends)
+            {
+                legendsAfterReordering.Add(legend);
             }
             return legendsAfterReordering;
         }

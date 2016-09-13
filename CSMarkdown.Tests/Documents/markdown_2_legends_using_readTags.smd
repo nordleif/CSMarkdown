@@ -4,12 +4,14 @@ output:
   html_document:
     theme: default
 ---
-Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+Getting data for P000_NIV, P000_M3, P000_AMP, P000_KWH AND P00_DRIFT(but P00_DRIFT is supposed to be P000_DRIFT). It the renders a graph for each tag,
+however, in case of P00_DRIFT, it just writes the legend in the top, but since it haves no values, there is no line for it.
+And furthermore is adds (no data found) after the name of the legend, and writes a warting above the chart saying no data was found for that tag.
 ## CS Syntax
 ```{s echo=true}
 
 var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
-var data = ReadTags(con, Interval.Hour, new DateTime(2016, 08, 01), new DateTime(2016, 08, 02), "P000_NIV", "P000_M3", "P00_AMP");
+var data = ReadTags(con, Interval.Hour, new DateTime(2016, 08, 01), new DateTime(2016, 08, 02), "P000_NIV", "P000_M3", "P000_AMP", "P000_KWH", "P00_DRIFT");
 RenderChart(data);
 
 ```
