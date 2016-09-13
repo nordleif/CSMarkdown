@@ -7,6 +7,7 @@ output:
 Getting data for P000_NIV, P000_M3, P000_AMP, P000_KWH AND P00_DRIFT(but P00_DRIFT is supposed to be P000_DRIFT). It the renders a graph for each tag,
 however, in case of P00_DRIFT, it just writes the legend in the top, but since it haves no values, there is no line for it.
 And furthermore is adds (no data found) after the name of the legend, and writes a warting above the chart saying no data was found for that tag.
+Laver den på Hourdata uden at modtage et Options object
 ## CS Syntax
 ```{s echo=true}
 

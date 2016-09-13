@@ -41,7 +41,6 @@ namespace CSMarkdown.Scripting
         public DataTable ReadTags(string connectionString, Interval interval, DateTime from, DateTime to, params string[] tags)
         {
             DataTable dTable = new DataTable();
-            DataRow row;
             string intervalForQuery = "";
             string formatString = "";
 
@@ -70,8 +69,6 @@ namespace CSMarkdown.Scripting
                 formatString = "yyyy-MM";
                 dTable = CreateBaseDataTable(interval, from, to, tags);
             }
-
-            int rowCounter;
 
             string fromDate = from.Year + "-" + from.Month.ToString("00") + "-" + from.Day.ToString("00") + " " + from.Hour.ToString("00") + ":" + from.Minute.ToString("00") + ":" + from.Second.ToString("00");
             string toDate = to.Year + "-" + to.Month.ToString("00") + "-" + to.Day.ToString("00") + " " + to.Hour.ToString("00") + ":" + to.Minute.ToString("00") + ":" + to.Second.ToString("00");
@@ -458,7 +455,7 @@ namespace CSMarkdown.Scripting
                     if (valuesBySpand[i].LeftOrRightYAxis == 1)
                         legendsBeforeReordering[i].LeftOrRightYAxis = "left";
 
-                    else if (valuesBySpand[i].LeftOrRightYAxis == 2)
+                    else /*if (valuesBySpand[i].LeftOrRightYAxis == 2)*/
                         legendsBeforeReordering[i].LeftOrRightYAxis = "right";
                 }
             }
