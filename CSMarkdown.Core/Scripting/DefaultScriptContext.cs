@@ -345,8 +345,8 @@ namespace CSMarkdown.Scripting
             var svgNode = HtmlNode.CreateNode("<svg>");
             //svgNode.Attributes.Add("width","100%");
             //svgNode.Attributes.Add("height", "auto");
-            svgNode.Attributes.Add("viewBox", "0 0 860 500");
-            svgNode.Attributes.Add("preserveAspectRatio", "xMinYMin meet");
+            //svgNode.Attributes.Add("viewBox", "0 0 860 500");
+            //svgNode.Attributes.Add("preserveAspectRatio", "xMinYMin meet");
             divNode.ChildNodes.Add(svgNode);
 
             var scriptNode = HtmlNode.CreateNode("<script>");
