@@ -10,9 +10,9 @@ namespace CSMarkdown.Scripting
     {
         private string chartModelType = "multiChart()";
         private int m_marginTop = 75;
-        private int m_marginBottom = 75;
-        private int m_marginRight = 75;
-        private int m_marginLeft = 75;
+        private int m_marginBottom = 100;
+        private int m_marginRight = 100;
+        private int m_marginLeft = 100;
 
         public int MarginTop
         {

@@ -180,6 +180,7 @@
     <Compile Include="Scripting\ChartOptions.cs" />
     <Compile Include="Scripting\CustomDefinedDateConverter.cs" />
     <Compile Include="Scripting\DefaultScriptContext.cs" />
+    <Compile Include="Scripting\Enums.cs" />
     <Compile Include="Scripting\Extensions.cs" />
     <Compile Include="Scripting\HighestLowestValues.cs" />
     <Compile Include="Scripting\LineLegend.cs" />
