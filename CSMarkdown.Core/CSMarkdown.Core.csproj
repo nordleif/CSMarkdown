@@ -186,6 +186,7 @@
     <Compile Include="Scripting\PieLegend.cs" />
     <Compile Include="Scripting\ScriptContextBase.cs" />
     <Compile Include="Rendering\YamlOptions.cs" />
+    <Compile Include="Scripting\TableOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -230,6 +231,7 @@
     <EmbeddedResource Include="Rendering\www\js\responsive-tables.js" />
     <EmbeddedResource Include="Rendering\www\css\responsive-tables.css" />
     <EmbeddedResource Include="Rendering\www\js\jQuery.js" />
+    <EmbeddedResource Include="Rendering\www\css\rotate.css" />
     <Content Include="ssleay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

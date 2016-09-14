@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using CommonMark.Syntax;
 using HtmlAgilityPack;
 using CSMarkdown.Scripting;
+using System.Data;
 
 namespace CSMarkdown.Rendering
 {
@@ -178,6 +179,16 @@ namespace CSMarkdown.Rendering
                 scriptContext.CurrentNode.AppendChild(HtmlNode.CreateNode($"<pre><code class=\"error\">## {ex.Message}</code></pre>"));
             }
                 
+        }
+
+        public static void SetColumnsOrder(this DataTable table, params string[] columnNames)
+        {
+            int columnIndex = 0;
+            foreach (var columnName in columnNames)
+            {
+                table.Columns[columnName].SetOrdinal(columnIndex);
+                columnIndex++;
+            }
         }
 
     }

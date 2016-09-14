@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using ClosedXML.Excel;
 using System.IO;
+using CSMarkdown.Rendering;
 
 namespace CSMarkdown.Scripting
 {
@@ -41,10 +42,13 @@ namespace CSMarkdown.Scripting
 
         public DataTable ReadCsv(string path)
         {
+            var p = Path.Combine(path);
+            if (Path.GetExtension(p) != ".csv")
+                throw new Exception();
+
+
             DataTable dataTable = new DataTable();
             DataColumn column;
-
-
             using (StreamReader reader = new StreamReader(path))
             {
                 string[] splitLine = reader.ReadLine().Split(',');
@@ -55,7 +59,7 @@ namespace CSMarkdown.Scripting
                     column.DataType = typeof(string);
                     dataTable.Columns.Add(column);
                 }
-                
+
                 while (!reader.EndOfStream)
                 {
                     DataRow row;
@@ -74,6 +78,10 @@ namespace CSMarkdown.Scripting
 
         public DataTable ReadExcel(string path, int sheet = 1)
         {
+            var p = Path.Combine(path);
+            if (Path.GetExtension(p) != ".xls" && Path.GetExtension(p) != ".xlsx")
+                throw new Exception();
+
             DataTable dataTable = new DataTable();
             using (XLWorkbook workbook = new XLWorkbook(path))
             {
@@ -105,20 +113,69 @@ namespace CSMarkdown.Scripting
             return dataTable;
         }
 
-        public void RenderTable(DataTable data)
+
+        public void RenderTable(DataTable data, TableOptions options = null)
         {
+            //data.SetColumnsOrder("","");
+
             if (data == null)
                 return;
 
+            if (options == null)
+                options = new TableOptions();
+
+            var divNode = HtmlNode.CreateNode("<div>");
+
+            if (options.Responsive == "table-responsive")
+                divNode.Attributes.Add("class", options.Responsive);
+
             var tableNode = HtmlNode.CreateNode("<table>");
-            tableNode.Attributes.Add("class", "responsive");
-            tableNode.Attributes.Add("align","center");
+
+            if (options.Responsive != "table-responsive")
+                tableNode.Attributes.Add("class", "table " + options.Style + " " + options.Responsive);
+            else
+                tableNode.Attributes.Add("class", "table " + options.Style);
+
+            tableNode.Attributes.Add("align", "center");
 
             var headNode = tableNode.AppendChild(HtmlNode.CreateNode("<thead>"));
             var bodyNode = tableNode.AppendChild(HtmlNode.CreateNode("<tbody>"));
 
+            if (options.GroupedColumns.Count > 0)
+            {
+                int emptySpan = 0;
+                var rowNode = HtmlNode.CreateNode("<tr>");
+                foreach (DataColumn column in data.Columns)
+                {
+                    bool fit = false;
+                    foreach (var group in options.GroupedColumns)
+                    {
+                        if (!group.Fit && group.Headers.Contains(column.ColumnName))
+                        {
+                            if (emptySpan > 0)
+                            {
+                                rowNode.AppendChild(HtmlNode.CreateNode($"<th colspan=\"" + emptySpan + "\">"));
+                                emptySpan = 0;
+                            }
+                            rowNode.AppendChild(HtmlNode.CreateNode($"<th colspan=\"" + group.Headers.Length + "\">" + group.Name));
+                            emptySpan -= group.Headers.Length - 1;
+                            fit = true;
+                            group.Fit = true;
+                        }
+
+                    }
+                    if (!fit)
+                    {
+                        emptySpan++;
+                    }
+                }
+                headNode.AppendChild(rowNode);
+            }
+
+            var tableRowNode = HtmlNode.CreateNode("<tr>");
             foreach (DataColumn column in data.Columns)
                 headNode.AppendChild(HtmlNode.CreateNode($"<th>{column.ColumnName.Trim()}"));
+            headNode.AppendChild(tableRowNode);
 
             foreach (DataRow row in data.Rows)
             {
@@ -127,7 +184,8 @@ namespace CSMarkdown.Scripting
                     rowNode.AppendChild(HtmlNode.CreateNode($"<td data-label=\"{column.ColumnName.Trim()}\">{row[column]}"));
             }
 
-            CurrentNode.ChildNodes.Add(tableNode);
+            divNode.ChildNodes.Add(tableNode);
+            CurrentNode.ChildNodes.Add(divNode);
         }
 
         public void RenderChart(DataTable data, ChartOptions options = null)
@@ -189,6 +247,10 @@ namespace CSMarkdown.Scripting
             CurrentNode.ChildNodes.Add(divNode);
 
             var svgNode = HtmlNode.CreateNode("<svg>");
+            //svgNode.Attributes.Add("width","100%");
+            //svgNode.Attributes.Add("height", "auto");
+            svgNode.Attributes.Add("viewBox", "0 0 860 500");
+            svgNode.Attributes.Add("preserveAspectRatio", "xMinYMin meet");
             divNode.ChildNodes.Add(svgNode);
 
             var scriptNode = HtmlNode.CreateNode("<script>");
@@ -401,7 +463,7 @@ namespace CSMarkdown.Scripting
             //    columnCounter = 3;
 
             //else
-                columnCounter = data.Columns.Count;
+            columnCounter = data.Columns.Count;
 
             for (int i = 1; i < columnCounter; i++)
             {
@@ -432,7 +494,7 @@ namespace CSMarkdown.Scripting
             int i = 0;
             foreach (var dataCombination in lineLegend.Values)
             {
-                if (options.XAxisType == "string")// && lineLegend.Type != "pie"
+                if (options.XAxisType == "string")
                     dataset += "{" + dataCombination.Key + "," + dataCombination.Value + ", label: \"" + options.XAxisLabels.ElementAt(i++) + "\"},";
                 else
                     dataset += "{" + dataCombination.Key + "," + dataCombination.Value + "},";
@@ -511,7 +573,7 @@ namespace CSMarkdown.Scripting
                 dicOfValues.Add("\"x\":" + xValue, "\"y\":" + dTable.Rows[i].ItemArray[m_yDataColumnIndex].ToString().Replace(',', '.'));
             }
             options.XAxisLabels = labels;
-        
+
             if (yDataColumnNameWasNotDefined)
                 m_yDataColumnIndex++;
 
@@ -581,12 +643,24 @@ namespace CSMarkdown.Scripting
                 else
                     addGraphFunction += "chart.xAxis.tickFormat(function(d) {return d3.time.format('%d.%m.%Y - %H:%M:%S')(new Date(d))}).staggerLabels(true);\n";
             }
+            if (options.XAxisLabel != null)
+            {
+                addGraphFunction += "chart.xAxis.axisLabel('" + options.XAxisLabel + "');";
+            }
 
             addGraphFunction += "chart.yAxis1.tickFormat(d3.format(',.0f'));\n";
+            if (options.YAxisLabel != null)
+            {
+                addGraphFunction += "chart.yAxis1.axisLabel('" + options.YAxisLabel + "');";
+            }
 
             if (options.Legends.Count > 1)
             {
                 addGraphFunction += "chart.yAxis2.tickFormat(d3.format(',.1f'));\n";
+                if (options.YAxisLabel2 != null)
+                {
+                    addGraphFunction += "chart.yAxis2.axisLabel('" + options.YAxisLabel2 + "');";
+                }
             }
             int legendCounter = 1;
             foreach (var legend in options.Legends)

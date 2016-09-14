@@ -4,14 +4,17 @@ title: Unit Test
 
 content goes here
 ```{s echo=true}
-var data = ReadCsv(@"C:\Users\sys2000\Source\Repos\CSMarkdown\CSMarkdown.Tests\Documents\mockupdata.csv");
-RenderTable(data);
+var data = ReadExcel(@"../../Documents\mockupdata.xlsx");
+RenderTable(data, options);
 
 ```
 
 ```{s echo=true}
-var data = ReadCsv(@"C:\Users\sys2000\Source\Repos\CSMarkdown\CSMarkdown.Tests\Documents\mockupdata.csv");
+var data = ReadCsv(@"../../Documents\mockupdata.csv");
 var options = new ChartOptions();
+options.XAxisLabel = "Time";
+options.YAxisLabel = "Barrels";
+options.YAxisLabel2 = "War";
 options.Legends.Add(new LineLegend(){Key = "Oil"});
 options.Legends.Add(new LineLegend(){Key = "War"});
 RenderChart(data, options);
