@@ -15,9 +15,9 @@ namespace CSMarkdown.Rendering
 
         public int MarginBottom { get; set; } = 10;
 
-        public int MarginLeft { get; set; } = 0;
+        public int MarginLeft { get; set; } = 10;
 
-        public int MarginRight { get; set; } = 0;
+        public int MarginRight { get; set; } = 10;
 
         public int MarginTop { get; set; } = 10;
     }

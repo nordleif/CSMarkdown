@@ -27,6 +27,10 @@ namespace CSMarkdown.Scripting
         private int m_rotateLabels = 45;
         private bool m_showAllTicks = true;
 
+        private string m_YAxisLabel;
+        private string m_XAxisLabel;
+        private string m_YAxisLabel2;
+
         public List<string> XAxisLabels
         {
             get
@@ -168,12 +172,38 @@ namespace CSMarkdown.Scripting
             {
                 return m_rotateLabels;
             }
+        }
 
+        public string YAxisLabel
+        {
+            get { return m_YAxisLabel; }
+            set { m_YAxisLabel = value; }
+        }
+        
+
+        public string YAxisLabel2
+        {
+            get { return m_YAxisLabel2; }
+            set { m_YAxisLabel2 = value; }
+        }
+
+        public string XAxisLabel
+        {
+            get { return m_XAxisLabel; }
+            set { m_XAxisLabel = value; }
+        }  
+        public int RotateLabel
+        {
+            get
+            {
+                return m_rotateLabels;
+            }
             set
             {
                 m_rotateLabels = value;
             }
         }
+            
 
         public bool ShowAllTicks
         {

@@ -13,18 +13,32 @@
 /* -----------------------------------------
    Shared Styles
 ----------------------------------------- */
+th.vertical{-moz-transform:rotate(-90deg); 
+         -moz-transform-origin: top left;
+         -webkit-transform: rotate(-90deg);
+         -webkit-transform-origin: top left;
+         -o-transform: rotate(-90deg);
+         -o-transform-origin:  top left;
+          position:relative;
+         top:20px;
+}
 
-tr:nth-child(even) {background-color: #f2f2f2}
+/*table th {transform: translate(25px, 51px) rotate(270deg); height: 140px;
+  white-space: nowrap; border-bottom: 1px solid #ccc;
+  padding: 5px 10px;}*/
 
-table {margin: 10px 10px 10px 10px}
+/*tr:nth-child(even) {background-color: #f2f2f2}
+
+/*table {margin: 10px 10px 10px 10px}*/
+/*table {margin-bottom: 10px; margin-top: 10px}
 table th { font-weight: bold; }
 table td, table th { padding: 9px 10px; text-align: left; }
-table, th, td {border: 1px solid black;}
+table, th, td {border: 1px solid black;}*/
 
 /* Mobile */
 @media only screen and (max-width: 767px) {
 	
-	table.responsive { margin-bottom: 0; }
+	table.responsive { margin-bottom: 10px; }
 	
 	.pinned { position: absolute; left: 0; top: 0; background: #fff; width: 35%; overflow: hidden; overflow-x: scroll; border-right: 1px solid #ccc; border-left: 1px solid #ccc; }
 	.pinned table { border-right: none; border-left: none; width: 100%; }
@@ -40,3 +54,39 @@ table, th, td {border: 1px solid black;}
 	
 	
 }
+
+@media screen and (max-width: 600px) {
+            table.bo {
+                border: 0;
+            }
+
+                table.bo thead {
+                    display: none;
+                }
+
+                table.bo tr {
+                    margin-bottom: 10px;
+                    display: block;
+                    border-bottom: 2px solid #ddd;
+                }
+
+                table.bo td {
+                    display: block;
+                    text-align: right;
+                    font-size: 13px;
+                    border-bottom: 1px dotted #ccc;
+                }
+
+                    table.bo td:last-child {
+                        border-bottom: 0;
+                    }
+
+                    table.bo td:before {
+                        content: attr(data-label);
+                        float: left;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                    }
+        }
+
+

@@ -114,6 +114,7 @@
     <None Include="Documents\markdown_yaml_params_with_to_date_using_x_param.smd" />
     <None Include="Documents\markdown_yaml_params.smd" />
     <None Include="Documents\mockupdata.csv" />
+    <None Include="Documents\mockupdata.xlsx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
