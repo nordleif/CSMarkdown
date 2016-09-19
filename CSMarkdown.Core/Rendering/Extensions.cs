@@ -193,6 +193,7 @@ namespace CSMarkdown.Rendering
 
         private static string DateTimeNotation(string dateParam)
         {
+            dateParam = dateParam.ToLower().Replace(" ", "");
             string dateTimeString = "";
 
             DateTime localNow = DateTime.Now.ToLocalTime();
@@ -207,7 +208,7 @@ namespace CSMarkdown.Rendering
                 throw new Exception("Date parameter can't consist of both local time and UTC time.");
             }
             StringBuilder paramBuilder = new StringBuilder();
-            foreach (var cha in dateParam.ToLower())
+            foreach (var cha in dateParam)
             {
                 bool notFirstChar = paramBuilder.Length - 1 >= 0 ? true : false;
 
@@ -231,7 +232,7 @@ namespace CSMarkdown.Rendering
 
                 previousChar = cha;
             }
-            dateParam = paramBuilder.ToString().ToLower();
+            dateParam = paramBuilder.ToString();
             string[] dateParamArr = dateParam.Split('.');
 
             List<DateTimeComponents> dtComponents = Enum.GetValues(typeof(DateTimeComponents)).Cast<DateTimeComponents>().ToList();
