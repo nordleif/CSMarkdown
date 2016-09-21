@@ -12,7 +12,7 @@ params:
     value: 2015-04-05
   to:
     type: date
-    value: 2015-04-03
+    value: x.x.x
 ---
 
 ## Tag 's p.tag'

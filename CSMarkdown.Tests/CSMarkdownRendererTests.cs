@@ -58,7 +58,7 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_multiple_value_with_legends_defined.smd", RenderOutput.Html)]
         [TestCase ("markdown_2_legends_using_readTags.smd", RenderOutput.Html)]
 
-        [TestCase("markdown_yaml_params - Copy.smd", RenderOutput.Html)]
+        [TestCase("markdown_yaml_params_with_to_date_using_x_param.smd", RenderOutput.Html)]
         [Test]
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {
@@ -124,7 +124,7 @@ namespace CSMarkdown.Tests
         [TestCase("--render --smdfile markdown_2_legends.smd --inputpath ../../Documents --outputpath C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: no name given")]
         [TestCase("-r -s markdown_2_legends.smd -n NoOutputDefined -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder", TestName = "App: no output defined")]
         [TestCase("-r -s markdown_2_legends.smd -n \"new name of output with whitespaces\" -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html", TestName = "App: new name of output file with whitespaces")]
-        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html -p \"from = 2015-12-29, to= 2016-12-29, tag = foo, boo\"", TestName = "App: using params")]
+        [TestCase("-r -s markdown_yaml_params.smd -n FileMadeUsingParams -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t html -p \"from = 2015-04-06, to= 2016-12-29, tag = P000_NIV, P000_M3\"", TestName = "App: using params")]
         [TestCase("-r -s markdown_2_legends.smd -n HubbaPDF -i ../../Documents -o C:/CSMarkdownTempFiles-DeletableFolder -t pdf", TestName = "App: new name and pdf as output")]
         [TestCase("-r -s markdown_2_legends.smd -n Markdown2LegendsUsingTheApp -i ../../Documents -t pdf", TestName = "App: no output path defined - Places file where .smd file is")]
         [TestCase("/?", TestName = "App: get /? for CSMarkdown.exe")]
