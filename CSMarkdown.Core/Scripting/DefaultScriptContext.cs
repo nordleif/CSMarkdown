@@ -833,10 +833,29 @@ namespace CSMarkdown.Scripting
             }
             if (!options.ShowMaxMin && options.ShowAllTicks)
             {
-                addGraphFunction += "var ticker = new Array(dataset" + m_chartCounter + "[0].values.length);\n";
+                int amountOfTicks = options.Legends[0].Values.Count - 1;
+                int steps = 1;
+                string tickSteps = "1";
+                if (options.Legends[0].Values.Count > 29)
+                {
+                    while ((options.Legends[0].Values.Count / steps) > 29)
+                    {
+                        steps++;
+                    }
+                    amountOfTicks = (amountOfTicks / steps);
+                    tickSteps = steps.ToString();
+                }
+                addGraphFunction += "var ticker = new Array();\n";
+                //addGraphFunction += "var ticker = new Array(dataset" + m_chartCounter + "[0].values.length);\n";
                 if (options.XAxisType != "string")
                 {
-                    addGraphFunction += "for (var a = dataset" + m_chartCounter.ToString() + "[0].values.length-1; a > -1; a--){ticker[a] = dataset" + m_chartCounter.ToString() + "[0].values[a].x;}chart.xAxis.tickValues(ticker).rotateLabels(" + options.RotateLabels + ").showMaxMin(" + options.ShowMaxMin.ToString().ToLower() + ");";
+                    addGraphFunction += "for (var a = " + amountOfTicks.ToString() + ", b = 0; a > -1; a--, b += " + tickSteps + "){ticker[a] = dataset" + m_chartCounter.ToString() + "[0].values[b].x;}";
+                    if (steps > 1)
+                    {
+                        addGraphFunction += "ticker[ticker.length] = dataset" + m_chartCounter.ToString() + "[0].values[dataset" + m_chartCounter.ToString() + "[0].values.length-1].x;";
+                    }
+                    addGraphFunction += "chart.xAxis.tickValues(ticker).rotateLabels(" + options.RotateLabels + ").showMaxMin(" + options.ShowMaxMin.ToString().ToLower() + ");";
+                    //addGraphFunction += "for (var a = dataset" + m_chartCounter.ToString() + "[0].values.length-1; a > -1; a--){ticker[a] = dataset" + m_chartCounter.ToString() + "[0].values[a].x;}chart.xAxis.tickValues(ticker).rotateLabels(" + options.RotateLabels + ").showMaxMin(" + options.ShowMaxMin.ToString().ToLower() + ");";
                 }
                 else
                 {
