@@ -836,9 +836,9 @@ namespace CSMarkdown.Scripting
                 int amountOfTicks = options.Legends[0].Values.Count - 1;
                 int steps = 1;
                 string tickSteps = "1";
-                if (options.Legends[0].Values.Count > 29)
+                if (options.Legends[0].Values.Count > options.MaxAmountOfTicks)
                 {
-                    while ((options.Legends[0].Values.Count / steps) > 29)
+                    while ((options.Legends[0].Values.Count / steps) > options.MaxAmountOfTicks)
                     {
                         steps++;
                     }

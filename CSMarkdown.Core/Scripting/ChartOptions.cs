@@ -26,6 +26,7 @@ namespace CSMarkdown.Scripting
         private bool m_showMaxMin = false;
         private int m_rotateLabels = 45;
         private bool m_showAllTicks = true;
+        private int m_maxAmountOfTicks = 29;
 
         private string m_YAxisLabel;
         private string m_XAxisLabel;
@@ -215,6 +216,19 @@ namespace CSMarkdown.Scripting
             set
             {
                 m_showAllTicks = value;
+            }
+        }
+
+        public int MaxAmountOfTicks
+        {
+            get
+            {
+                return m_maxAmountOfTicks;
+            }
+
+            set
+            {
+                m_maxAmountOfTicks = value;
             }
         }
     }
