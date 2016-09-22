@@ -105,24 +105,49 @@ namespace CSMarkdown.Rendering
                 var defaultValue = options.ReadValue<string>($"params.{parameterName}.value", string.Empty);
 
                 var propertyType = typeof(string);
-                if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
+                if (type.Equals("string[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(string[]);
+                else if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(bool);
+                else if (type.Equals("bool[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(bool[]);
                 else if (type.Equals("date", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(DateTime);
+                else if (type.Equals("date[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime[]);
                 else if (type.Equals("datetime", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(DateTime);
+                else if (type.Equals("datetime[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime[]);
                 else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(double);
+                else if (type.Equals("double[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(double[]);
                 else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(int);
+                else if (type.Equals("int[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(int[]);
 
                 object parameterValue = null;
                 if (!string.IsNullOrEmpty(defaultValue))
                 {
-                    if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
-                        defaultValue = DateTimeNotation(defaultValue);
+                    if (propertyType.IsArray)
+                    {
+                        string[] defaultValueArr = GenerateArrayOfValues(defaultValue);
+                        if (propertyType == typeof(DateTime))
+                            for (int i = 0; i < defaultValueArr.Length; i++)
+                                if (defaultValueArr[i].ToLower().Contains('x') || defaultValueArr[i].ToLower().Contains('u'))
+                                    defaultValueArr[i] = DateTimeNotation(defaultValueArr[i]);
 
-                    parameterValue = Convert.ChangeType(defaultValue, propertyType);
+                        parameterValue = Convert.ChangeType(defaultValueArr, propertyType);
+                    }
+                    else
+                    {
+                        if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
+                            defaultValue = DateTimeNotation(defaultValue);
+
+                        parameterValue = Convert.ChangeType(defaultValue, propertyType);
+                    }
                 }
                 else
                     parameterValue = Activator.CreateInstance(propertyType);
@@ -130,10 +155,24 @@ namespace CSMarkdown.Rendering
                 var value = values.FirstOrDefault(kvp => kvp.Key.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (propertyType == typeof(DateTime) && (value.ToLower().Contains('x') || value.Contains('u')))
-                        value = DateTimeNotation(value);
+                    if (propertyType.IsArray)
+                    {
+                        string[] valueArr = GenerateArrayOfValues(value);
+                        if (propertyType == typeof(DateTime))
+                            for (int i = 0; i < valueArr.Length; i++)
+                                if (valueArr[i].ToLower().Contains('x') || valueArr[i].ToLower().Contains('u'))
+                                    valueArr[i] = DateTimeNotation(valueArr[i]);
+                        
+                        parameterValue = Convert.ChangeType(valueArr, propertyType);
+                    }
 
-                    parameterValue = Convert.ChangeType(value, propertyType);
+                    else
+                    {
+                        if (propertyType == typeof(DateTime) && (value.ToLower().Contains('x') || value.Contains('u')))
+                            value = DateTimeNotation(value);
+
+                        parameterValue = Convert.ChangeType(value, propertyType);
+                    }
                 }
 
                 if (parameterValue == null)
@@ -143,6 +182,22 @@ namespace CSMarkdown.Rendering
             }
 
             return expandoObject;
+        }
+
+        private static string[] GenerateArrayOfValues(string defaultValue)
+        {
+            string[] values = defaultValue.Split(',');
+
+            for (int i = 0; i < values.Count(); i++)
+            {
+                while (values[i][0] == ' ')
+                    values[i] = values[i].Remove(0, 1);
+
+                while (values[i][values[i].Length - 1] == ' ')
+                    values[i] = values[i].Remove(values[i].Length - 1, 1);
+            }
+
+            return values;
         }
 
         public static string ReadResourceString(this Assembly assembly, string resourceName)

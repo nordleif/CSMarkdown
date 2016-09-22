@@ -24,6 +24,11 @@ namespace CSMarkdown.Rendering
 
         }
 
+        public Dictionary<string, object> GetParameters(string text)
+        {
+            return null;
+        }
+
         public byte[] Render(string text, CSMarkdownRenderOptions options = null)
         {
             if (string.IsNullOrWhiteSpace(text))

@@ -39,11 +39,21 @@ namespace CSMarkdown.Scripting
             return dataTable;
         }
 
+        private DataTable ExtractTagTable(string query, string connectionString)
+        {
+            var dataTable = new DataTable();
+            var dataAdapter = new SqlDataAdapter(query, connectionString);
+
+            dataAdapter.Fill(dataTable);
+
+            return dataTable;
+        }
+
         public DataTable ReadTags(string connectionString, Interval interval, DateTime from, DateTime to, params string[] tags)
         {
-            DataTable dTable = new DataTable();
-            string intervalForQuery = "";
-            string formatString = "";
+            var dTable = new DataTable();
+            var intervalForQuery = "";
+            var formatString = "";
 
             if (interval == Interval.Data)
             {
@@ -71,15 +81,15 @@ namespace CSMarkdown.Scripting
                 dTable = CreateBaseDataTable(interval, from, to, tags);
             }
 
-            string fromDate = from.Year + "-" + from.Month.ToString("00") + "-" + from.Day.ToString("00") + " " + from.Hour.ToString("00") + ":" + from.Minute.ToString("00") + ":" + from.Second.ToString("00");
-            string toDate = to.Year + "-" + to.Month.ToString("00") + "-" + to.Day.ToString("00") + " " + to.Hour.ToString("00") + ":" + to.Minute.ToString("00") + ":" + to.Second.ToString("00");
+            var fromDate = from.Year + "-" + from.Month.ToString("00") + "-" + from.Day.ToString("00") + " " + from.Hour.ToString("00") + ":" + from.Minute.ToString("00") + ":" + from.Second.ToString("00");
+            var toDate = to.Year + "-" + to.Month.ToString("00") + "-" + to.Day.ToString("00") + " " + to.Hour.ToString("00") + ":" + to.Minute.ToString("00") + ":" + to.Second.ToString("00");
 
             //////////////////////////////////
 
             for (int i = 0; i < tags.Length; i++)
             {
-                DataTable extractedTable = new DataTable();
-                extractedTable = ReadSql("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tags[i] + "' and local_time >= '" + fromDate + "' and local_time < '" + toDate + "'", connectionString);
+                var extractedTable = new DataTable();
+                extractedTable = ExtractTagTable("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tags[i] + "' and local_time >= '" + fromDate + "' and local_time < '" + toDate + "'", connectionString);
 
                 foreach (DataRow extractedRow in extractedTable.Rows)
                 {
