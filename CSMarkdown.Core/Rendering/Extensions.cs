@@ -130,8 +130,8 @@ namespace CSMarkdown.Rendering
                 var value = values.FirstOrDefault(kvp => kvp.Key.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
-                        defaultValue = DateTimeNotation(defaultValue);
+                    if (propertyType == typeof(DateTime) && (value.ToLower().Contains('x') || value.Contains('u')))
+                        value = DateTimeNotation(value);
 
                     parameterValue = Convert.ChangeType(value, propertyType);
                 }
@@ -193,7 +193,6 @@ namespace CSMarkdown.Rendering
 
         private static string DateTimeNotation(string dateParam)
         {
-            dateParam = dateParam.ToLower().Replace(" ", "");
             string dateTimeString = "";
 
             DateTime localNow = DateTime.Now.ToLocalTime();
@@ -203,34 +202,54 @@ namespace CSMarkdown.Rendering
             char[] plusAndMinus = { '+', '-' };
             char[] allowedLetters = { 'x', 'u' };
             char previousChar = new char();
+            char nextChar = new char();
             if (dateParam.Contains(allowedLetters[0]) && dateParam.Contains(allowedLetters[1]))
             {
                 throw new Exception("Date parameter can't consist of both local time and UTC time.");
             }
+
             StringBuilder paramBuilder = new StringBuilder();
-            foreach (var cha in dateParam)
+            for (int i = 0; i < dateParam.Length; i++)
             {
                 bool notFirstChar = paramBuilder.Length - 1 >= 0 ? true : false;
+                bool notLastChar = i + 1 < dateParam.Length ? true : false;
 
-                if ((cha >= '0' && cha <= '9') || (plusAndMinus.Contains(cha) || allowedLetters.Contains(cha)))
+                if (notLastChar)
+                    nextChar = dateParam[i + 1];
+
+                if ((!notFirstChar && dateParam[i] == ' ') || (!notLastChar && dateParam[i] == ' '))
+                    continue;
+
+                else if ((notFirstChar && notLastChar) && (dateParam[i] == ' ' || dateParam[i] == 'T')) // Skal der være mellemrum før og efter T, eller skal det være uden mellemrum før og efter?
                 {
-                    if (notFirstChar && (plusAndMinus.Contains(cha) && plusAndMinus.Contains(previousChar)))
+                    if (((previousChar >= '0' && previousChar <= '9') || allowedLetters.Contains(previousChar)) && ((nextChar >= '0' && nextChar <= '9') || allowedLetters.Contains(nextChar)))
+                        paramBuilder.Append('.');
+                    else if (previousChar == ' ' && dateParam[i] == 'T' && nextChar == ' ')
+                        continue;
+                }
+
+                else if ((dateParam[i] >= '0' && dateParam[i] <= '9') || (plusAndMinus.Contains(dateParam[i]) || allowedLetters.Contains(dateParam[i])))
+                {
+                    if (notFirstChar && (plusAndMinus.Contains(dateParam[i]) && plusAndMinus.Contains(previousChar)))
                     {
-                        throw new Exception("Invalid input format. \'" + previousChar + "\' and \'" + cha + "\' can't be used in succession of each other");
+                        throw new Exception("Invalid input format. \'" + previousChar + "\' and \'" + dateParam[i] + "\' can't be used in succession of each other");
                     }
-                    else if (notFirstChar && (plusAndMinus.Contains(previousChar) && allowedLetters.Contains(cha)))
-                        paramBuilder.Remove(paramBuilder.Length - 1, 1).Append("." + cha);
-                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && allowedLetters.Contains(cha)))
-                        paramBuilder.Append("." + cha);
-                    else if (notFirstChar && (allowedLetters.Contains(previousChar) && (cha >= '0' && cha <= '9')))
-                        paramBuilder.Append("." + cha);
+                    else if (notFirstChar && (plusAndMinus.Contains(previousChar) && allowedLetters.Contains(dateParam[i])))
+                        paramBuilder.Remove(paramBuilder.Length - 1, 1).Append("." + dateParam[i]);
+                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && allowedLetters.Contains(dateParam[i])))
+                        paramBuilder.Append("." + dateParam[i]);
+                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && plusAndMinus.Contains(dateParam[i])))
+                        paramBuilder.Append(".");
+                    else if (notFirstChar && (allowedLetters.Contains(previousChar) && (dateParam[i] >= '0' && dateParam[i] <= '9')))
+                        paramBuilder.Append("." + dateParam[i]);
                     else
-                        paramBuilder.Append(cha);
+                        paramBuilder.Append(dateParam[i]);
                 }
                 else
                     paramBuilder.Append('.');
 
-                previousChar = cha;
+                previousChar = dateParam[i];
+
             }
             dateParam = paramBuilder.ToString();
             string[] dateParamArr = dateParam.Split('.');
@@ -278,7 +297,7 @@ namespace CSMarkdown.Rendering
             return dateTimeString;
         }
 
-        public static double Evaluate(string expression)
+        private static double Evaluate(string expression)
         {
             DataTable table = new DataTable();
             table.Columns.Add("expression", typeof(string), expression);

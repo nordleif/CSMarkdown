@@ -1,0 +1,29 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+params:
+  tag:
+    type: string
+    value: NORD_TRETUR
+  from:
+    type: date
+    value: 2015-04-02
+  to:
+    type: date
+    value: 2015-04-03
+---
+Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+## CS Syntax
+```{s echo=true}
+
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
+var data = ReadTags(con, Interval.Hour, @from, @to, @tag);
+var options = new ChartOptions();
+options.Legends.Add(new LineLegend(){Key = "Test1"});
+options.Legends.Add(new LineLegend(){Key = "Test2"});
+options.XAxisType = "date";
+RenderChart(data, options);
+
+```

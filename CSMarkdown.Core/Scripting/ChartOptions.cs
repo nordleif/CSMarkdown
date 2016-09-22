@@ -173,6 +173,10 @@ namespace CSMarkdown.Scripting
             {
                 return m_rotateLabels;
             }
+            set
+            {
+                m_rotateLabels = value;
+            }
         }
 
         public string YAxisLabel
