@@ -4,8 +4,9 @@ title: Unit Test
 
 content goes here
 ```{s echo=true}
-var data = ReadExcel(@"../../Documents\mockupdata.xlsx");
-RenderTable(data, options);
+//var data = ReadExcel(@"../../Documents\mockupdata.xlsx");
+var data = ReadCsv(@"C:\Users\sys2000\Downloads\MOCK_DATA (5).csv");
+RenderTable(data);
 
 ```
 

@@ -49,6 +49,7 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_table.smd", RenderOutput.Pdf)]
         [TestCase("markdown_read_excel_csv.smd", RenderOutput.Html)]
         [TestCase("markdown_read_excel_csv.smd", RenderOutput.Pdf)]
+        [TestCase("markdown_syntax_test.smd", RenderOutput.Html)]
 
         [TestCase("markdown_display_error.smd", RenderOutput.Html)]
         [TestCase("markdown_display_message.smd", RenderOutput.Html)]

@@ -1,27 +1,14 @@
 /* Foundation v2.1.4 http://foundation.zurb.com */
 /* Artfully masterminded by ZURB  */
 
-/* -------------------------------------------------- 
-   Table of Contents
------------------------------------------------------
-:: Shared Styles
-:: Page Name 1
-:: Page Name 2
-*/
+
 
 
 /* -----------------------------------------
    Shared Styles
 ----------------------------------------- */
-th.vertical{-moz-transform:rotate(-90deg); 
-         -moz-transform-origin: top left;
-         -webkit-transform: rotate(-90deg);
-         -webkit-transform-origin: top left;
-         -o-transform: rotate(-90deg);
-         -o-transform-origin:  top left;
-          position:relative;
-         top:20px;
-}
+
+th.groupheader{text-align: center;}
 
 /*table th {transform: translate(25px, 51px) rotate(270deg); height: 140px;
   white-space: nowrap; border-bottom: 1px solid #ccc;
@@ -88,5 +75,7 @@ table, th, td {border: 1px solid black;}*/
                         font-weight: bold;
                     }
         }
+
+
 
 

@@ -79,6 +79,7 @@
     <None Include="Documents\markdown_2_legends_with_params.smd" />
     <None Include="Documents\markdown_2_legends_using_readTags.smd" />
     <None Include="Documents\markdown_read_excel_csv.smd" />
+    <None Include="Documents\markdown_syntax_test.smd" />
     <None Include="Documents\markdown_table.smd" />
     <None Include="Documents\markdown_multiple_value_with_legends_defined.smd" />
     <None Include="Documents\markdown_multiple_value_without_legends.smd" />

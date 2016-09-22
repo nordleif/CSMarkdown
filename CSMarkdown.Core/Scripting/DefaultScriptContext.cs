@@ -228,7 +228,7 @@ namespace CSMarkdown.Scripting
             var tableNode = HtmlNode.CreateNode("<table>");
 
             if (options.Responsive != "table-responsive")
-                tableNode.Attributes.Add("class", "table " + options.Style + " " + options.Responsive);
+                tableNode.Attributes.Add("class", "table " + options.Style + " " + options.Responsive + " table-header-rotated");
             else
                 tableNode.Attributes.Add("class", "table " + options.Style);
 
@@ -250,13 +250,12 @@ namespace CSMarkdown.Scripting
                         {
                             if (emptySpan > 0)
                             {
-                                rowNode.AppendChild(HtmlNode.CreateNode($"<th colspan=\"" + emptySpan + "\">"));
+                                rowNode.AppendChild(HtmlNode.CreateNode($"<th colspan=\"" + emptySpan + "\"><div><span>"));
                                 emptySpan = 0;
                             }
-                            rowNode.AppendChild(HtmlNode.CreateNode($"<th colspan=\"" + group.Headers.Length + "\">" + group.Name));
+                            rowNode.AppendChild(HtmlNode.CreateNode($"<th class=\"groupheader\" colspan=\"" + group.Headers.Length + "\"><div><span>" + group.Name));
                             emptySpan -= group.Headers.Length - 1;
-                            fit = true;
-                            group.Fit = true;
+                            group.Fit = fit = true;
                         }
 
                     }
@@ -270,11 +269,20 @@ namespace CSMarkdown.Scripting
 
             var tableRowNode = HtmlNode.CreateNode("<tr>");
             foreach (DataColumn column in data.Columns)
-                headNode.AppendChild(HtmlNode.CreateNode($"<th>{column.ColumnName.Trim()}"));
+            {
+                if (options.RotateColumns)
+                {
+                    int height = column.ColumnName.Length;
+                    headNode.AppendChild(HtmlNode.CreateNode($"<th class=\"rotate-90\" nowrap style=\"height: {height*8}px;\"><div><span>{column.ColumnName.Trim()}"));
+                }
+                else
+                    headNode.AppendChild(HtmlNode.CreateNode($"<th><div><span>{column.ColumnName.Trim()}"));
+            }
             headNode.AppendChild(tableRowNode);
 
             foreach (DataRow row in data.Rows)
             {
+                
                 var rowNode = bodyNode.AppendChild(HtmlNode.CreateNode("<tr>"));
                 foreach (DataColumn column in data.Columns)
                     rowNode.AppendChild(HtmlNode.CreateNode($"<td data-label=\"{column.ColumnName.Trim()}\">{row[column]}"));
