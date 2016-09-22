@@ -196,19 +196,7 @@ namespace CSMarkdown.Scripting
         {
             get { return m_XAxisLabel; }
             set { m_XAxisLabel = value; }
-        }  
-        public int RotateLabel
-        {
-            get
-            {
-                return m_rotateLabels;
-            }
-            set
-            {
-                m_rotateLabels = value;
-            }
         }
-            
 
         public bool ShowAllTicks
         {
