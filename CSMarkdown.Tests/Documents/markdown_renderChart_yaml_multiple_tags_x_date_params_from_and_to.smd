@@ -9,7 +9,7 @@ params:
     value: P000_NIV, P000_M3, P000_AMP
   from:
     type: date
-    value: x.x-1.x
+    value: x.x.x-5
   to:
     type: date
     value: x.x.x
