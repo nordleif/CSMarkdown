@@ -74,8 +74,10 @@ namespace CSMarkdown.Scripting
                         break;
                 }
             }
-
-
+            
+            if (convertedDateFormat.Contains("%I") || convertedDateFormat.Contains("%_I"))
+                convertedDateFormat += " %p";
+            
             return convertedDateFormat;
         }
     }

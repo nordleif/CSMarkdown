@@ -105,24 +105,49 @@ namespace CSMarkdown.Rendering
                 var defaultValue = options.ReadValue<string>($"params.{parameterName}.value", string.Empty);
 
                 var propertyType = typeof(string);
-                if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
+                if (type.Equals("string[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(string[]);
+                else if (type.Equals("bool", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(bool);
+                else if (type.Equals("bool[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(bool[]);
                 else if (type.Equals("date", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(DateTime);
+                else if (type.Equals("date[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime[]);
                 else if (type.Equals("datetime", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(DateTime);
+                else if (type.Equals("datetime[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(DateTime[]);
                 else if (type.Equals("double", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(double);
+                else if (type.Equals("double[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(double[]);
                 else if (type.Equals("int", StringComparison.InvariantCultureIgnoreCase))
                     propertyType = typeof(int);
+                else if (type.Equals("int[]", StringComparison.InvariantCultureIgnoreCase))
+                    propertyType = typeof(int[]);
 
                 object parameterValue = null;
                 if (!string.IsNullOrEmpty(defaultValue))
                 {
-                    if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
-                        defaultValue = DateTimeNotation(defaultValue);
+                    if (propertyType.IsArray)
+                    {
+                        string[] defaultValueArr = GenerateArrayOfValues(defaultValue);
+                        if (propertyType == typeof(DateTime))
+                            for (int i = 0; i < defaultValueArr.Length; i++)
+                                if (defaultValueArr[i].ToLower().Contains('x') || defaultValueArr[i].ToLower().Contains('u'))
+                                    defaultValueArr[i] = DateTimeNotation(defaultValueArr[i]);
 
-                    parameterValue = Convert.ChangeType(defaultValue, propertyType);
+                        parameterValue = Convert.ChangeType(defaultValueArr, propertyType);
+                    }
+                    else
+                    {
+                        if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
+                            defaultValue = DateTimeNotation(defaultValue);
+
+                        parameterValue = Convert.ChangeType(defaultValue, propertyType);
+                    }
                 }
                 else
                     parameterValue = Activator.CreateInstance(propertyType);
@@ -130,10 +155,24 @@ namespace CSMarkdown.Rendering
                 var value = values.FirstOrDefault(kvp => kvp.Key.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase)).Value;
                 if (!string.IsNullOrEmpty(value))
                 {
-                    if (propertyType == typeof(DateTime) && (defaultValue.ToLower().Contains('x') || defaultValue.Contains('u')))
-                        defaultValue = DateTimeNotation(defaultValue);
+                    if (propertyType.IsArray)
+                    {
+                        string[] valueArr = GenerateArrayOfValues(value);
+                        if (propertyType == typeof(DateTime))
+                            for (int i = 0; i < valueArr.Length; i++)
+                                if (valueArr[i].ToLower().Contains('x') || valueArr[i].ToLower().Contains('u'))
+                                    valueArr[i] = DateTimeNotation(valueArr[i]);
+                        
+                        parameterValue = Convert.ChangeType(valueArr, propertyType);
+                    }
 
-                    parameterValue = Convert.ChangeType(value, propertyType);
+                    else
+                    {
+                        if (propertyType == typeof(DateTime) && (value.ToLower().Contains('x') || value.Contains('u')))
+                            value = DateTimeNotation(value);
+
+                        parameterValue = Convert.ChangeType(value, propertyType);
+                    }
                 }
 
                 if (parameterValue == null)
@@ -143,6 +182,22 @@ namespace CSMarkdown.Rendering
             }
 
             return expandoObject;
+        }
+
+        private static string[] GenerateArrayOfValues(string defaultValue)
+        {
+            string[] values = defaultValue.Split(',');
+
+            for (int i = 0; i < values.Count(); i++)
+            {
+                while (values[i][0] == ' ')
+                    values[i] = values[i].Remove(0, 1);
+
+                while (values[i][values[i].Length - 1] == ' ')
+                    values[i] = values[i].Remove(values[i].Length - 1, 1);
+            }
+
+            return values;
         }
 
         public static string ReadResourceString(this Assembly assembly, string resourceName)
@@ -193,7 +248,6 @@ namespace CSMarkdown.Rendering
 
         private static string DateTimeNotation(string dateParam)
         {
-            dateParam = dateParam.ToLower().Replace(" ", "");
             string dateTimeString = "";
 
             DateTime localNow = DateTime.Now.ToLocalTime();
@@ -203,34 +257,54 @@ namespace CSMarkdown.Rendering
             char[] plusAndMinus = { '+', '-' };
             char[] allowedLetters = { 'x', 'u' };
             char previousChar = new char();
+            char nextChar = new char();
             if (dateParam.Contains(allowedLetters[0]) && dateParam.Contains(allowedLetters[1]))
             {
                 throw new Exception("Date parameter can't consist of both local time and UTC time.");
             }
+
             StringBuilder paramBuilder = new StringBuilder();
-            foreach (var cha in dateParam)
+            for (int i = 0; i < dateParam.Length; i++)
             {
                 bool notFirstChar = paramBuilder.Length - 1 >= 0 ? true : false;
+                bool notLastChar = i + 1 < dateParam.Length ? true : false;
 
-                if ((cha >= '0' && cha <= '9') || (plusAndMinus.Contains(cha) || allowedLetters.Contains(cha)))
+                if (notLastChar)
+                    nextChar = dateParam[i + 1];
+
+                if ((!notFirstChar && dateParam[i] == ' ') || (!notLastChar && dateParam[i] == ' '))
+                    continue;
+
+                else if ((notFirstChar && notLastChar) && (dateParam[i] == ' ' || dateParam[i] == 'T')) // Skal der være mellemrum før og efter T, eller skal det være uden mellemrum før og efter?
                 {
-                    if (notFirstChar && (plusAndMinus.Contains(cha) && plusAndMinus.Contains(previousChar)))
+                    if (((previousChar >= '0' && previousChar <= '9') || allowedLetters.Contains(previousChar)) && ((nextChar >= '0' && nextChar <= '9') || allowedLetters.Contains(nextChar)))
+                        paramBuilder.Append('.');
+                    else if (previousChar == ' ' && dateParam[i] == 'T' && nextChar == ' ')
+                        continue;
+                }
+
+                else if ((dateParam[i] >= '0' && dateParam[i] <= '9') || (plusAndMinus.Contains(dateParam[i]) || allowedLetters.Contains(dateParam[i])))
+                {
+                    if (notFirstChar && (plusAndMinus.Contains(dateParam[i]) && plusAndMinus.Contains(previousChar)))
                     {
-                        throw new Exception("Invalid input format. \'" + previousChar + "\' and \'" + cha + "\' can't be used in succession of each other");
+                        throw new Exception("Invalid input format. \'" + previousChar + "\' and \'" + dateParam[i] + "\' can't be used in succession of each other");
                     }
-                    else if (notFirstChar && (plusAndMinus.Contains(previousChar) && allowedLetters.Contains(cha)))
-                        paramBuilder.Remove(paramBuilder.Length - 1, 1).Append("." + cha);
-                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && allowedLetters.Contains(cha)))
-                        paramBuilder.Append("." + cha);
-                    else if (notFirstChar && (allowedLetters.Contains(previousChar) && (cha >= '0' && cha <= '9')))
-                        paramBuilder.Append("." + cha);
+                    else if (notFirstChar && (plusAndMinus.Contains(previousChar) && allowedLetters.Contains(dateParam[i])))
+                        paramBuilder.Remove(paramBuilder.Length - 1, 1).Append("." + dateParam[i]);
+                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && allowedLetters.Contains(dateParam[i])))
+                        paramBuilder.Append("." + dateParam[i]);
+                    else if (notFirstChar && ((previousChar >= '0' && previousChar <= '9') && plusAndMinus.Contains(dateParam[i])))
+                        paramBuilder.Append(".");
+                    else if (notFirstChar && (allowedLetters.Contains(previousChar) && (dateParam[i] >= '0' && dateParam[i] <= '9')))
+                        paramBuilder.Append("." + dateParam[i]);
                     else
-                        paramBuilder.Append(cha);
+                        paramBuilder.Append(dateParam[i]);
                 }
                 else
                     paramBuilder.Append('.');
 
-                previousChar = cha;
+                previousChar = dateParam[i];
+
             }
             dateParam = paramBuilder.ToString();
             string[] dateParamArr = dateParam.Split('.');
@@ -278,7 +352,7 @@ namespace CSMarkdown.Rendering
             return dateTimeString;
         }
 
-        public static double Evaluate(string expression)
+        private static double Evaluate(string expression)
         {
             DataTable table = new DataTable();
             table.Columns.Add("expression", typeof(string), expression);

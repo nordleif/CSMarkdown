@@ -51,17 +51,31 @@ namespace CSMarkdown.App
 
             if (options.Parameters != null)
             {
-                int padsBetweenCommas = 1;
+                options.Parameters = options.Parameters.Replace("\"", "");
+                int padsBetweenCommas = 0;
                 bool isKey = true;
                 string key = "", value = "";
-                for (int i = 0; i < options.Parameters.Length; i++)
+                for (int i = 0; i < options.Parameters.Length + 1; i++)
                 {
-                    if (isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
+                    if ((isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value)) || i >= options.Parameters.Length)
                     {
-                        parameters.Add(key.Trim(), value);
-                        key = "";
-                        value = "";
-                        padsBetweenCommas = 1;
+                        if (value[0] == ' ')
+                        {
+                            value = value.Remove(0, 1);
+                            i--;
+                        }
+                        else if(value[value.Length-1] == ' ')
+                        {
+                            value = value.Remove(value.Length-1, 1);
+                            i--;
+                        }
+                        else
+                        {
+                            parameters.Add(key.Trim(), value);
+                            key = "";
+                            value = "";
+                            padsBetweenCommas = 0;
+                        }
                     }
                     else if (isKey)
                     {
@@ -94,10 +108,10 @@ namespace CSMarkdown.App
                         }
                     }
                 }
-                if (!isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
-                {
-                    parameters.Add(key.Trim(), value);
-                }
+                //if (!isKey && !string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
+                //{
+                //    parameters.Add(key.Trim(), value);
+                //}
             }
 
             var path = Path.Combine(options.InputPath, options.SmdFileName);

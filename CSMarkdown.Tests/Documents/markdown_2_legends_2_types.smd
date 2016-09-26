@@ -16,9 +16,4 @@ options.Legends.Add(new BarLegend(){Key = "Test2", YDataName = "value"});
 options.XAxisType = "date";
 RenderChart(data, options);
 
-
-
-
-
-
 ```
