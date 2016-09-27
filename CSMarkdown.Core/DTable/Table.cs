@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSMarkdown.DataTable
+namespace CSMarkdown.DTable
 {
-    class DTable
+    class Table
     {
         private List<Cell> m_cells = new List<Cell>();
-        public DTable()
+        public Table()
         {
 
         }

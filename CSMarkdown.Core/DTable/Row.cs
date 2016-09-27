@@ -4,17 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSMarkdown.DataTable
+namespace CSMarkdown.DTable
 {
     class Row
     {
-        internal Row(DTable table, int Index)
+        internal Row(Table table, int Index)
         {
 
         }
 
-        public DTable Table { get; set; }
+        public Table Table { get; set; }
         public int Index { get; set; }
-
     }
 }

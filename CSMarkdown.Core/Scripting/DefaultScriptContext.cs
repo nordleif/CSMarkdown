@@ -26,7 +26,7 @@ namespace CSMarkdown.Scripting
 
         }
 
-        public System.Data.DataTable ReadSql(string query, string connectionString)
+        public DataTable ReadSql(string query, string connectionString)
         {
             var dataTable = new DataTable();
             var dataAdapter = new SqlDataAdapter(query, connectionString);
