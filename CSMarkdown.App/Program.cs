@@ -140,8 +140,9 @@ namespace CSMarkdown.App
         static void WebApp(ActivationOptions options)
         {
             var webApp = new WebApp();
-            webApp.Start(new StartOptions { WorkingDirectory = @"C:\Users\Nicholai\Desktop\CSMarkdownGit\CSMarkdown.Tests\Documents" });
+            //webApp.Start(new StartOptions { WorkingDirectory = @"C:\Users\Nicholai\Desktop\CSMarkdownGit\CSMarkdown.Tests\Documents" });
             //webApp.Start(new StartOptions { WorkingDirectory = @"D:\Source\GitHub\CSMarkdown\CSMarkdown.Tests\Documents" });
+            webApp.Start(new StartOptions { WorkingDirectory = @"../../Documents" });
 
             Console.WriteLine("WebApp started. Press enter to quit.");
             Console.ReadLine();
