@@ -571,7 +571,13 @@ namespace CSMarkdown.Scripting
                                 y2HighestValue = spanItem.HighestValue;
                             }
                         }
-                        else if (spanItem.HighestValue > y2HighestValue && spanItem.LowestValue < y2HighestValue)
+                        else if (spanItem.HighestValue > y2HighestValue && spanItem.LowestValue < y2LowestValue)
+                        {
+                            spanItem.LeftOrRightYAxis = 2;
+                            y2HighestValue = spanItem.HighestValue;
+                            y2LowestValue = spanItem.LowestValue;
+                        }
+                        else if (spanItem.HighestValue > y2HighestValue && spanItem.LowestValue > y2LowestValue)
                         {
                             spanItem.LeftOrRightYAxis = 2;
                             y2HighestValue = spanItem.HighestValue;
