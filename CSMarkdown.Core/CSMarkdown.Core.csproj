@@ -157,13 +157,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataTable\Cell.cs" />
-    <Compile Include="DataTable\Column.cs" />
-    <Compile Include="DataTable\Columns.cs" />
-    <Compile Include="DataTable\DataTable.cs" />
-    <Compile Include="DataTable\Row.cs" />
-    <Compile Include="DataTable\Rows.cs" />
-    <Compile Include="DataTable\Test.cs" />
+    <Compile Include="DTable\Cell.cs" />
+    <Compile Include="DTable\Column.cs" />
+    <Compile Include="DTable\Columns.cs" />
+    <Compile Include="DTable\DTable.cs" />
+    <Compile Include="DTable\Row.cs" />
+    <Compile Include="DTable\Rows.cs" />
+    <Compile Include="DTable\Test.cs" />
     <Compile Include="Data\Cell.cs" />
     <Compile Include="Data\Column.cs" />
     <Compile Include="Data\Row.cs" />
