@@ -7,14 +7,21 @@ using System.Collections.ObjectModel;
 
 namespace CSMarkdown.DataTable
 {
-    class ColumnArray : Collection<Column>
+    class Columns : ReadOnlyCollection<Column>
     {
+
+        public Columns(IList<Column> list) : base(list)
+        {
+            
+        }
         new public Cell[] this[int index]
         {
-            get
-            {
+            get {
+
                 return null;
-            }
+
+                 }
+            
         }
     }
 }

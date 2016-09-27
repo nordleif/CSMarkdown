@@ -159,10 +159,11 @@
   <ItemGroup>
     <Compile Include="DataTable\Cell.cs" />
     <Compile Include="DataTable\Column.cs" />
-    <Compile Include="DataTable\ColumnArray.cs" />
+    <Compile Include="DataTable\Columns.cs" />
     <Compile Include="DataTable\DataTable.cs" />
     <Compile Include="DataTable\Row.cs" />
-    <Compile Include="DataTable\RowArray.cs" />
+    <Compile Include="DataTable\Rows.cs" />
+    <Compile Include="DataTable\Test.cs" />
     <Compile Include="Data\Cell.cs" />
     <Compile Include="Data\Column.cs" />
     <Compile Include="Data\Row.cs" />
