@@ -47,6 +47,8 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_yaml_params.smd", RenderOutput.Pdf)]
         [TestCase("markdown_table.smd", RenderOutput.Html)]
         [TestCase("markdown_table.smd", RenderOutput.Pdf)]
+        [TestCase("markdown_table_with_options.smd", RenderOutput.Html)]
+        [TestCase("markdown_table_with_options.smd", RenderOutput.Pdf)]
         [TestCase("markdown_read_excel_csv.smd", RenderOutput.Html)]
         [TestCase("markdown_read_excel_csv.smd", RenderOutput.Pdf)]
         [TestCase("markdown_syntax_test.smd", RenderOutput.Html)]

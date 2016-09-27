@@ -222,8 +222,6 @@ namespace CSMarkdown.Scripting
 
         public void RenderTable(DataTable data, TableOptions options = null)
         {
-            //data.SetColumnsOrder("","");
-
             if (data == null)
                 return;
 
@@ -283,7 +281,7 @@ namespace CSMarkdown.Scripting
                 if (options.RotateColumns)
                 {
                     int height = column.ColumnName.Length;
-                    headNode.AppendChild(HtmlNode.CreateNode($"<th class=\"rotate-90\" nowrap style=\"height: {height*8}px;\"><div><span>{column.ColumnName.Trim()}"));
+                    headNode.AppendChild(HtmlNode.CreateNode($"<th class=\"rotate-90\" nowrap style=\"height: {height * 8}px;\"><div><span>{column.ColumnName.Trim()}"));
                 }
                 else
                     headNode.AppendChild(HtmlNode.CreateNode($"<th><div><span>{column.ColumnName.Trim()}"));

@@ -363,15 +363,5 @@ namespace CSMarkdown.Rendering
             return double.Parse((string)row["expression"]);
         }
 
-        public static void SetColumnsOrder(this DataTable table, params string[] columnNames)
-        {
-            int columnIndex = 0;
-            foreach (var columnName in columnNames)
-            {
-                table.Columns[columnName].SetOrdinal(columnIndex);
-                columnIndex++;
-            }
-        }
-
     }
 }

@@ -26,7 +26,7 @@ namespace CSMarkdown.Scripting
 
         public void GroupedHeaders(string name, params string[] headers)
         {
-            GroupedColumn group = new GroupedColumn(name, headers);
+            var group = new GroupedColumn(name, headers);
             _GroupedColumns.Add(group);
         }
 
