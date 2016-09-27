@@ -162,7 +162,7 @@ namespace CSMarkdown.Rendering
                             for (int i = 0; i < valueArr.Length; i++)
                                 if (valueArr[i].ToLower().Contains('x') || valueArr[i].ToLower().Contains('u'))
                                     valueArr[i] = DateTimeNotation(valueArr[i]);
-                        
+
                         parameterValue = Convert.ChangeType(valueArr, propertyType);
                     }
 
@@ -275,12 +275,10 @@ namespace CSMarkdown.Rendering
                 if ((!notFirstChar && dateParam[i] == ' ') || (!notLastChar && dateParam[i] == ' '))
                     continue;
 
-                else if ((notFirstChar && notLastChar) && (dateParam[i] == ' ' || dateParam[i] == 'T')) // Skal der være mellemrum før og efter T, eller skal det være uden mellemrum før og efter?
+                else if ((notFirstChar && notLastChar) && dateParam[i] == ' ')
                 {
                     if (((previousChar >= '0' && previousChar <= '9') || allowedLetters.Contains(previousChar)) && ((nextChar >= '0' && nextChar <= '9') || allowedLetters.Contains(nextChar)))
                         paramBuilder.Append('.');
-                    else if (previousChar == ' ' && dateParam[i] == 'T' && nextChar == ' ')
-                        continue;
                 }
 
                 else if ((dateParam[i] >= '0' && dateParam[i] <= '9') || (plusAndMinus.Contains(dateParam[i]) || allowedLetters.Contains(dateParam[i])))
@@ -307,6 +305,10 @@ namespace CSMarkdown.Rendering
 
             }
             dateParam = paramBuilder.ToString();
+
+            if (dateParam[dateParam.Length-1] == '.')
+                dateParam.Remove(dateParam.Length - 1, 1);
+
             string[] dateParamArr = dateParam.Split('.');
 
             List<DateTimeComponents> dtComponents = Enum.GetValues(typeof(DateTimeComponents)).Cast<DateTimeComponents>().ToList();

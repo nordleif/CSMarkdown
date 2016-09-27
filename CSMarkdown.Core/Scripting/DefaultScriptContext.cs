@@ -508,23 +508,88 @@ namespace CSMarkdown.Scripting
                     lowestSpanItem = item;
             }
 
-            //double averageSpan = (highestSpanItem.HighestLowestDifference + lowestSpanItem.HighestLowestDifference) / 2;
-            if (useableLegends.Count == 2)
+            if (useableLegends.Count + unuseableLegends.Count == 2)
             {
                 valuesBySpand[0].LeftOrRightYAxis = 1;
                 valuesBySpand[1].LeftOrRightYAxis = 2;
             }
-            else
-                foreach (var sortedValueItem in valuesBySpand)
-                {
-                    if (sortedValueItem.HighestLowestDifference > highestSpanItem.HighestLowestDifference /*- highestSpanItem.HighestLowestDifference*/ * 0.75)
-                    {
-                        sortedValueItem.LeftOrRightYAxis = 1;
-                    }
-                    else if (sortedValueItem.HighestLowestDifference > lowestSpanItem.HighestLowestDifference /*- lowestSpanItem.HighestLowestDifference*/ * 0.75)
-                        sortedValueItem.LeftOrRightYAxis = 2;
 
+            else
+            {
+                if (highestValueItem == lowestValueItem)
+                    foreach (var spanItem in valuesBySpand)
+                    {
+                        spanItem.LeftOrRightYAxis = 1;
+                    }
+
+                else
+                {
+                    foreach (var spanItem in valuesBySpand)
+                    {
+                        if (spanItem == highestValueItem)
+                            spanItem.LeftOrRightYAxis = 1;
+                        else if (spanItem == lowestValueItem)
+                            spanItem.LeftOrRightYAxis = 2;
+                    }
+                    double y1HighestValue = highestValueItem.HighestValue;
+                    double y1Lowestvalue = highestValueItem.LowestValue;
+                    double y2HighestValue = lowestValueItem.HighestValue;
+                    double y2LowestValue = lowestValueItem.LowestValue;
+
+                    foreach (var spanItem in valuesBySpand)
+                    {
+                        if (spanItem.LeftOrRightYAxis == 1 || spanItem.LeftOrRightYAxis == 2)
+                            continue;
+                        if (spanItem.HighestValue > y1HighestValue && spanItem.LowestValue < y1Lowestvalue)
+                        {
+                            spanItem.LeftOrRightYAxis = 1;
+                            y1HighestValue = spanItem.HighestValue;
+                            y1Lowestvalue = spanItem.LowestValue;
+                        }
+                        else if (spanItem.HighestValue > y1HighestValue && spanItem.LowestValue > y1Lowestvalue)
+                        {
+                            spanItem.LeftOrRightYAxis = 1;
+                            y1HighestValue = spanItem.HighestValue;
+                        }
+                        else if (spanItem.HighestValue > y1Lowestvalue && spanItem.LowestValue < y1Lowestvalue)
+                        {
+                            spanItem.LeftOrRightYAxis = 1;
+                            y1Lowestvalue = spanItem.LowestValue;
+                        }
+                        else if (spanItem.HighestValue < y1HighestValue && spanItem.LowestValue > y1Lowestvalue)
+                        {
+                            spanItem.LeftOrRightYAxis = 1;
+                        }
+                        else if (spanItem.HighestValue < y1Lowestvalue && spanItem.LowestValue > y2HighestValue)
+                        {
+                            if (y1Lowestvalue - spanItem.HighestValue < spanItem.LowestValue - y2HighestValue)
+                            {
+                                spanItem.LeftOrRightYAxis = 1;
+                                y1Lowestvalue = spanItem.LowestValue;
+                            }
+                            else
+                            {
+                                spanItem.LeftOrRightYAxis = 2;
+                                y2HighestValue = spanItem.HighestValue;
+                            }
+                        }
+                        else if (spanItem.HighestValue > y2HighestValue && spanItem.LowestValue < y2HighestValue)
+                        {
+                            spanItem.LeftOrRightYAxis = 2;
+                            y2HighestValue = spanItem.HighestValue;
+                        }
+                        else if (spanItem.HighestValue < y2HighestValue && spanItem.LowestValue > y2LowestValue)
+                        {
+                            spanItem.LeftOrRightYAxis = 2;
+                        }
+                        else if (spanItem.HighestValue < y2HighestValue && spanItem.LowestValue < y2LowestValue)
+                        {
+                            spanItem.LeftOrRightYAxis = 2;
+                            y2LowestValue = spanItem.LowestValue;
+                        }
+                    }
                 }
+            }
 
             List<BaseLegend> legendsBeforeReordering = new List<BaseLegend>();
             for (int i = 0; i < useableLegends.Count; i++)
