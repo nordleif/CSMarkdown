@@ -314,7 +314,7 @@ namespace CSMarkdown.Rendering
             List<DateTimeComponents> dtComponents = Enum.GetValues(typeof(DateTimeComponents)).Cast<DateTimeComponents>().ToList();
 
             if (dateParamArr.Length > dtComponents.Count)
-                throw new Exception("Too many date parameters received, can't set date - Will use default if any is provided");
+                throw new Exception("Too many date parameters received, can't set date.");
 
             string calcExpression = "";
             for (int i = 0; i < dateParamArr.Length; i++)
