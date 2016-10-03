@@ -62,6 +62,7 @@ namespace CSMarkdown.Tests
         [TestCase("markdown_renderChart_yaml_multiple_tags_x_date_params_from_and_to.smd", RenderOutput.Html)]
         [TestCase("markdown_yaml_params_with_to_date_using_x_param.smd", RenderOutput.Html)]
         [TestCase("markdown_2_legends_2_types_4_different_date_formats.smd", RenderOutput.Html)]
+        [TestCase("markdown_3_legends_with_array_of_dates_readTags.smd", RenderOutput.Html)]
         [Test]
         public void CSMarkdownRenderer_Render(string fileName, RenderOutput output)
         {

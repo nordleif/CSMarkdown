@@ -49,6 +49,88 @@ namespace CSMarkdown.Scripting
             return dataTable;
         }
 
+        public DataTable ReadTags(string connectionString, Interval interval, DateTime[] dates, params string[] tags)
+        {
+            var dTable = new DataTable();
+            var intervalForQuery = "";
+            var formatString = "";
+
+            if (interval == Interval.Data)
+            {
+                intervalForQuery = "data";
+                //Hvordan skal det håndteres ved data?.
+                //Hvis der skal laves en ny metode til data, skal understående CreateBaseDataTable's blive hvor de er
+                //Men kan samme metode bruges, kan CreateBaseDataTable naturligvis blot skrives en gang og sættes udenfor if statementsne
+            }
+
+            dTable = CreateDateTimeSpecificTable(dates, tags, interval);
+
+            var from = new DateTime();
+            var to = new DateTime();
+            for (int i = 0; i < dates.Length; i++)
+            {
+                from = dates[i];
+                if (interval == Interval.Month)
+                {
+                    to = from.AddMonths(1);
+                    intervalForQuery = "monthdata";
+                }
+                else if (interval == Interval.Day)
+                {
+                    to = from.AddDays(1);
+                    intervalForQuery = "daydata";
+                }
+                else if (interval == Interval.Hour)
+                {
+                    to = from.AddHours(1);
+                    intervalForQuery = "hourdata";
+                }
+                var fromDate = from.Year + "-" + from.Month.ToString("00") + "-" + from.Day.ToString("00") + " " + from.Hour.ToString("00") + ":" + from.Minute.ToString("00") + ":" + from.Second.ToString("00");
+                var toDate = to.Year + "-" + to.Month.ToString("00") + "-" + to.Day.ToString("00") + " " + to.Hour.ToString("00") + ":" + to.Minute.ToString("00") + ":" + to.Second.ToString("00");
+
+                for (int j = 0; j < tags.Length; j++)
+                {
+                    var extractedTable = new DataTable();
+                    extractedTable = ExtractTagTable("select d.local_time, d.value from rpt_" + intervalForQuery + " d inner join pnt p on d.pnt_no = p.pnt_no where p.pnt_name = '" + tags[j] + "' and local_time >= '" + fromDate + "' and local_time < '" + toDate + "'", connectionString);
+
+                    dTable.Rows[i][dTable.Columns[tags[j]]] = extractedTable.Rows[0][1];
+                }
+
+            }
+
+            return dTable;
+        }
+
+        private DataTable CreateDateTimeSpecificTable(DateTime[] dates, string[] tags, Interval interval)
+        {
+            DataTable dTable = new DataTable();
+            DataColumn column = new DataColumn();
+            DataRow row;
+            //column.ColumnName = interval.ToString();
+            column.ColumnName = "local_time";
+            column.DataType = typeof(DateTime);
+            dTable.Columns.Add(column);
+            for (int i = 0; i < tags.Length; i++)
+            {
+                column = new DataColumn();
+                column.ColumnName = tags[i];
+                column.DataType = typeof(double);
+                dTable.Columns.Add(column);
+            }
+            foreach (var date in dates)
+            {
+                row = dTable.NewRow();
+                row[0] = date;
+                //for (int i = 1; i < dTable.Columns.Count; i++)
+                //{
+                //    row[i] = DBNull.Value;
+                //}
+                dTable.Rows.Add(row);
+            }
+
+            return dTable;
+        }
+
         public DataTable ReadTags(string connectionString, Interval interval, DateTime from, DateTime to, params string[] tags)
         {
             var dTable = new DataTable();
@@ -290,7 +372,7 @@ namespace CSMarkdown.Scripting
 
             foreach (DataRow row in data.Rows)
             {
-                
+
                 var rowNode = bodyNode.AppendChild(HtmlNode.CreateNode("<tr>"));
                 foreach (DataColumn column in data.Columns)
                     rowNode.AppendChild(HtmlNode.CreateNode($"<td data-label=\"{column.ColumnName.Trim()}\">{row[column]}"));
