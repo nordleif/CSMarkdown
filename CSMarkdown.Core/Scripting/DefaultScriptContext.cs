@@ -148,18 +148,24 @@ namespace CSMarkdown.Scripting
             {
                 intervalForQuery = "hourdata";
                 formatString = "yyyy-MM-dd HH";
+                from = new DateTime(from.Year, from.Month, from.Day, from.Hour, 00, 00);
+                to = new DateTime(to.Year, to.Month, to.Day, to.Hour, 00, 00);
                 dTable = CreateBaseDataTable(interval, from, to, tags);
             }
             else if (interval == Interval.Day)
             {
                 intervalForQuery = "daydata";
                 formatString = "yyyy-MM-dd";
+                from = new DateTime(from.Year, from.Month, from.Day, 00, 00, 00);
+                to = new DateTime(to.Year, to.Month, to.Day, 00, 00, 00);
                 dTable = CreateBaseDataTable(interval, from, to, tags);
             }
             else if (interval == Interval.Month)
             {
                 intervalForQuery = "monthdata";
                 formatString = "yyyy-MM";
+                from = new DateTime(from.Year, from.Month, 1, 00, 00, 00);
+                to = new DateTime(to.Year, to.Month, 1, 00, 00, 00);
                 dTable = CreateBaseDataTable(interval, from, to, tags);
             }
 
@@ -956,7 +962,7 @@ namespace CSMarkdown.Scripting
                 addGraphFunction += "chart.xAxis.axisLabel('" + options.XAxisLabel + "');";
             }
 
-            addGraphFunction += "chart.yAxis1.tickFormat(d3.format(',.0f'));\n";
+            addGraphFunction += "chart.yAxis1.tickFormat(d3.format(',.2f'));\n";
             if (options.YAxisLabel != null)
             {
                 addGraphFunction += "chart.yAxis1.axisLabel('" + options.YAxisLabel + "');";
@@ -964,7 +970,7 @@ namespace CSMarkdown.Scripting
 
             if (options.Legends.Count > 1)
             {
-                addGraphFunction += "chart.yAxis2.tickFormat(d3.format(',.1f'));\n";
+                addGraphFunction += "chart.yAxis2.tickFormat(d3.format(',.2f'));\n";
                 if (options.YAxisLabel2 != null)
                 {
                     addGraphFunction += "chart.yAxis2.axisLabel('" + options.YAxisLabel2 + "');";
