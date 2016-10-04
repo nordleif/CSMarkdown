@@ -6,12 +6,13 @@ output:
 ---
 Getting data for P000_NIV, P000_M3, P000_AMP, using the readtags method, wich takes connection, interval, array of datetimes(instead of from and to), and 
 lastly the array of tags.
+Furthermore, this test also shows, that eventhoug fx the first DateTime item is 2016.05.29, it will only use year and month, and set Day to 1 since the interval was set to Month.
 ## CS Syntax
 ```{s echo=true}
 
 var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
 
-var data = ReadTags(con, Interval.Day, new[]{ new DateTime(2016, 08, 01), new DateTime(2016, 08, 02), new DateTime(2016, 08, 03)}, "P000_NIV", "P000_M3", "P000_AMP");
+var data = ReadTags(con, Interval.Month, new[]{ new DateTime(2016, 05, 29), new DateTime(2016, 07, 02), new DateTime(2016, 08, 03)}, "P000_NIV", "P000_M3", "P000_AMP");
 RenderChart(data);
 
 ```

@@ -62,7 +62,15 @@ namespace CSMarkdown.Scripting
                 //Hvis der skal laves en ny metode til data, skal understående CreateBaseDataTable's blive hvor de er
                 //Men kan samme metode bruges, kan CreateBaseDataTable naturligvis blot skrives en gang og sættes udenfor if statementsne
             }
-
+            for (int i = 0; i < dates.Length; i++)
+            {
+                if (interval == Interval.Month)
+                    dates[i] = new DateTime(dates[i].Year, dates[i].Month, 1, 00, 00, 00);
+                else if (interval == Interval.Day)
+                    dates[i] = new DateTime(dates[i].Year, dates[i].Month, dates[i].Day, 00, 00, 00);
+                else if (interval == Interval.Hour)
+                    dates[i] = new DateTime(dates[i].Year, dates[i].Month, dates[i].Day, dates[i].Hour, 00, 00);
+            }
             dTable = CreateDateTimeSpecificTable(dates, tags, interval);
 
             var from = new DateTime();
