@@ -431,8 +431,13 @@ namespace CSMarkdown.Scripting
                 if (options.Legends[1].LeftOrRightYAxis == null || options.Legends[1].LeftOrRightYAxis.ToLower() != "left" || options.Legends[1].LeftOrRightYAxis.ToLower() != "right")
                     options.Legends[1].LeftOrRightYAxis = "right";
             }
+
             foreach (var legendType in options.Legends)
             {
+                if (options.ChartModelType == "multiChart()" && String.IsNullOrWhiteSpace(legendType.Key) && !String.IsNullOrWhiteSpace(legendType.YDataName))
+                {
+                    legendType.Key = legendType.YDataName;
+                }
                 legendType.Values = MakeValuesDictionary(data, options.XDataName, legendType.YDataName, options, legendType);
             }
 
