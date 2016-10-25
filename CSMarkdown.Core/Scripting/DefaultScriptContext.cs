@@ -114,7 +114,7 @@ namespace CSMarkdown.Scripting
             DataTable dTable = new DataTable();
             DataColumn column = new DataColumn();
             DataRow row;
-            //column.ColumnName = interval.ToString();
+
             column.ColumnName = "local_time";
             column.DataType = typeof(DateTime);
             dTable.Columns.Add(column);
