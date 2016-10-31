@@ -73,6 +73,7 @@ namespace CSMarkdown.Rendering
             
             // Load HTML document
             context.HtmlDocument = new HtmlDocument();
+            //context.HtmlDocument.LoadHtmlFromResource(options.Output == RenderOutput.Web ? "default-web.html": "defualt-html.html");
             context.HtmlDocument.LoadHtmlFromResource(options.Output == RenderOutput.Pdf ? "default-pdf.html" : "default-html.html");
 
             // Render YAML options

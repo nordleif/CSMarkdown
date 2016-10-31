@@ -239,6 +239,7 @@
     <EmbeddedResource Include="Rendering\www\css\responsive-tables.css" />
     <EmbeddedResource Include="Rendering\www\js\jQuery.js" />
     <EmbeddedResource Include="Rendering\www\css\rotate.css" />
+    <Content Include="Rendering\www\default-web.html" />
     <Content Include="ssleay32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

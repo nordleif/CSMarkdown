@@ -10,5 +10,6 @@ namespace CSMarkdown.Rendering
     {
         Html,
         Pdf,
+        Web,
     }
 }

@@ -30,6 +30,49 @@ namespace CSMarkdown.Hosting
                 m_webApp = Microsoft.Owin.Hosting.WebApp.Start("http://localhost/csmarkdown/", (builder) => builder.Use(OnRequest));
         }
 
+        private async Task OnRequest1(IOwinContext context, Func<Task> next)
+        {
+            var requestedPath = context.Request.Path.ToString();
+            //var param = context.Request.QueryString.ToString();
+            //param = param.Remove(0, 1); //Remove &
+            
+
+            Console.WriteLine(requestedPath);
+
+            var pathSegments = requestedPath.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
+            var firstSegment = pathSegments.FirstOrDefault();
+
+            if (firstSegment != null)
+            {
+                if(firstSegment.Equals("render"))
+                {
+                    Console.WriteLine("Check 1");
+                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    Console.WriteLine(markdownPath);
+
+                    var text = File.ReadAllText(markdownPath);
+                    Console.WriteLine(text);
+                    var renderer = new CSMarkdownRenderer();
+                    var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true});
+                    Console.WriteLine(result);
+
+                    Console.WriteLine("Check 3");
+                    Console.WriteLine(result);
+                    
+                    context.Response.ContentType = "text/html";
+                    await context.Response.WriteAsync(result);
+                    Console.WriteLine("Render");
+                }
+            }
+            else
+            {
+                Console.WriteLine("else");
+            }
+
+            await next();
+        }
+
+
         private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
 
@@ -49,6 +92,7 @@ namespace CSMarkdown.Hosting
             
             var segments = requestPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = segments.FirstOrDefault();
+            
             if (firstSegment != null)
             {
                 if (firstSegment.Equals("render", StringComparison.InvariantCultureIgnoreCase) && segments.Length == 2)
