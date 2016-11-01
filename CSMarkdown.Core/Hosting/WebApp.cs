@@ -30,14 +30,22 @@ namespace CSMarkdown.Hosting
                 m_webApp = Microsoft.Owin.Hosting.WebApp.Start("http://localhost/csmarkdown/", (builder) => builder.Use(OnRequest));
         }
 
-        private async Task OnRequest1(IOwinContext context, Func<Task> next)
+        private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
             var requestedPath = context.Request.Path.ToString();
-            //var param = context.Request.QueryString.ToString();
-            //param = param.Remove(0, 1); //Remove &
-            
+            var param = context.Request.QueryString.ToString();
+            param = param.Remove(0, 1); //Remove &
+         
+            Console.WriteLine(requestedPath + " " + param);
 
-            Console.WriteLine(requestedPath);
+            var paramSegments = param.Split(new char[] { '&' });
+
+            var parameters = new Dictionary<string, string>();
+            foreach (var p in paramSegments)
+            {
+                var paramss = p.Split('=');
+                parameters.Add(paramss[0], paramss[1]);
+            }
 
             var pathSegments = requestedPath.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();
@@ -46,34 +54,25 @@ namespace CSMarkdown.Hosting
             {
                 if(firstSegment.Equals("render"))
                 {
-                    Console.WriteLine("Check 1");
                     var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
-                    Console.WriteLine(markdownPath);
+                    if (File.Exists(markdownPath))
+                    {
+                        var text = File.ReadAllText(markdownPath);
+                        var renderer = new CSMarkdownRenderer();
+                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
 
-                    var text = File.ReadAllText(markdownPath);
-                    Console.WriteLine(text);
-                    var renderer = new CSMarkdownRenderer();
-                    var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true});
-                    Console.WriteLine(result);
-
-                    Console.WriteLine("Check 3");
-                    Console.WriteLine(result);
-                    
-                    context.Response.ContentType = "text/html";
-                    await context.Response.WriteAsync(result);
-                    Console.WriteLine("Render");
+                        context.Response.ContentType = "text/html";
+                        await context.Response.WriteAsync(result);
+                    }
                 }
             }
-            else
-            {
-                Console.WriteLine("else");
-            }
+            
 
             await next();
         }
 
 
-        private async Task OnRequest(IOwinContext context, Func<Task> next)
+        /*private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
 
             // Urls:
@@ -129,6 +128,6 @@ namespace CSMarkdown.Hosting
             }
             
             await next();
-        }
+        }*/
     }
 }
