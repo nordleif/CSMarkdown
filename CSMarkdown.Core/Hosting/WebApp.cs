@@ -32,26 +32,30 @@ namespace CSMarkdown.Hosting
 
         private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
+            //Mads Nørgaard
             var requestedPath = context.Request.Path.ToString();
             var param = context.Request.QueryString.ToString();
-            param = param.Remove(0, 1); //Remove &
-         
-            Console.WriteLine(requestedPath + " " + param);
-
-            var paramSegments = param.Split(new char[] { '&' });
-
-            var parameters = new Dictionary<string, string>();
-            foreach (var p in paramSegments)
+            if(param != null)
             {
-                var paramss = p.Split('=');
-                parameters.Add(paramss[0], paramss[1]);
+                param = param.Remove(0, 1); //Remove &
+                var paramSegments = param.Split(new char[] { '&' });
+
+                var parameters = new Dictionary<string, string>();
+                foreach (var p in paramSegments)
+                {
+                    var paramss = p.Split('=');
+                    parameters.Add(paramss[0], paramss[1]);
+                }
             }
+            Console.WriteLine(requestedPath);
+
 
             var pathSegments = requestedPath.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();
 
             if (firstSegment != null)
             {
+                //Mads Nørgaard
                 if(firstSegment.Equals("render"))
                 {
                     var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
@@ -65,6 +69,7 @@ namespace CSMarkdown.Hosting
                         await context.Response.WriteAsync(result);
                     }
                 }
+                
             }
             
 
