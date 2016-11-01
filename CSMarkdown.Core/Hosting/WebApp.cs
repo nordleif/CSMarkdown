@@ -34,7 +34,7 @@ namespace CSMarkdown.Hosting
         {
             //Mads Nørgaard
             var requestedPath = context.Request.Path.ToString();
-            var param = context.Request.QueryString.ToString();
+            /*var param = context.Request.QueryString.ToString();
             if(param != null)
             {
                 param = param.Remove(0, 1); //Remove &
@@ -46,7 +46,8 @@ namespace CSMarkdown.Hosting
                     var paramss = p.Split('=');
                     parameters.Add(paramss[0], paramss[1]);
                 }
-            }
+
+            }*/
             Console.WriteLine(requestedPath);
 
 
