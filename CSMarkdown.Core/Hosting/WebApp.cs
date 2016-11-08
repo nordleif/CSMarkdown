@@ -76,12 +76,12 @@ namespace CSMarkdown.Hosting
                 //Nicholai Axelgaard
                 else if(firstSegment.Equals("getReports"))
                 {
-                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
-                    string[] reportsArray = Directory.GetFiles(markdownPath, "*.smd", SearchOption.AllDirectories);
+                    //var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    string[] reportsArray = Directory.GetFiles(m_options.WorkingDirectory, "*.smd", SearchOption.AllDirectories);
                     for (int i = 0; i < reportsArray.Length; i++)
                     {
                         reportsArray[i] = reportsArray[i].Replace("\\", "/");
-                        reportsArray[i] = reportsArray[i].Replace(markdownPath, "");
+                        reportsArray[i] = reportsArray[i].Replace(m_options.WorkingDirectory, "");
                     }
                     Reports reports = new Reports();
 
@@ -96,11 +96,8 @@ namespace CSMarkdown.Hosting
 
                     string json = JsonConvert.SerializeObject(reports, settings);
 
-                    var renderer = new CSMarkdownRenderer();
-                    var result = renderer.Render(json);
-
                     context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync(result);
+                    await context.Response.WriteAsync(json);
                 }  
             }
             
