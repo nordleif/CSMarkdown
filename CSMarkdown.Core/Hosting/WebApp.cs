@@ -8,6 +8,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Hosting;
 using Owin;
 using CSMarkdown.Rendering;
+using Newtonsoft.Json;
 
 namespace CSMarkdown.Hosting
 {
@@ -71,10 +72,48 @@ namespace CSMarkdown.Hosting
                     }
                 }
                 
+                //Nicholai
+                else if(firstSegment.Equals("getReports"))
+                {
+                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    string[] reportsArray = Directory.GetFiles(markdownPath, "*.smd", SearchOption.AllDirectories);
+                    for (int i = 0; i < reportsArray.Length; i++)
+                    {
+                        reportsArray[i] = reportsArray[i].Replace("\\", "/");
+                        reportsArray[i] = reportsArray[i].Replace(markdownPath, "");
+                    }
+                    Reports reports = new Reports();
+
+                    foreach (var reportPath in reportsArray)
+                    {
+                        reports.AddToCollection(reportPath);
+                    }
+
+                    JsonSerializerSettings settings = new JsonSerializerSettings();
+                    settings.Converters.Add(new Converter());
+                    settings.Formatting = Formatting.Indented;
+
+                    string json = JsonConvert.SerializeObject(reports, settings);
+
+                    var renderer = new CSMarkdownRenderer();
+                    var result = renderer.Render(json);
+
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(result);
+                }
+                
+                
+                
             }
             
 
             await next();
+        }
+
+        private static dynamic CreateDirectoryArray(DirectoryInfo directoryInfo)
+        {
+
+            return null;
         }
 
 
