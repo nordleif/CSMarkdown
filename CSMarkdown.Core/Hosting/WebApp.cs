@@ -110,69 +110,7 @@ namespace CSMarkdown.Hosting
             await next();
         }
 
-        private static dynamic CreateDirectoryArray(DirectoryInfo directoryInfo)
-        {
-
-            return null;
-        }
 
 
-        /*private async Task OnRequest(IOwinContext context, Func<Task> next)
-        {
-
-            // Urls:
-            // -----
-            //
-            // /render/<smdname>?rc:output=html?intparam=1&boolparam=true
-            // /render/reports
-            //
-            //  /reports/<smdname >
-
-
-            Console.WriteLine(context.Request.Path);
-
-            var requestPath = context.Request.Path.ToUriComponent(); // context.Request.Uri.LocalPath;
-            var requestUri = new Uri(requestPath, UriKind.Relative);
-            
-            var segments = requestPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
-            var firstSegment = segments.FirstOrDefault();
-            
-            if (firstSegment != null)
-            {
-                if (firstSegment.Equals("render", StringComparison.InvariantCultureIgnoreCase) && segments.Length == 2)
-                {
-                    // Render
-                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{segments[1]}.smd");
-                    if (File.Exists(markdownPath))
-                    {
-                        var text = File.ReadAllText(markdownPath);
-                        var renderer = new CSMarkdownRenderer();
-                        var responseText = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
-
-                        context.Response.ContentType = "text/html";
-                        await context.Response.WriteAsync(responseText);
-                    }
-                }
-                else
-                {
-                    // Read file 
-                    var fileUri = new Uri($"file://{m_options.WorkingDirectory}{requestPath}");
-                    var filePath = fileUri.LocalPath;
-                    if (File.Exists(filePath))
-                    {
-                        // Read file
-                        var responseText = File.ReadAllText(filePath);
-                        context.Response.ContentType = "text/html";
-                        await context.Response.WriteAsync(responseText);
-                    }
-                    else
-                    {
-                        // read resource
-                    }
-                }
-            }
-            
-            await next();
-        }*/
     }
 }
