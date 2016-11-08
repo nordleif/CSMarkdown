@@ -70,16 +70,8 @@ namespace CSMarkdown.Hosting
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
                     }
-                    else
-                    {
-                        markdownPath = Path.Combine(m_options.WorkingDirectory, "markdown_failure.smd");
-                        var text = File.ReadAllText(markdownPath);
-                        var renderer = new CSMarkdownRenderer();
-                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
+                    
 
-                        context.Response.ContentType = "text/html";
-                        await context.Response.WriteAsync(result);
-                    }
                 }
                 else if(firstSegment.Equals("reports"))
                 {
