@@ -35,9 +35,12 @@ namespace CSMarkdown.Hosting
         {
             //Mads Nørgaard
             var requestedPath = context.Request.Path.ToString();
-            /*var param = context.Request.QueryString.ToString();
-            if(param != null)
+            Console.WriteLine(requestedPath);
+
+
+            /*if (context.Request.QueryString.ToString() != null) //Check for query string
             {
+                var param = context.Request.QueryString.ToString();
                 param = param.Remove(0, 1); //Remove &
                 var paramSegments = param.Split(new char[] { '&' });
 
@@ -49,8 +52,6 @@ namespace CSMarkdown.Hosting
                 }
 
             }*/
-            Console.WriteLine(requestedPath);
-
 
             var pathSegments = requestedPath.Split(new string[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();

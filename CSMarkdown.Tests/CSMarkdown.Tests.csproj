@@ -75,6 +75,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Documents\markdown_failure.smd" />
     <None Include="Documents\markdown_2_legends_2_types_4_different_date_formats.smd" />
     <None Include="Documents\markdown_3_legends_with_array_of_dates_readTags.smd" />
     <None Include="Documents\markdown_renderChart_yaml_multiple_tags_x_date_params_from_and_to.smd" />
