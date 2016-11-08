@@ -8,6 +8,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Hosting;
 using Owin;
 using CSMarkdown.Rendering;
+using Newtonsoft.Json;
 
 namespace CSMarkdown.Hosting
 {
@@ -70,16 +71,40 @@ namespace CSMarkdown.Hosting
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
                     }
-                    
-
                 }
-                else if(firstSegment.Equals("reports"))
+                
+                //Nicholai Axelgaard
+                else if(firstSegment.Equals("getReports"))
                 {
+                    //var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    string[] reportsArray = Directory.GetFiles(m_options.WorkingDirectory, "*.smd", SearchOption.AllDirectories);
+                    for (int i = 0; i < reportsArray.Length; i++)
+                    {
+                        reportsArray[i] = reportsArray[i].Replace("\\", "/");
+                        reportsArray[i] = reportsArray[i].Replace(m_options.WorkingDirectory, "");
+                    }
+                    Reports reports = new Reports();
 
-                }
+                    foreach (var reportPath in reportsArray)
+                    {
+                        reports.AddToCollection(reportPath);
+                    }
+
+                    JsonSerializerSettings settings = new JsonSerializerSettings();
+                    settings.Converters.Add(new Converter());
+                    settings.Formatting = Formatting.Indented;
+
+                    string json = JsonConvert.SerializeObject(reports, settings);
+
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(json);
+                }  
             }
+            
             await next();
         }
+
+
 
     }
 }
