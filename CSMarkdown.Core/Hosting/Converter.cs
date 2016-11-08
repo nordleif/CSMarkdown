@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSMarkdown.Hosting
 {
+    //Nicholai Axelgaard
     class Converter : JsonConverter
     {
         public override bool CanConvert(Type objectType)

@@ -73,7 +73,7 @@ namespace CSMarkdown.Hosting
                     }
                 }
                 
-                //Nicholai
+                //Nicholai Axelgaard
                 else if(firstSegment.Equals("getReports"))
                 {
                     var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
@@ -101,13 +101,9 @@ namespace CSMarkdown.Hosting
 
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(result);
-                }
-                
-                
-                
+                }  
             }
             
-
             await next();
         }
 
