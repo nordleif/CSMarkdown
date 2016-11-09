@@ -80,8 +80,8 @@ namespace CSMarkdown.Hosting
                     string[] reportsArray = Directory.GetFiles(m_options.WorkingDirectory, "*.smd", SearchOption.AllDirectories);
                     for (int i = 0; i < reportsArray.Length; i++)
                     {
-                        reportsArray[i] = reportsArray[i].Replace("\\", "/");
                         reportsArray[i] = reportsArray[i].Replace(m_options.WorkingDirectory, "");
+                        reportsArray[i] = reportsArray[i].Replace("\\", "/");
                     }
                     Reports reports = new Reports();
 
