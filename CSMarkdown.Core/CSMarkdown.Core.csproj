@@ -168,6 +168,7 @@
     <Compile Include="DTable\Rows.cs" />
     <Compile Include="DTable\Table.cs" />
     <Compile Include="Hosting\Converter.cs" />
+    <Compile Include="Hosting\Parameter.cs" />
     <Compile Include="Hosting\Reports.cs" />
     <Compile Include="Hosting\WebApp.cs" />
     <Compile Include="Hosting\StartOptions.cs" />
