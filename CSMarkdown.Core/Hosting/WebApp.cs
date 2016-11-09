@@ -69,6 +69,8 @@ namespace CSMarkdown.Hosting
                         var renderer = new CSMarkdownRenderer();
                         var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
 
+                        
+
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
                     }
@@ -96,6 +98,9 @@ namespace CSMarkdown.Hosting
                     settings.Formatting = Formatting.Indented;
 
                     string json = JsonConvert.SerializeObject(reports, settings);
+
+                    string origin = context.Response.Headers.Get("Origin");
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
 
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(json);
@@ -165,6 +170,7 @@ namespace CSMarkdown.Hosting
                         }
 
                         string json = JsonConvert.SerializeObject(parameters);
+                        context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
                         context.Response.ContentType = "application/json";
                         await context.Response.WriteAsync(json);
                     }
