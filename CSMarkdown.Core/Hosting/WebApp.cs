@@ -95,7 +95,7 @@ namespace CSMarkdown.Hosting
                     }
 
                     JsonSerializerSettings settings = new JsonSerializerSettings();
-                    settings.Converters.Add(new Converter());
+                    //settings.Converters.Add(new Converter());
                     settings.Formatting = Formatting.Indented;
 
                     string json = JsonConvert.SerializeObject(reports, settings);

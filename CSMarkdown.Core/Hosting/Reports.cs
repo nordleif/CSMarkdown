@@ -9,9 +9,9 @@ namespace CSMarkdown.Hosting
     //Nicholai Axelgaard
     class Reports
     {
-        public Dictionary<string, Reports> Folders { get; set; }
-        public HashSet<string> Files { get; set; }
         public string Name { get; set; }
+        public HashSet<string> Files { get; set; }
+        public Dictionary<string, Reports> Folders { get; set; }
 
         public Reports(string name = "")
         {
