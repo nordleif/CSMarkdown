@@ -122,6 +122,7 @@
     <None Include="Documents\mockupdata.csv" />
     <None Include="Documents\mockupdata.xlsx" />
     <None Include="Documents\TestFolder\markdown_001.smd" />
+    <None Include="Documents\TestFolder\TestFolder2\markdown_001.smd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
