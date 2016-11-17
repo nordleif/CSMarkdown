@@ -86,8 +86,9 @@ namespace CSMarkdown.Hosting
                         reportsArray[i] = reportsArray[i].Replace(m_options.WorkingDirectory, "");
                         reportsArray[i] = reportsArray[i].Replace("\\", "/");
                     }
-                    var rootFolderName = m_options.WorkingDirectory.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
-                    Reports reports = new Reports(rootFolderName[rootFolderName.Length-1]);
+                    var rootFolders = m_options.WorkingDirectory.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries);
+                    string rootFolderName = rootFolders.Last().First().ToString().ToUpper() + rootFolders.Last().Substring(1);
+                    Reports reports = new Reports(rootFolderName);
 
                     foreach (var reportPath in reportsArray)
                     {
