@@ -103,8 +103,6 @@ namespace CSMarkdown.Hosting
 
                     //string origin = context.Response.Headers.Get("Origin");
                     context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
-                    context.Response.Headers.Add("Access-Control-Allow-Headers", new string[] { "Authorization", "Content-Type" });
-                    context.Response.Headers.Add("Access-Control-Allow-Methods", new string[] { "OPTIONS", "POST" });
 
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(json);
