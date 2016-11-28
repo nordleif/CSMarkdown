@@ -32,27 +32,33 @@ namespace CSMarkdown.Hosting
             m_webApp = Microsoft.Owin.Hosting.WebApp.Start("http://localhost/csmarkdown/", (builder) => builder.Use(OnRequest));
         }
 
+        private string DecodeUrlString(string url)
+        {
+            string newUrl;
+            while ((newUrl = Uri.UnescapeDataString(url)) != url)
+                url = newUrl;
+            return newUrl;
+        }
+
+        // Nicholai Axelgaard
         private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
-            //Mads Nørgaard
             var requestedPath = context.Request.Path.ToString();
             Console.WriteLine(requestedPath);
 
 
-            /*if (context.Request.QueryString != null) //Check for query string
+            var incomingParameters = new Dictionary<string, string>();
+            if (context.Request.QueryString.ToString() != null) //Check for query string
             {
-                var param = context.Request.QueryString.ToString();
-                param = param.Remove(0, 1); //Remove &
-                var paramSegments = param.Split(new char[] { '&' });
+                Console.WriteLine(context.Request.QueryString.ToString());
+                var paramsString = context.Request.QueryString.ToString().Replace("?", "");
+                    foreach (var param in paramsString.Split('&'))
+                    {
+                    incomingParameters.Add(param.ToString().Split('=')[0].Trim(), param.ToString().Split('=')[1].Trim());
+                    }
+                
 
-                var parameters = new Dictionary<string, string>();
-                foreach (var p in paramSegments)
-                {
-                    var paramss = p.Split('=');
-                    parameters.Add(paramss[0], paramss[1]);
-                }
-
-            }*/
+            }
 
             var pathSegments = requestedPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();
@@ -67,7 +73,10 @@ namespace CSMarkdown.Hosting
                     {
                         var text = File.ReadAllText(markdownPath);
                         var renderer = new CSMarkdownRenderer();
-                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
+
+
+
+                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true, Parameters = incomingParameters });
 
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
@@ -121,6 +130,7 @@ namespace CSMarkdown.Hosting
                     await context.Response.WriteAsync(json);
                 }
 
+                // Nicholai Axelgaard
                 else if (firstSegment.Equals("params"))
                 {
                     var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
