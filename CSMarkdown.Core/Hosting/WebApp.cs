@@ -39,7 +39,7 @@ namespace CSMarkdown.Hosting
             Console.WriteLine(requestedPath);
 
 
-            /*if (context.Request.QueryString.ToString() != null) //Check for query string
+            /*if (context.Request.QueryString != null) //Check for query string
             {
                 var param = context.Request.QueryString.ToString();
                 param = param.Remove(0, 1); //Remove &
@@ -69,12 +69,25 @@ namespace CSMarkdown.Hosting
                         var renderer = new CSMarkdownRenderer();
                         var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true });
 
-                        
-
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
                     }
                 }
+
+                if (firstSegment.Equals("pdf"))
+                {
+                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    if (File.Exists(markdownPath))
+                    {
+                        var text = File.ReadAllText(markdownPath);
+                        var renderer = new CSMarkdownRenderer();
+                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Pdf, FlattenHtml = true });
+
+                        context.Response.ContentType = "application/pdf";
+                        await context.Response.WriteAsync(result);
+                    }
+                }
+
 
                 //Nicholai Axelgaard
                 else if (firstSegment.Equals("getReports"))
