@@ -48,7 +48,7 @@ namespace CSMarkdown.Hosting
 
 
             var incomingParameters = new Dictionary<string, string>();
-            if (context.Request.QueryString.ToString() != null) //Check for query string
+            if (!string.IsNullOrWhiteSpace(context.Request.QueryString.ToString())) //Check for query string
             {
                 Console.WriteLine(context.Request.QueryString.ToString());
                 var paramsString = context.Request.QueryString.ToString().Replace("?", "");
@@ -59,7 +59,6 @@ namespace CSMarkdown.Hosting
                 
 
             }
-
             var pathSegments = requestedPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();
 
