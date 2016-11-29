@@ -40,24 +40,24 @@ namespace CSMarkdown.Hosting
             return newUrl;
         }
 
-        // Nicholai Axelgaard
+
         private async Task OnRequest(IOwinContext context, Func<Task> next)
         {
+            context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "*" });
+
             var requestedPath = context.Request.Path.ToString();
             Console.WriteLine(requestedPath);
 
-
+            // Nicholai Axelgaard
             var incomingParameters = new Dictionary<string, string>();
-            if (context.Request.QueryString.ToString() != null) //Check for query string
+            if (context.Request.QueryString.HasValue) //Check for query string
             {
                 Console.WriteLine(context.Request.QueryString.ToString());
                 var paramsString = context.Request.QueryString.ToString().Replace("?", "");
-                    foreach (var param in paramsString.Split('&'))
-                    {
+                foreach (var param in paramsString.Split('&'))
+                {
                     incomingParameters.Add(param.ToString().Split('=')[0].Trim(), param.ToString().Split('=')[1].Trim());
-                    }
-                
-
+                }
             }
 
             var pathSegments = requestedPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
@@ -68,31 +68,38 @@ namespace CSMarkdown.Hosting
                 //Mads Nørgaard
                 if (firstSegment.Equals("render"))
                 {
-                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
-                    if (File.Exists(markdownPath))
+                    var markdownPath = "";
+                    if (incomingParameters.ContainsKey("path"))
                     {
-                        var text = File.ReadAllText(markdownPath);
-                        var renderer = new CSMarkdownRenderer();
-
-
-
-                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true, Parameters = incomingParameters });
-
-                        context.Response.ContentType = "text/html";
-                        await context.Response.WriteAsync(result);
+                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{incomingParameters["path"] + pathSegments[1]}.smd");
+                        
                     }
-                }
+                    else
+                    {
+                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                        
+                    }
+                    Console.WriteLine("Markdown Path: " + markdownPath);
 
-                if (firstSegment.Equals("pdf"))
-                {
-                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
                     if (File.Exists(markdownPath))
                     {
                         var text = File.ReadAllText(markdownPath);
                         var renderer = new CSMarkdownRenderer();
-                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Pdf, FlattenHtml = true });
 
-                        context.Response.ContentType = "application/pdf";
+                        byte[] result;
+                        if (incomingParameters.ContainsKey("pdf"))
+                        {
+                            result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Pdf, FlattenHtml = true, Parameters = incomingParameters });
+                            context.Response.ContentType = "application/pdf";
+                        }
+                        else
+                        {
+                            result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true, Parameters = incomingParameters });
+                            context.Response.ContentType = "text/html";
+                        }
+
+                        //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
+                        //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "*" });
                         await context.Response.WriteAsync(result);
                     }
                 }
@@ -124,7 +131,8 @@ namespace CSMarkdown.Hosting
                     string json = JsonConvert.SerializeObject(reports, settings);
 
                     //string origin = context.Response.Headers.Get("Origin");
-                    context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
+                    //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
+                    //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "*" });
 
                     context.Response.ContentType = "application/json";
                     await context.Response.WriteAsync(json);
@@ -195,14 +203,16 @@ namespace CSMarkdown.Hosting
                         }
 
                         string json = JsonConvert.SerializeObject(parameters);
-                        context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
+                        //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "http://localhost:51358" });
+                        //context.Response.Headers.Add("Access-Control-Allow-Origin", new string[] { "*" });
                         context.Response.ContentType = "application/json";
                         await context.Response.WriteAsync(json);
                     }
                 }
 
-                await next();
+                
             }
+            await next();
         }
     }
 }
