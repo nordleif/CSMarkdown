@@ -77,12 +77,25 @@ namespace CSMarkdown.Hosting
 
                         var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Html, FlattenHtml = true, Parameters = incomingParameters });
 
-
-
                         context.Response.ContentType = "text/html";
                         await context.Response.WriteAsync(result);
                     }
                 }
+
+                if (firstSegment.Equals("pdf"))
+                {
+                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    if (File.Exists(markdownPath))
+                    {
+                        var text = File.ReadAllText(markdownPath);
+                        var renderer = new CSMarkdownRenderer();
+                        var result = renderer.Render(text, new CSMarkdownRenderOptions { Output = RenderOutput.Pdf, FlattenHtml = true });
+
+                        context.Response.ContentType = "application/pdf";
+                        await context.Response.WriteAsync(result);
+                    }
+                }
+
 
                 //Nicholai Axelgaard
                 else if (firstSegment.Equals("getReports"))
