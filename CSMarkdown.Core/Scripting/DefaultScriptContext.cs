@@ -504,7 +504,9 @@ namespace CSMarkdown.Scripting
 
             if (useableLegends.Count == 0 && options.Legends.Count != 0)
             {
-                useableLegends = options.Legends;
+                foreach (var legend in options.Legends)
+                    useableLegends.Add(legend);
+                //useableLegends = options.Legends;
                 for (int i = 0, j = 0; i < useableLegends.Count + 1; i++)
                 {
                     if (data.Columns[i].ColumnName != options.XDataName)
@@ -699,7 +701,7 @@ namespace CSMarkdown.Scripting
             List<BaseLegend> legendsBeforeReordering = new List<BaseLegend>();
             for (int i = 0; i < useableLegends.Count; i++)
             {
-                legendsBeforeReordering.Add(useableLegends[valuesBySpand[i].IndexInOriginalList]);
+                legendsBeforeReordering.Add(options.Legends[valuesBySpand[i].IndexInOriginalList]); // useableLegends[valuesBySpand[i].IndexInOriginalList
                 if (legendsBeforeReordering[i].LeftOrRightYAxis == null)
                 {
                     if (valuesBySpand[i].LeftOrRightYAxis == 1)
