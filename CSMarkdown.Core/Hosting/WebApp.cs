@@ -59,7 +59,6 @@ namespace CSMarkdown.Hosting
                     incomingParameters.Add(param.ToString().Split('=')[0].Trim(), param.ToString().Split('=')[1].Trim());
                 }
             }
-
             var pathSegments = requestedPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
             var firstSegment = pathSegments.FirstOrDefault();
 
