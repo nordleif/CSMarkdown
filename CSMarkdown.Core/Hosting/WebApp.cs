@@ -71,7 +71,6 @@ namespace CSMarkdown.Hosting
                     if (incomingParameters.ContainsKey("path"))
                     {
                         markdownPath = Path.Combine(m_options.WorkingDirectory, $"{incomingParameters["path"] + pathSegments[1]}.smd");
-                        
                     }
                     else
                     {
