@@ -56,7 +56,7 @@ namespace CSMarkdown.Hosting
                 var paramsString = context.Request.QueryString.ToString().Replace("?", "");
                 foreach (var param in paramsString.Split('&'))
                 {
-                    incomingParameters.Add(param.ToString().Split('=')[0].Trim(), param.ToString().Split('=')[1].Trim());
+                    incomingParameters.Add(param.ToString().Split('=')[0].Replace("%20", " ").Trim(), param.ToString().Split('=')[1].Replace("%20", " ").Trim());
                 }
             }
             var pathSegments = requestedPath.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
@@ -70,7 +70,7 @@ namespace CSMarkdown.Hosting
                     var markdownPath = "";
                     if (incomingParameters.ContainsKey("path"))
                     {
-                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{incomingParameters["path"] + pathSegments[1]}.smd");
+                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{incomingParameters["path"] + pathSegments[1].Replace("%20", " ")}.smd");
                     }
                     else
                     {
@@ -139,7 +139,17 @@ namespace CSMarkdown.Hosting
                 // Nicholai Axelgaard
                 else if (firstSegment.Equals("params"))
                 {
-                    var markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+                    string markdownPath = "";
+                    if (incomingParameters.ContainsKey("path"))
+                    {
+                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{incomingParameters["path"] + pathSegments[1].Replace("%20", " ")}.smd");
+                    }
+                    else
+                    {
+                        markdownPath = Path.Combine(m_options.WorkingDirectory, $"{pathSegments[1]}.smd");
+
+                    }
+                    Console.WriteLine("Markdown Path: " + markdownPath);
                     if (File.Exists(markdownPath))
                     {
                         var text = File.ReadAllText(markdownPath);
