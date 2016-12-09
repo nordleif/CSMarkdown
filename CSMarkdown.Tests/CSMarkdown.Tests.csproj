@@ -117,7 +117,6 @@
     <None Include="Documents\markdown_002.smd" />
     <None Include="Documents\markdown_inline_code.smd" />
     <None Include="Documents\markdown_001.smd" />
-    <None Include="Documents\markdown_yaml_params_with_to_date_using_x_param - Copy.smd" />
     <None Include="Documents\markdown_yaml_params_with_to_date_using_x_param.smd" />
     <None Include="Documents\markdown_yaml_params.smd" />
     <None Include="Documents\mockupdata.csv" />

@@ -1,0 +1,23 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+---
+
+## CS Syntax
+```{s echo=true}
+var n = 1;
+var con = "data source=s2kapp1;initial catalog=sys2000;integrated security=false; user=sys2000; password=sys2000";
+var data = ReadSql("select top 5 p.pnt_name [Pnt], p.descr [Descr], d.local_time [Time], d.value [Value] from rpt_data d inner join pnt p on d.pnt_no = p.pnt_no", con);
+RenderTable(data);
+```
+
+## Inline code WOW
+
+Two plus two equals 's 2 + 2'. This is a Roslyn expression.
+
+Four 's n' plus four equals <code options="inline">4+4</code>. Wow.
+
+
+

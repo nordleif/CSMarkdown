@@ -1,0 +1,9 @@
+﻿---
+title: Display Error
+---
+
+### True Option Value
+```{s echo=true, error=true}
+1 / 0;
+```
+

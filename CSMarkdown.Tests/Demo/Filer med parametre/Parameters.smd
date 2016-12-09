@@ -1,0 +1,58 @@
+﻿---
+title: Unit Test
+output:
+  html_document:
+    theme: default
+params:
+  boolparam:
+    type: bool
+    value: true
+  dateparam:
+    type: date
+    value: 2016-08-18
+  datetimeparam:
+    type: datetime
+    value: 2016-08-18 20:52
+  doubleparam:
+    type: double
+    value: 1.1
+  intparam:
+    type: int
+    value: 1
+---
+
+## Parameters
+
+### YAML Syntax
+<pre>
+<code>
+params:
+  boolparam:
+    type: bool
+    value: true
+  dateparam:
+    type: date
+    value: 2016-08-18
+  datetimeparam:
+    type: datetime
+    value: 2016-08-18 20:52
+  doubleparam:
+    type: double
+    value: 1.1
+  intparam:
+    type: int
+    value: 1
+</code>
+</pre>
+
+boolparam returns 's p.boolparam'
+
+dateparam returns 's p.dateparam'
+
+datetimeparam returns 's p.datetimeparam'
+
+doubleparam returns: 's p.doubleparam'
+
+intparam returns: 's p.intparam'
+
+

@@ -1,0 +1,29 @@
+﻿---
+title: Display Warning
+---
+
+### Default Option Value
+```{s warning=true}
+WriteWarning("Test");
+```
+
+### Lower Case True Option Value
+```{s message=true}
+WriteWarning("Test");
+```
+
+### Upper Case True Option Value
+```{s MESSAGE=TRUE}
+WriteWarning("Test");
+```
+
+### Lower Case False Option Value
+```{s message=false}
+WriteWarning("Test");
+```
+
+### Upper Case False Option Value
+```{s MESSAGE=FALSe}
+WriteWarning("Test");
+```
+

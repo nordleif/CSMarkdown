@@ -1,0 +1,7 @@
+﻿---
+title: Error
+---
+
+```{s error=true}
+1 / 0
+```

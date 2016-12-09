@@ -1,0 +1,21 @@
+﻿---
+title: Unit Test
+---
+
+content goes here
+```{s echo=true}
+var data = ReadExcel(@"../../Documents\mockupdata.xlsx");
+RenderTable(data);
+
+```
+
+```{s echo=true}
+var data = ReadCsv(@"../../Documents\mockupdata.csv");
+var options = new ChartOptions();
+options.XAxisLabel = "Time";
+options.YAxisLabel = "Barrels";
+options.YAxisLabel2 = "War";
+options.Legends.Add(new LineLegend(){Key = "Oil"});
+options.Legends.Add(new LineLegend(){Key = "War"});
+RenderChart(data, options);
+```

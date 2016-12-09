@@ -1,0 +1,28 @@
+﻿---
+title: Display Message
+---
+
+### Default Option Value
+```{s}
+WriteMessage("Test");
+```
+
+### Lower Case True Option Value
+```{s message=true}
+WriteMessage("Test");
+```
+
+### Upper Case True Option Value
+```{s MESSAGE=TRUE}
+WriteMessage("Test");
+```
+
+### Lower Case False Option Value
+```{s message=false}
+WriteMessage("Test");
+```
+
+### Upper Case False Option Value
+```{s MESSAGE=FALSe}
+WriteMessage("Test");
+```
