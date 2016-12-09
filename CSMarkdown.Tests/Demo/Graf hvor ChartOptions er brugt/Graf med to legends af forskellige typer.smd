@@ -4,7 +4,7 @@ output:
   html_document:
     theme: default
 ---
-Chart test with one line and one bar legend, where which Columns in data ARE defined (first line will be d.value * 2 as newValue)
+Chart test with one line and one bar legend, where which Columns in data ARE defined (line legend will be d.value * 2 as newValue)
 ## CS Syntax
 ```{s echo=true}
 

@@ -14,7 +14,7 @@ params:
     type: date
     value: x.x.x
 ---
-Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+Chart using multiple tags and x date parameters
 ## CS Syntax
 ```{s echo=true}
 

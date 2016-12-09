@@ -4,7 +4,7 @@ output:
   html_document:
     theme: default
 ---
-Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue)
+Two line chart test, where which Columns in data are not defined (default second line will be d.value * 2 as newValue), but the key for both legends is defined
 ## CS Syntax
 ```{s echo=true}
 

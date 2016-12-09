@@ -5,7 +5,7 @@ output:
     theme: default
 ---
 
-ChartOptions with only the date format defined + filled DataTable 
+Custom date format on X Axis
 
 ## CS Syntax
 ```{s echo=true, error =false}

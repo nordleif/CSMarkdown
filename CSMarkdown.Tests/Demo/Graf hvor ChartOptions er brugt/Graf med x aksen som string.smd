@@ -5,6 +5,8 @@ output:
     theme: default
 ---
 
+Chart using string as X Axis type
+
 ## CS Syntax
 ```{s echo=true}
 

@@ -5,7 +5,7 @@ output:
     theme: default
 ---
 
-Empty ChartOptions + filled DataTable
+Chart with two legends which hasn't been defined beforehand
 
 ## CS Syntax
 ```{s echo=true, error =false}

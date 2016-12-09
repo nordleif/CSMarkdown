@@ -16,7 +16,7 @@ params:
 ---
 
 ## Tag 's p.tag'
-Viser top 5 rækker for datoen 's p.from'.
+Chart using one value in tag and x for the "to" date
 
 ```{s echo=true}
 

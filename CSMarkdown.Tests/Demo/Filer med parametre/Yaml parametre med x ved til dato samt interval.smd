@@ -19,7 +19,7 @@ params:
 ---
 
 ## Tag 's p.tag'
-Viser top 5 rækker for datoen 's p.from'.
+Chart using one tag, normal from date, x params for to date and a set interval
 
 ```{s echo=true}
 
